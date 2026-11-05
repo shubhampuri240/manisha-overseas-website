@@ -12,3 +12,11 @@ if(matchMedia('(hover:hover) and (pointer:fine)').matches&&!matchMedia('(prefers
  document.querySelectorAll('a,button,input,textarea,select').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('is-hover'));el.addEventListener('mouseleave',()=>cursor.classList.remove('is-hover'))});
 }
 window.addEventListener('load',()=>{requestAnimationFrame(()=>document.body.classList.add('is-ready'))});
+
+const studioParams=new URLSearchParams(location.search);
+const studioMessage=document.querySelector('#message');
+if(studioMessage&&studioParams.has('style')){
+ const details=[['Style',studioParams.get('style')],['Colour direction',studioParams.get('colour')],['Texture preview',studioParams.get('texture')],['Surface pattern',studioParams.get('pattern')],['Finish details',studioParams.get('finish')]].filter(([,v])=>v);
+ const generated='I would like to discuss this Manisha catalogue style and visual direction:\n'+details.map(([k,v])=>k+': '+v).join('\n')+'\nPlease confirm fabric, construction, sampling feasibility and quotation.';
+ if(!studioMessage.value.trim())studioMessage.value=generated;
+}

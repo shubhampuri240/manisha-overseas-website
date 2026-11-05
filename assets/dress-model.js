@@ -204,4 +204,27 @@
   stage.classList.add('has-webgl');if(fallback)fallback.setAttribute('aria-hidden','true');
   syncToggle();animate();
   window.addEventListener('pagehide',()=>{if(raf)cancelAnimationFrame(raf);ro.disconnect();inView.disconnect();renderer.dispose();maps.map.dispose();maps.alphaMap.dispose();});
+  // Controls exposed to the design workspace. They affect the 3D concept only.
+  let currentFabric='cotton',currentPattern='plain',customTexture=null;
+  const trimMeshes=[];garment.traverse(o=>{if(o.isMesh&&(o.material===piping||o.material===stitch))trimMeshes.push(o);});
+  function makeSurfaceTexture(fabricType,patternType){
+    const size=512,c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');
+    ctx.fillStyle=fabricType==='linen'?'#e8dfd2':fabricType==='drape'?'#eee6d9':'#f3ede2';ctx.fillRect(0,0,size,size);
+    if(fabricType==='linen'||fabricType==='cotton'){for(let i=0;i<size;i+=fabricType==='linen'?5:8){ctx.strokeStyle=fabricType==='linen'?'rgba(133,112,88,.13)':'rgba(154,137,113,.08)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,size);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(size,i);ctx.stroke();}}
+    if(fabricType==='drape'){for(let i=0;i<50;i++){ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(i*13,0);ctx.bezierCurveTo(i*13-35,170,i*13+35,320,i*13,512);ctx.stroke();}}
+    if(patternType==='stripe'){ctx.strokeStyle='rgba(114,96,76,.56)';ctx.lineWidth=5;for(let x=-512;x<size+512;x+=54){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+512,size);ctx.stroke();}}
+    else if(patternType==='floral'){for(let y=24;y<size;y+=90)for(let x=24;x<size;x+=90){ctx.save();ctx.translate(x,y);ctx.strokeStyle='rgba(125,104,82,.68)';ctx.lineWidth=2;for(let k=0;k<6;k++){ctx.rotate(Math.PI/3);ctx.beginPath();ctx.ellipse(0,17,7,16,0,0,Math.PI*2);ctx.stroke();}ctx.beginPath();ctx.arc(0,0,4,0,Math.PI*2);ctx.fillStyle='rgba(150,124,91,.8)';ctx.fill();ctx.restore();}}
+    const texture=new THREE.CanvasTexture(c);texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(fabricType==='drape'?1.15:1.7,2);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=renderer.capabilities.getMaxAnisotropy();return texture;
+  }
+  function applySurface(){if(customTexture){customTexture.dispose();customTexture=null;}if(currentPattern==='eyelet'){cloth.map=maps.map;cloth.alphaMap=maps.alphaMap;cloth.transparent=true;cloth.alphaTest=.16;cloth.roughness=.86;}else{customTexture=makeSurfaceTexture(currentFabric,currentPattern);cloth.map=customTexture;cloth.alphaMap=null;cloth.transparent=false;cloth.alphaTest=0;cloth.roughness=currentFabric==='drape'?.48:(currentFabric==='linen'?.98:.88);}cloth.needsUpdate=true;}
+  window.ManishaDressStudio={
+    setTone(hex){cloth.color.set(hex);cloth.needsUpdate=true;},
+    setFabric(name){currentFabric=name;applySurface();},
+    setPattern(name){currentPattern=name;applySurface();},
+    setTrims(show){trimMeshes.forEach(m=>m.visible=!!show);},
+    zoom(delta){camera.position.z=Math.max(6.3,Math.min(12,camera.position.z+delta));},
+    reset(){garment.rotation.set(0,-.28,0);camera.position.set(0,0,initialCameraZ);spin=true;syncToggle();currentFabric='cotton';currentPattern='plain';applySurface();cloth.color.set('#fffdf7');this.setTrims(true);},
+    pause(){spin=false;syncToggle();},resume(){spin=true;syncToggle();}
+  };
+
 })();
