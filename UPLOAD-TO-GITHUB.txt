@@ -1,0 +1,5 @@
+Upload the three .webp files in this folder to the existing GitHub repository at assets/visuals/.
+
+Open that folder in GitHub, select Add file > Upload files, select the three .webp files, and commit them to the staging branch. Do not upload to main yet.
+
+These are original generated campaign concepts, not verified photographs of Manisha garments or factory operations.
