@@ -1,0 +1,13 @@
+<?php
+// Minimal Hostinger-compatible enquiry handler. No external plugin or paid form service required.
+session_start();
+function clean($v,$max=5000){$v=trim((string)$v);$v=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/u','',$v);preg_match_all('/./us',$v,$chars);return implode('',array_slice($chars[0]??[],0,$max));}
+if($_SERVER['REQUEST_METHOD']!=='POST'){http_response_code(405);exit('Method not allowed');}
+if(!empty($_POST['website'])){http_response_code(200);exit('Thank you.');}
+$ip=$_SERVER['REMOTE_ADDR']??'unknown';$rateFile=__DIR__.'/storage/rate.json';$rates=is_file($rateFile)?json_decode(file_get_contents($rateFile),true):[];if(!is_array($rates))$rates=[];$now=time();$key=hash('sha256',$ip);$attempts=$rates[$key]??[];if(!is_array($attempts))$attempts=[];$attempts=array_values(array_filter($attempts,fn($t)=>is_int($t)&&$t>$now-3600));if(count($attempts)>=5){http_response_code(429);exit('Please try again later.');}$attempts[]=$now;$rates[$key]=$attempts;file_put_contents($rateFile,json_encode($rates),LOCK_EX);
+$name=clean($_POST['name']??'',100);$email=clean($_POST['email']??'',180);$company=clean($_POST['company']??'',160);$country=clean($_POST['country']??'',100);$type=clean($_POST['company_type']??'',100);$category=clean($_POST['category']??'',100);$quantity=clean($_POST['quantity']??'',80);$timeline=clean($_POST['timeline']??'',100);$message=clean($_POST['message']??'',5000);
+if(!$name||!filter_var($email,FILTER_VALIDATE_EMAIL)||!$country||!$category||!$message){http_response_code(422);exit('Please go back and complete the required fields.');}
+$entry=['received_at'=>gmdate('c'),'name'=>$name,'email'=>$email,'company'=>$company,'country'=>$country,'business_type'=>$type,'category'=>$category,'quantity'=>$quantity,'timeline'=>$timeline,'message'=>$message];$line=json_encode($entry,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES).PHP_EOL;$path=__DIR__.'/storage/enquiries.jsonl';if(file_put_contents($path,$line,FILE_APPEND|LOCK_EX)===false){http_response_code(500);exit('We could not save your enquiry. Please email salil@manishaexports.com.');}
+$to='salil@manishaexports.com';$subject='Website wholesale enquiry — '.preg_replace('/[\r\n]+/',' ',$company?:$name);$body="New website enquiry\n\nName: $name\nEmail: $email\nCompany: $company\nCountry: $country\nBusiness type: $type\nCategory: $category\nQuantity: $quantity\nTimeline: $timeline\n\nProject details:\n$message\n\nReceived: ".gmdate('c');$headers="From: website@".($_SERVER['HTTP_HOST']??'localhost')."\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8";@mail($to,$subject,$body,$headers);
+header('Location: /thank-you.html',true,303);exit;
+?>

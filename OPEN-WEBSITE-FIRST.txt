@@ -1,0 +1,28 @@
+MANISHA OVERSEAS — OPEN THE WEBSITE
+==================================
+
+1. Download the ZIP file and choose Extract All.
+2. Open the extracted folder named Manisha-Overseas-Website.
+3. Double-click index.html. This is the homepage.
+4. Use the top navigation or click All Pages to browse the site.
+5. Choose 3D Dress Studio in the top navigation to see the revolving garment.
+
+MAIN PAGE ORDER
+1. Home — reference-matched editorial homepage
+2. 3D Dress Studio — revolving 3D dress concept; drag to inspect and use pause/reset
+3. About Us — company story and manufacturing identity
+4. Collections — seven category pages and 21 illustrative product pages
+5. Fabrics & Craftsmanship — deeper look at cotton, Schiffli, embroidery and prints
+6. Buyer Process — how wholesale enquiries move from brief to production planning
+7. Manufacturing, Private Label, Wholesale, Quality and Contact
+
+TROUBLESHOOTING
+- Keep an internet connection on for Google Fonts and Three.js.
+- The dress studio includes a rotating illustrated fallback if WebGL/Three.js cannot load.
+- If Windows blocks local scripts, open index.html in Chrome or Edge.
+- Do not open individual HTML pages from inside the ZIP without extracting the full folder first.
+
+IMAGE NOTE
+This edition bundles generated editorial fashion, textile and factory-concept images locally.
+They are illustrative visuals, not documentation of actual Manisha garments or the Noida facility.
+Replace them with approved company photography before making factual product/factory claims.

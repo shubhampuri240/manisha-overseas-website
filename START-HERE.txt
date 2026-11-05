@@ -1,0 +1,33 @@
+MANISHA OVERSEAS — MULTI-PAGE WEBSITE / NAVIGATION FIX
+======================================================
+
+OPEN THE WEBSITE
+1. Extract the entire ZIP first (do not open only one HTML from inside the ZIP preview).
+2. Open the folder named Manisha-Overseas-Website.
+3. Open index.html to start at the homepage.
+4. Use the top navigation: 3D Dress Studio, About Us, Collections, Manufacturing, All Pages.
+
+MAIN PAGES
+01 Home: index.html
+02 3D Dress Studio: dress-studio.html
+03 About Us: about.html
+All Pages directory: pages.html
+All collections: collections/index.html
+
+SEVEN COLLECTION PAGES
+- collections/cotton-dresses.html
+- collections/schiffli-cutwork.html
+- collections/printed-dresses.html
+- collections/tops-blouses.html
+- collections/coord-sets.html
+- collections/skirts-pants.html
+- collections/resort-kaftans.html
+
+OTHER PAGES
+Manufacturing, Private Label, Wholesale, Quality, Contact and Thank You.
+Each collection also has product detail pages under products/.
+
+3D DRESS
+The dedicated 3D Dress Studio page contains a real Three.js garment model when WebGL and the Three.js CDN are available. If the CDN or WebGL is blocked, an illustrated dress rotates as a fallback so the page is not blank. Drag to rotate when the WebGL model is active; use Pause/Resume and Reset.
+
+The site is not deployed. Keep email DNS records protected when domain connection is later arranged.

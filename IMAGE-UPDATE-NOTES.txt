@@ -1,0 +1,17 @@
+IMAGE UPDATE NOTES
+==================
+
+All previous tiny local WebP thumbnails (many only ~210 x 140 pixels) have been removed.
+Page image references now use high-resolution Pexels CDN photos requested at 2,200–3,200px.
+The approved design, page order, product pages and interactive 3D dress page are preserved.
+
+Preview requires an internet connection because photos and web fonts load from their public CDNs.
+Before production launch:
+- Replace stock fashion images with approved Manisha product photos wherever possible.
+- Replace stock manufacturing photos with real photographs of the Noida facility.
+- For long-term performance and control, download approved images and store them on the site's own hosting/CDN when hosting access is available.
+- Treat generic embroidery/lace visuals as inspiration only; do not present them as actual Schiffli samples unless the garment or fabric has been verified.
+
+The three main pages are:
+index.html (Home), dress-studio.html (3D Dress Studio), about.html (About Us).
+All collections remain under /collections/.

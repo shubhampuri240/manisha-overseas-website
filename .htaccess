@@ -1,0 +1,15 @@
+Options -Indexes
+DirectoryIndex index.html
+<FilesMatch "^(\.env|composer\.(json|lock)|package(-lock)?\.json|README\.md)$">Require all denied</FilesMatch>
+<IfModule mod_headers.c>
+Header set X-Content-Type-Options "nosniff"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/css "access plus 7 days"
+ExpiresByType application/javascript "access plus 7 days"
+ExpiresByType image/svg+xml "access plus 30 days"
+</IfModule>
