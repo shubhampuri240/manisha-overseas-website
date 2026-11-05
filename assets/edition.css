@@ -135,3 +135,64 @@
  .campaign-wardrobe .campaign-overlay{width:88%;margin:0 auto 52px}
  .campaign-index{bottom:15px;left:5%}
 }
+
+
+/* 2026 VISUAL REFINEMENT — light interior navigation */
+.edition-nav.light-nav{position:relative;top:auto;left:auto;background:#f4f0e8;color:#171b20;border-bottom:1px solid rgba(27,30,31,.15);height:78px}
+.edition-nav.light-nav .brand-divider{background:rgba(27,30,31,.28)}
+.edition-nav.light-nav nav .active{border-bottom-color:#171b20}
+.edition-nav.light-nav .drop-menu{background:#f4f0e8;color:#171b20;border:1px solid rgba(27,30,31,.12)}
+.edition-nav.light-nav .drop-menu a:hover{background:#e8e1d5}
+.edition-nav.light-nav .nav-quote{background:#171b20;color:#f4f0e8}
+@media(max-width:720px){.edition-nav.light-nav nav{background:#f4f0e8;color:#171b20}.edition-nav.light-nav nav .active{border-bottom-color:#171b20}.edition-nav.light-nav .drop-menu{background:#e9e2d7;color:#171b20}}
+/* Collection directory — dedicated responsive page */
+.collections-index-page{background:#f4f0e8}
+.collection-directory-hero{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:76px 5.5% 84px;background:linear-gradient(120deg,#f4f0e8 0%,#eee8dc 100%)}
+.collection-directory-copy{max-width:620px}
+.collection-directory-copy h1{font:500 clamp(58px,7vw,100px)/.94 var(--serif);letter-spacing:-.065em;margin:23px 0}
+.collection-directory-copy h1 em{color:#8b795e;font-weight:500}
+.collection-directory-copy p{max-width:500px;font-size:14px;line-height:1.85;color:#5e5b54}
+.collection-directory-cta{display:inline-flex;gap:18px;align-items:center;margin-top:16px;padding-bottom:9px;border-bottom:1px solid #34332f;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.collection-directory-cta span{font-size:17px}
+.collection-directory-meta{display:flex;align-items:center;gap:13px;margin-top:65px;font-size:8px;letter-spacing:.18em;color:#7b776e}
+.collection-directory-meta i{display:block;width:24px;height:1px;background:#a9a194}
+.collection-directory-visual{height:clamp(390px,42vw,570px);position:relative;overflow:hidden;background:#ded6c9}
+.collection-directory-visual:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(transparent,#171b2044)}
+.collection-directory-visual img{width:100%;height:100%;object-fit:cover;object-position:67% center}
+.collection-directory-visual>span{position:absolute;z-index:1;bottom:20px;left:22px;color:#fff;font-size:8px;letter-spacing:.18em}
+.collection-directory-list{padding:74px 5.5% 110px}
+.collection-directory-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:35px}
+.collection-directory-heading h2{font:500 clamp(38px,5vw,60px)/1 var(--serif);margin:12px 0 0;letter-spacing:-.04em}
+.collection-directory-heading p{max-width:390px;font-size:12px;line-height:1.8;color:#656158;margin:0}
+.collection-directory-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 16px}
+.directory-card{display:flex;flex-direction:column;min-width:0;color:#171b20}
+.directory-card-image{height:clamp(220px,26vw,350px);overflow:hidden;background:#e1d9cd}
+.directory-card-image img{width:100%;height:100%;object-fit:cover;transition:transform .75s cubic-bezier(.2,.7,.2,1)}
+.directory-card:hover .directory-card-image img{transform:scale(1.045)}
+.directory-card-copy{padding:15px 1px 0}
+.directory-card-copy small{font-size:8px;letter-spacing:.17em;color:#817b70}
+.directory-card-copy h3{font:500 clamp(20px,2vw,27px)/1.12 var(--serif);margin:8px 0 9px}
+.directory-card-copy>span{font-size:9px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid #aaa398;padding-bottom:7px;display:inline-block}
+.directory-card-contact{justify-content:space-between;min-height:clamp(220px,26vw,350px);padding:28px;background:#1b2024;color:#f4f0e8}
+.directory-card-contact .directory-card-copy{padding:0}
+.directory-card-contact .directory-card-copy small{color:#c2b7a6}
+.directory-card-contact .directory-card-copy h3{font-size:clamp(24px,2.4vw,34px)}
+.directory-card-contact .directory-card-copy>span{border-color:#999184}
+.directory-contact-mark{font:500 45px var(--serif);letter-spacing:.08em}
+.directory-contact-mark span{font-size:20px;color:#c9ae83;margin-left:9px}
+@media(max-width:1000px){.collection-directory-hero{gap:4vw;padding-left:4%;padding-right:4%}.collection-directory-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.collection-directory-list{padding-left:4%;padding-right:4%}.collection-directory-visual{height:440px}}
+@media(max-width:720px){.edition-nav.light-nav{height:68px}.collection-directory-hero{grid-template-columns:1fr;padding:52px 6% 55px;gap:30px}.collection-directory-copy h1{font-size:clamp(55px,13vw,78px);margin:18px 0}.collection-directory-copy p{font-size:12px}.collection-directory-meta{margin-top:35px;font-size:7px}.collection-directory-visual{height:390px}.collection-directory-list{padding:55px 6% 75px}.collection-directory-heading{display:block}.collection-directory-heading p{margin-top:16px}.collection-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 12px}.directory-card-image,.directory-card-contact{height:260px;min-height:260px}.directory-card-copy h3{font-size:20px}.directory-card-copy small{font-size:7px}}
+@media(max-width:420px){.collection-directory-grid{grid-template-columns:1fr}.directory-card-image,.directory-card-contact{height:360px;min-height:360px}.directory-card-copy h3{font-size:26px}}
+/* Keep paired editorial campaigns intentional on the homepage */
+.campaign-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:12px 3.5%;background:#f4f0e8}
+.campaign-pair .campaign-banner{min-height:clamp(360px,34vw,500px);height:100%;margin:0}
+.campaign-pair .campaign-cotton>img{object-position:left center}
+.campaign-pair .campaign-wardrobe>img{object-position:right center}
+.campaign-pair .campaign-overlay{width:78%;padding:15px 0}
+.campaign-pair .campaign-cotton .campaign-overlay{margin-left:auto;margin-right:6%;text-align:left}
+.campaign-pair .campaign-wardrobe .campaign-overlay{margin-left:7%;margin-right:0;text-align:left}
+.campaign-pair .campaign-overlay h2{font-size:clamp(32px,3.2vw,50px);line-height:1}
+.campaign-pair .campaign-overlay p{font-size:10px;line-height:1.65;max-width:260px}
+.campaign-pair .campaign-link{font-size:8px}
+.campaign-pair .campaign-index{display:none}
+@media(max-width:720px){.campaign-pair{grid-template-columns:1fr;padding:8px;gap:8px}.campaign-pair .campaign-banner{min-height:410px;height:410px}.campaign-pair .campaign-overlay{width:78%;padding:10px 0}.campaign-pair .campaign-overlay h2{font-size:clamp(38px,9vw,52px)}.campaign-pair .campaign-overlay p{font-size:11px}}
