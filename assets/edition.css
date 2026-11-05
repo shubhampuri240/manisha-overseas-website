@@ -91,3 +91,47 @@
 .studio-page #dress-canvas{cursor:grab;touch-action:pan-y;}
 .studio-page #dress-canvas:active{cursor:grabbing;}
 @media(max-width:720px){.studio-reference-card>a{grid-template-columns:68px 1fr}.studio-reference-card img{width:68px;height:90px}.dress-tone-options button{font-size:8px;padding:7px 8px}.studio-fallback-photo img{height:88%!important;max-width:88%;}}
+
+
+/* Editorial campaign banners inspired by the supplied visual references */
+.campaign-banner{position:relative;isolation:isolate;min-height:clamp(350px,43vw,610px);overflow:hidden;background:#d6cabb;color:#fff;margin:0;display:flex;align-items:center}
+.campaign-banner>img{position:absolute;z-index:-2;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.campaign-banner:after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none}
+.campaign-arrivals{min-height:clamp(250px,31vw,430px);color:#fff}
+.campaign-arrivals:after{background:linear-gradient(90deg,#24180d22,#24180d10 48%,#24180d20)}
+.campaign-center{position:relative;width:min(680px,90%);margin:auto;text-align:center;padding:55px 20px;text-shadow:0 1px 14px #3a2d1f50}
+.campaign-overlay .micro{font-size:9px;letter-spacing:.24em;opacity:.9}
+.campaign-overlay h2{font:500 clamp(43px,6vw,83px)/.94 var(--serif);letter-spacing:-.045em;margin:14px 0 10px}
+.campaign-overlay h2 em{font-weight:500}
+.campaign-overlay p{max-width:420px;font-size:12px;line-height:1.65;margin:0 auto 20px}
+.campaign-link{display:inline-flex;align-items:center;gap:14px;border-bottom:1px solid currentColor;padding:0 0 7px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.campaign-link span{font-size:15px;transition:transform .25s}
+.campaign-link:hover span{transform:translate(4px,-3px)}
+.campaign-index{position:absolute;bottom:22px;left:4.5%;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.85}
+.campaign-cotton{min-height:clamp(430px,48vw,660px);color:#fff}
+.campaign-cotton:after{background:linear-gradient(90deg,#2a21151a 0%,#2a211500 34%,#2a21154a 100%)}
+.campaign-cotton .campaign-overlay{margin-left:auto;margin-right:7%;width:min(520px,43%);text-align:left;text-shadow:0 1px 16px #473c2d40}
+.campaign-cotton .campaign-overlay h2{font-size:clamp(45px,5.6vw,76px)}
+.campaign-cotton .campaign-overlay p{margin:0 0 22px}
+.campaign-wardrobe{min-height:clamp(430px,47vw,640px);color:#292a28}
+.campaign-wardrobe:after{background:linear-gradient(90deg,#e4dfd6e8 0%,#e4dfd6a8 35%,#e4dfd600 72%)}
+.campaign-wardrobe .campaign-overlay{margin-left:8%;width:min(480px,42%);text-align:left}
+.campaign-wardrobe .campaign-overlay h2{font-size:clamp(48px,5.8vw,82px)}
+.campaign-wardrobe .campaign-overlay p{margin:0 0 22px}
+.campaign-wardrobe .campaign-index{color:#333}
+@media(max-width:720px){
+ .campaign-banner{min-height:420px}
+ .campaign-arrivals{min-height:300px}
+ .campaign-center{padding:35px 14px}
+ .campaign-overlay h2{font-size:clamp(40px,12vw,58px)}
+ .campaign-overlay p{font-size:11px;max-width:300px}
+ .campaign-cotton{min-height:520px;align-items:flex-end}
+ .campaign-cotton>img{object-position:30% center}
+ .campaign-cotton:after{background:linear-gradient(0deg,#2a211598 0%,#2a211500 80%)}
+ .campaign-cotton .campaign-overlay{width:90%;margin:0 auto 52px;text-align:left}
+ .campaign-wardrobe{min-height:500px;align-items:flex-end}
+ .campaign-wardrobe>img{object-position:66% center}
+ .campaign-wardrobe:after{background:linear-gradient(0deg,#eee9e1ed 0%,#eee9e180 55%,#eee9e100 100%)}
+ .campaign-wardrobe .campaign-overlay{width:88%;margin:0 auto 52px}
+ .campaign-index{bottom:15px;left:5%}
+}
