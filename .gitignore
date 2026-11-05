@@ -1,0 +1,15 @@
+# Runtime enquiry data and logs
+/storage/*.json
+/storage/*.jsonl
+/storage/*.log
+
+# Local operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor and temporary files
+.vscode/
+.idea/
+*.tmp
+*.bak
