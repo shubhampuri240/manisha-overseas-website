@@ -20,3 +20,5 @@ if(studioMessage&&studioParams.has('style')){
  const generated='I would like to discuss this Manisha catalogue style and visual direction:\n'+details.map(([k,v])=>k+': '+v).join('\n')+'\nPlease confirm fabric, construction, sampling feasibility and quotation.';
  if(!studioMessage.value.trim())studioMessage.value=generated;
 }
+
+function addCompanyNavMenu(){const nav=document.querySelector('.edition-nav nav')||document.querySelector('.navlinks');if(!nav||nav.querySelector('[data-company-menu]'))return;const prefix=(location.pathname.includes('/collections/')||location.pathname.includes('/products/'))?'../':'';const group=document.createElement('div');group.className='nav-drop company-nav-drop';group.dataset.companyMenu='';group.innerHTML='<a href="'+prefix+'about.html">Company⌄</a><div class="drop-menu"><a href="'+prefix+'about.html">About Manisha</a><a href="'+prefix+'global-reach.html">Global Reach</a><a href="'+prefix+'clients.html">Clients &amp; Partners</a><a href="'+prefix+'product-development.html">Product Development</a></div>';const before=nav.querySelector('.nav-quote,.nav-cta');nav.insertBefore(group,before||null);}addCompanyNavMenu();
