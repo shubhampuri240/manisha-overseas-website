@@ -26,7 +26,7 @@ function addCompanyNavMenu(){const nav=document.querySelector('.edition-nav nav'
 /* Select a product image and open it as a reference inside the Manisha 3D Studio. */
 (()=> {
  if(!document.querySelector("main")) return;
- const cardSelectors=[".product-card",".tile",".collection-card",".collection-card-v3",".detail-image"];
+ const cardSelectors=[".product-card",".tile",".collection-card",".collection-card-v3",".cx-products a",".product-grid a",".detail-image"];
  const candidates=[...document.querySelectorAll(cardSelectors.join(","))];
  candidates.forEach(card=>{
    if(card.dataset.studioActionReady==="1") return;
