@@ -48,7 +48,7 @@ submit.addEventListener("click",async()=>{
   csrfToken=await getCsrfToken();const garmentData=await imageAsDataUri(garmentImageUrl),form=new FormData();form.append("action","run");form.append("csrf_token",csrfToken);form.append("person_photo",personFile);form.append("garment_image",garmentData);
   const response=await fetch("try-on-api.php",{method:"POST",body:form,credentials:"same-origin"}),data=await response.json().catch(()=>({message:"The try-on endpoint is not responding as a configured service."}));
   if(!response.ok)throw new Error(data.message||"The try-on service is not configured on this website host.");if(!data.id)throw new Error("The try-on service did not return a prediction ID.");
-  setStatus("Your try-on is processing…");const output=await poll(data.id),image=Array.isArray(output)?output[0]:output;if(!image||typeof image!=="string")throw new Error("The try-on service returned no image.");
+  setStatus("Your try-on is processing…");const output=await poll(data.id),rawImage=Array.isArray(output)?output[0]:output;if(!rawImage||typeof rawImage!=="string")throw new Error("The try-on service returned no image.");const image=(rawImage.startsWith("data:image/")||rawImage.startsWith("https://"))?rawImage:"data:image/jpeg;base64,"+rawImage;
   resultImage.src=image;download.href=image;resultBox.hidden=false;setStatus("Your virtual try-on preview is ready.");
  }catch(error){setStatus(error.message+" The current GitHub Pages preview cannot run PHP; enable the backend on PHP hosting first.",true);}
  finally{busy=false;validate();}
