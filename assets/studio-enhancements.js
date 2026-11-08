@@ -4,7 +4,10 @@ let garmentImageUrl=null;
 if(rawImage){try{const u=new URL(rawImage,location.href);if(u.protocol==="https:"||u.origin===location.origin)garmentImageUrl=u.href;}catch(e){}}
 const frame=document.querySelector("#photo-reference-frame"),caption=document.querySelector("#photo-style-caption"),title=document.querySelector("#stage-style-title"),statusLine=document.querySelector("#stage-status");
 if(garmentImageUrl&&frame){
- frame.style.backgroundImage="url("+JSON.stringify(garmentImageUrl)+")";frame.style.backgroundSize="contain";frame.style.backgroundPosition="center";frame.style.backgroundRepeat="no-repeat";frame.style.backgroundColor="#f1ece2";
+ const applyWebsiteReference=()=>{frame.style.backgroundImage="url("+JSON.stringify(garmentImageUrl)+")";};
+ applyWebsiteReference();
+ const referenceObserver=new MutationObserver(()=>{if(!frame.style.backgroundImage.includes(garmentImageUrl))applyWebsiteReference();});
+ referenceObserver.observe(frame,{attributes:true,attributeFilter:["style"]});frame.style.backgroundSize="contain";frame.style.backgroundPosition="center";frame.style.backgroundRepeat="no-repeat";frame.style.backgroundColor="#f1ece2";
  if(caption)caption.textContent="WEBSITE SELECTION / "+rawName.toUpperCase();
  if(title)title.textContent="Website selection · "+rawName;
  if(statusLine)statusLine.textContent="Website garment selected · switch to Catalogue photo to inspect";
