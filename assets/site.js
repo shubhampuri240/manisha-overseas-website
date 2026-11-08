@@ -22,3 +22,39 @@ if(studioMessage&&studioParams.has('style')){
 }
 
 function addCompanyNavMenu(){const nav=document.querySelector('.edition-nav nav')||document.querySelector('.navlinks');if(!nav||nav.querySelector('[data-company-menu]'))return;const prefix=(location.pathname.includes('/collections/')||location.pathname.includes('/products/'))?'../':'';const group=document.createElement('div');group.className='nav-drop company-nav-drop';group.dataset.companyMenu='';group.innerHTML='<a href="'+prefix+'about.html">Company⌄</a><div class="drop-menu"><a href="'+prefix+'about.html">About Manisha</a><a href="'+prefix+'global-reach.html">Global Reach</a><a href="'+prefix+'clients.html">Clients &amp; Partners</a><a href="'+prefix+'product-development.html">Product Development</a></div>';const before=nav.querySelector('.nav-quote,.nav-cta');nav.insertBefore(group,before||null);}addCompanyNavMenu();
+
+/* Select a product image and open it as a reference inside the Manisha 3D Studio. */
+(()=> {
+ if(!document.querySelector("main")) return;
+ const cardSelectors=[".product-card",".tile",".collection-card",".collection-card-v3",".detail-image"];
+ const candidates=[...document.querySelectorAll(cardSelectors.join(","))];
+ candidates.forEach(card=>{
+   if(card.dataset.studioActionReady==="1") return;
+   const img=card.querySelector("img");
+   if(!img||!img.src||img.closest("header,footer,.edition-footer,.studio-site-header")) return;
+   card.dataset.studioActionReady="1";
+   const name=(card.querySelector("h1,h2,h3,b")?.textContent||img.alt||"Selected garment").trim();
+   let target=card;
+   if(card.tagName==="A"){
+     const wrapper=document.createElement("div");
+     wrapper.className="studio-entry-wrap";
+     card.parentNode.insertBefore(wrapper,card);
+     wrapper.appendChild(card);
+     target=wrapper;
+   }else if(getComputedStyle(card).position==="static"){
+     card.style.position="relative";
+   }
+   const button=document.createElement("a");
+   button.className="studio-entry-button";
+   button.textContent="Open in 3D Studio ↗";
+   const nested=location.pathname.includes("/collections/")||location.pathname.includes("/products/");
+   const studioPath=nested?"../dress-studio.html":"dress-studio.html";
+   const destination=new URL(studioPath,location.href);
+   destination.searchParams.set("image",img.currentSrc||img.src);
+   destination.searchParams.set("name",name);
+   destination.searchParams.set("source","website");
+   button.href=destination.href;
+   button.setAttribute("aria-label","Open "+name+" in the 3D garment studio");
+   target.appendChild(button);
+ });
+})();
