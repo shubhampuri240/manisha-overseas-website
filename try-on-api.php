@@ -3,16 +3,40 @@ declare(strict_types=1);
 
 /*
  * Manisha Overseas virtual try-on proxy.
- * Keep FASHN_API_KEY on the PHP host only. Never put it in browser JavaScript or Git.
- * Uploaded person photos are read from PHP's temporary upload location and are not written to disk.
+ * FASHN_API_KEY must exist only in the PHP hosting environment.
+ * Person photos are read from PHP's temporary upload location and not written to the website.
  */
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, private');
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+    'httponly' => true,
+    'samesite' => 'Lax',
+]);
+session_start();
 
 function reply(int $status, array $payload): never {
     http_response_code($status);
     echo json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
+}
+
+$action = (string) ($_POST['action'] ?? $_GET['action'] ?? '');
+if ($action === 'token') {
+    if (!isset($_SESSION['tryon_csrf'])) {
+        $_SESSION['tryon_csrf'] = bin2hex(random_bytes(32));
+    }
+    reply(200, ['csrf_token' => $_SESSION['tryon_csrf']]);
+}
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+    reply(405, ['message' => 'Use POST for try-on requests.']);
+}
+$providedToken = (string) ($_POST['csrf_token'] ?? '');
+$sessionToken = (string) ($_SESSION['tryon_csrf'] ?? '');
+if ($providedToken === '' || $sessionToken === '' || !hash_equals($sessionToken, $providedToken)) {
+    reply(403, ['message' => 'This request expired. Refresh the studio and try again.']);
 }
 
 function fashnRequest(string $url, string $apiKey, ?string $body = null): array {
@@ -55,12 +79,8 @@ $apiKey = getenv('FASHN_API_KEY') ?: '';
 if ($apiKey === '') {
     reply(503, ['message' => 'Virtual try-on is not enabled on this host yet. Add FASHN_API_KEY to the PHP hosting environment to activate it.']);
 }
-$action = (string) ($_POST['action'] ?? $_GET['action'] ?? '');
 
 if ($action === 'run') {
-    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-        reply(405, ['message' => 'Use POST to start a try-on.']);
-    }
     if (!isset($_FILES['person_photo']) || (int) $_FILES['person_photo']['error'] !== UPLOAD_ERR_OK) {
         reply(400, ['message' => 'Choose a photo before starting the try-on.']);
     }
@@ -68,13 +88,15 @@ if ($action === 'run') {
     if ((int) $file['size'] < 1 || (int) $file['size'] > 10 * 1024 * 1024) {
         reply(413, ['message' => 'The person photo must be 10 MB or smaller.']);
     }
+    if (!class_exists('finfo')) {
+        reply(500, ['message' => 'The PHP host needs the Fileinfo extension enabled.']);
+    }
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mime = $finfo->file((string) $file['tmp_name']);
     $allowed = ['image/jpeg', 'image/png', 'image/webp'];
     if (!in_array($mime, $allowed, true)) {
         reply(415, ['message' => 'Only JPG, PNG and WebP person photos are accepted.']);
     }
-
     $personBytes = file_get_contents((string) $file['tmp_name']);
     if ($personBytes === false) {
         reply(400, ['message' => 'The uploaded photo could not be read.']);
@@ -87,6 +109,18 @@ if ($action === 'run') {
         !preg_match('#^data:image/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$#', $garmentImage)) {
         reply(400, ['message' => 'Choose a valid garment image from the website first.']);
     }
+
+    // Limit each browser session to five paid try-on requests per hour.
+    $now = time();
+    $recent = array_values(array_filter(
+        $_SESSION['tryon_runs'] ?? [],
+        static fn($timestamp) => is_int($timestamp) && $timestamp > ($now - 3600)
+    ));
+    if (count($recent) >= 5) {
+        reply(429, ['message' => 'This browser session has reached five try-on requests in one hour. Please try again later.']);
+    }
+    $recent[] = $now;
+    $_SESSION['tryon_runs'] = $recent;
 
     $payload = [
         'model_name' => 'tryon-v1.6',
@@ -110,7 +144,7 @@ if ($action === 'run') {
 }
 
 if ($action === 'status') {
-    $id = (string) ($_POST['id'] ?? $_GET['id'] ?? '');
+    $id = (string) ($_POST['id'] ?? '');
     if (!preg_match('/^[A-Za-z0-9-]{8,128}$/', $id)) {
         reply(400, ['message' => 'The try-on request ID is invalid.']);
     }
