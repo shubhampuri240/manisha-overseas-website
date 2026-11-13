@@ -84,6 +84,10 @@
   const stitch=new THREE.MeshStandardMaterial({color:0xcdb795,roughness:.9});
   materialSet=[cloth];
   garment=new THREE.Group();scene.add(garment);
+  const skirtAssembly=new THREE.Group();garment.add(skirtAssembly);
+  const bodiceAssembly=new THREE.Group();garment.add(bodiceAssembly);
+  const sleevesAssembly=new THREE.Group();garment.add(sleevesAssembly);
+  const pantsAssembly=new THREE.Group();garment.add(pantsAssembly);pantsAssembly.visible=false;
 
   function meshFromGrid(rows,cols,fn,material){
     const vertices=[],uv=[],indices=[];
@@ -109,13 +113,13 @@
     const y=.12-2.34*v+.018*Math.sin(a*8+v*5)*v;
     return new THREE.Vector3(Math.cos(a)*radius,y,Math.sin(a)*radius*.60);
   },cloth);
-  garment.add(skirt);
+  skirtAssembly.add(skirt);
   // Tier seam trims follow the same flare and are positioned as delicate stitched rows.
   function tierRing(v){
     const r=.34+1.05*Math.pow(v,1.18),y=.12-2.34*v;
     const points=[];for(let i=0;i<=160;i++){const a=i/160*Math.PI*2,rr=r+(Math.sin(a*9+v*4.2)*.035)*(.25+.75*v);points.push(new THREE.Vector3(Math.cos(a)*rr,y,Math.sin(a)*rr*.60));}
     const curve=new THREE.CatmullRomCurve3(points);
-    const line=new THREE.Mesh(new THREE.TubeGeometry(curve,160,.009,5,false),stitch);garment.add(line);
+    const line=new THREE.Mesh(new THREE.TubeGeometry(curve,160,.009,5,false),stitch);skirtAssembly.add(line);
   }
   tierRing(.36);tierRing(.70);tierRing(.91);
 
@@ -130,7 +134,7 @@
     const waistPinch=1-.055*Math.exp(-Math.pow((v-.18)/.10,2));
     return new THREE.Vector3(Math.cos(a)*rx*waistPinch,y,Math.sin(a)*rz*waistPinch);
   },cloth);
-  garment.add(bodice);
+  bodiceAssembly.add(bodice);
   // Smocking rows around the bodice, subtle enough to preserve the clean product look.
   for(let i=0;i<8;i++){
     const v=.34+i*.055,points=[];
@@ -140,7 +144,7 @@
       points.push(new THREE.Vector3(Math.cos(a)*rx*1.006,y,Math.sin(a)*rz*1.012));
     }
     const curve=new THREE.CatmullRomCurve3(points);
-    garment.add(new THREE.Mesh(new THREE.TubeGeometry(curve,100,.006,4,false),stitch));
+    bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(curve,100,.006,4,false),stitch));
   }
   // Square neckline piping: front edge and short side rises.
   const necklinePoints=[
@@ -148,36 +152,46 @@
     new THREE.Vector3(0,.84,.27),new THREE.Vector3(.20,.84,.265),new THREE.Vector3(.36,.84,.23),new THREE.Vector3(.43,.87,.17)
   ];
   const neckCurve=new THREE.CatmullRomCurve3(necklinePoints);
-  garment.add(new THREE.Mesh(new THREE.TubeGeometry(neckCurve,64,.025,8,false),piping));
+  bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(neckCurve,64,.025,8,false),piping));
   // Shoulder straps and back neckline finish.
   for(const sign of [-1,1]){
     const strapCurve=new THREE.CatmullRomCurve3([
       new THREE.Vector3(sign*.43,.87,.17),new THREE.Vector3(sign*.47,.99,.12),new THREE.Vector3(sign*.43,1.08,0),new THREE.Vector3(sign*.35,1.08,-.16)
     ]);
-    garment.add(new THREE.Mesh(new THREE.TubeGeometry(strapCurve,28,.023,8,false),piping));
+    bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(strapCurve,28,.023,8,false),piping));
   }
   // Waist seam with a subtle self-fabric band.
   const waistPts=[];for(let i=0;i<=128;i++){const a=i/128*Math.PI*2;waistPts.push(new THREE.Vector3(Math.cos(a)*.355,.035,Math.sin(a)*.245));}
-  garment.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(waistPts),128,.018,6,false),piping));
+  bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(waistPts),128,.018,6,false),piping));
 
   // Short, softly puffed sleeves and their gathered cuffs.
   function puffSleeve(side){
     const sleeve=new THREE.Mesh(new THREE.SphereGeometry(1,56,40),cloth);
-    sleeve.scale.set(.34,.30,.285);sleeve.position.set(side*.52,.76,0);sleeve.rotation.z=-side*.18;garment.add(sleeve);
+    sleeve.scale.set(.34,.30,.285);sleeve.position.set(side*.52,.76,0);sleeve.rotation.z=-side*.18;sleevesAssembly.add(sleeve);
     const cuffPts=[];const cx=side*.73,cy=.58;
     for(let i=0;i<=96;i++){const a=i/96*Math.PI*2;cuffPts.push(new THREE.Vector3(cx,cy+Math.cos(a)*.135,Math.sin(a)*.205));}
-    garment.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cuffPts),96,.021,6,false),piping));
+    sleevesAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cuffPts),96,.021,6,false),piping));
     // small sleeve-gather rows around the crown
     for(let k=0;k<3;k++){
       const ring=new THREE.Mesh(new THREE.TorusGeometry(.24-k*.018,.006,5,64),stitch);
-      ring.position.set(side*.52,.79+k*.055,0);ring.rotation.y=Math.PI/2;ring.rotation.z=-side*.18;garment.add(ring);
+      ring.position.set(side*.52,.79+k*.055,0);ring.rotation.y=Math.PI/2;ring.rotation.z=-side*.18;sleevesAssembly.add(ring);
     }
   }
   puffSleeve(-1);puffSleeve(1);
 
+  // Wide-leg one-piece option for catalogue Style 6821.
+  for(const side of [-1,1]){
+    const leg=new THREE.Mesh(new THREE.CylinderGeometry(.32,.25,2.34,64,2,true),cloth);
+    leg.position.set(side*.19,-1.20,0);pantsAssembly.add(leg);
+    const inner=new THREE.Mesh(new THREE.CylinderGeometry(.305,.238,2.32,64,2,true),lining);
+    inner.position.copy(leg.position);pantsAssembly.add(inner);
+  }
+  const pantWaist=new THREE.Mesh(new THREE.TorusGeometry(.36,.025,8,96),piping);
+  pantWaist.position.y=-.015;pantsAssembly.add(pantWaist);
+
   // Delicate hem scallops / stitch edge.
   const hemPts=[];for(let i=0;i<=192;i++){const a=i/192*Math.PI*2;const r=1.39+.022*Math.sin(a*24);hemPts.push(new THREE.Vector3(Math.cos(a)*r,-2.22,Math.sin(a)*r*.60));}
-  garment.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(hemPts),192,.018,6,false),piping));
+  skirtAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(hemPts),192,.018,6,false),piping));
   garment.position.y=.15;garment.rotation.y=-.28;
 
   // Floating atelier turntable and soft contact shadow.
@@ -217,13 +231,29 @@
     const texture=new THREE.CanvasTexture(c);texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(fabricType==='drape'?1.15:1.7,2);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=renderer.capabilities.getMaxAnisotropy();return texture;
   }
   function applySurface(){if(customTexture){customTexture.dispose();customTexture=null;}if(currentPattern==='eyelet'){cloth.map=maps.map;cloth.alphaMap=maps.alphaMap;cloth.transparent=true;cloth.alphaTest=.16;cloth.roughness=.86;}else{customTexture=makeSurfaceTexture(currentFabric,currentPattern);cloth.map=customTexture;cloth.alphaMap=null;cloth.transparent=false;cloth.alphaTest=0;cloth.roughness=currentFabric==='drape'?.48:(currentFabric==='linen'?.98:.88);}cloth.needsUpdate=true;}
+  const styleProfiles=[
+    {skirt:[1,1,1],bodice:[1,1,1],sleeves:[1,1,1]},
+    {pants:true,skirt:[1,1,1],bodice:[1.06,1,1.04],sleeves:[.88,.92,.9]},
+    {skirt:[.76,1.04,.82],bodice:[.96,1,1],sleeves:[.9,1,.92]},
+    {skirt:[.92,1.08,.94],bodice:[1.04,1.02,1.04],sleeves:[.96,1,1]},
+    {skirt:[1.13,1.08,1.12],bodice:[1,1,1],sleeves:[1.04,1,1.04]},
+    {skirt:[1.27,1.02,1.24],bodice:[1.02,1,1.02],sleeves:[1.1,1.02,1.1]},
+    {skirt:[1.03,1.18,1.02],bodice:[.96,1.06,.96],sleeves:[.92,.96,.92]}
+  ];
+  function applyStyle(index){
+    const p=styleProfiles[Math.max(0,Math.min(styleProfiles.length-1,Number(index)||0))];
+    skirtAssembly.visible=!p.pants;pantsAssembly.visible=!!p.pants;
+    skirtAssembly.scale.set(...p.skirt);bodiceAssembly.scale.set(...p.bodice);sleevesAssembly.scale.set(...p.sleeves);
+  }
+  applyStyle(0);
   window.ManishaDressStudio={
+    setStyle(index){applyStyle(index);},
     setTone(hex){cloth.color.set(hex);cloth.needsUpdate=true;},
     setFabric(name){currentFabric=name;applySurface();},
     setPattern(name){currentPattern=name;applySurface();},
     setTrims(show){trimMeshes.forEach(m=>m.visible=!!show);},
     zoom(delta){camera.position.z=Math.max(6.3,Math.min(12,camera.position.z+delta));},
-    reset(){garment.rotation.set(0,-.28,0);camera.position.set(0,0,initialCameraZ);spin=true;syncToggle();currentFabric='cotton';currentPattern='plain';applySurface();cloth.color.set('#fffdf7');this.setTrims(true);},
+    reset(){garment.rotation.set(0,-.28,0);camera.position.set(0,0,initialCameraZ);spin=true;syncToggle();currentFabric='cotton';currentPattern='plain';applySurface();cloth.color.set('#fffdf7');applyStyle(0);this.setTrims(true);},
     pause(){spin=false;syncToggle();},resume(){spin=true;syncToggle();}
   };
 
