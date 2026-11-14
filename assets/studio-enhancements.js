@@ -1,7 +1,8 @@
 (()=>{"use strict";
-const params=new URLSearchParams(location.search),rawImage=params.get("image"),rawName=params.get("name")||"Selected website garment";
+const params=new URLSearchParams(location.search),rawImage=params.get("image"),styleCode=params.get("style"),rawName=params.get("name")||(styleCode?"Style "+styleCode:"Selected website garment");
 let garmentImageUrl=null;
 if(rawImage){try{const u=new URL(rawImage,location.href);if(u.protocol==="https:"||u.origin===location.origin)garmentImageUrl=u.href;}catch(e){}}
+if(!garmentImageUrl&&styleCode&&window.MANISHA_CATALOGUE_IMAGES?.[styleCode])garmentImageUrl=window.MANISHA_CATALOGUE_IMAGES[styleCode].front;
 const frame=document.querySelector("#photo-reference-frame"),caption=document.querySelector("#photo-style-caption"),title=document.querySelector("#stage-style-title"),statusLine=document.querySelector("#stage-status");
 if(garmentImageUrl&&frame){
  const applyWebsiteReference=()=>{frame.style.backgroundImage="url("+JSON.stringify(garmentImageUrl)+")";};
