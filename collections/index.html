@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/site.css">
 <link rel="stylesheet" href="../assets/edition.css">
+<link rel="stylesheet" href="../assets/collection-showcase.css">
 <link rel="icon" href="../assets/favicon.svg">
 </head>
 <body class="collections-index-page">
@@ -32,18 +33,37 @@
   </nav>
 </header>
 <main>
-  <section class="collection-directory-hero">
-    <div class="collection-directory-copy">
-      <div class="micro">MANISHA OVERSEAS / COLLECTIONS</div>
-      <h1>Collections<br><em>with character.</em></h1>
-      <p>Explore our women's western wear directions — from breathable cotton and expressive prints to Schiffli cutwork, coordinated sets and resort silhouettes.</p>
-      <a class="collection-directory-cta" href="../contact.html">Develop a collection with us <span>↗</span></a>
-      <div class="collection-directory-meta">07 COLLECTION DIRECTIONS <i></i> WOMEN'S APPAREL / INDIA</div>
+  <section class="collection-showcase shell" data-collection-showcase aria-label="Featured collection carousel">
+    <div class="collection-showcase-kicker"><span>MANISHA OVERSEAS / THE COLLECTION EDIT</span><span>WOMEN'S APPAREL · 2026</span></div>
+    <div class="collection-showcase-panel">
+      <div class="collection-showcase-copy">
+        <div class="micro">SEVEN COLLECTION DIRECTIONS · MADE TO EXPLORE</div>
+        <h1 data-showcase-line>Natural texture.<br><em>Modern form.</em></h1>
+        <p data-showcase-desc>Explore considered womenswear directions, from breathable cotton and expressive prints to detailed cutwork and relaxed resort silhouettes.</p>
+        <div class="collection-showcase-actions">
+          <a class="collection-showcase-cta" data-showcase-cta href="cotton-dresses.html">Explore collection <span>↗</span></a>
+          <a class="collection-showcase-studio" href="../dress-studio.html">Open 3D Studio ↗</a>
+        </div>
+      </div>
+      <a class="collection-showcase-image-link" data-showcase-image-link href="cotton-dresses.html" aria-label="Explore featured collection">
+        <img class="collection-showcase-image" data-showcase-image src="../assets/visuals/collection-01.webp" alt="Cotton dress collection visual">
+      </a>
+      <div class="collection-showcase-side">
+        <div class="collection-showcase-count" data-showcase-count>01 / 07</div>
+        <div class="collection-showcase-product">
+          <small data-showcase-category>Cotton foundations</small>
+          <b data-showcase-title>Cotton Dresses</b>
+          <span>Wholesale development · Enquire for styles and specifications</span>
+        </div>
+        <div class="collection-showcase-controls">
+          <button class="collection-showcase-arrow" data-showcase-prev type="button" aria-label="Previous collection">‹</button>
+          <div class="collection-showcase-dots" data-showcase-dots aria-label="Choose collection"></div>
+          <button class="collection-showcase-arrow" data-showcase-next type="button" aria-label="Next collection">›</button>
+        </div>
+      </div>
     </div>
-    <div class="collection-directory-visual">
-      <img src="../assets/visuals/campaign-modern-cotton.webp" alt="Editorial concept featuring women's contemporary cotton and eyelet apparel">
-      <span>THE MANISHA EDIT / 2026</span>
-    </div>
+    <div class="collection-showcase-progress"><span data-showcase-progress></span></div>
+    <div class="collection-showcase-note"><span>SELECT A DIRECTION TO EXPLORE</span><span>VISUAL STYLE CONCEPTS · FINAL STYLES CONFIRMED WITH BUYERS</span></div>
   </section>
   <section class="collection-directory-list">
     <div class="collection-directory-heading">
@@ -63,5 +83,6 @@
   </section>
 </main>
 <footer class="edition-footer"><a class="brand" href="../index.html">MANISHA<span>OVERSEAS</span></a><p>Women's apparel manufacturing & export · Noida, India</p><div><a href="../about.html">About Us</a><a href="../manufacturing.html">Manufacturing</a><a href="../contact.html">Contact</a></div><small>© <span data-year></span> Manisha Overseas. All rights reserved.</small></footer>
-<script src="../assets/site.js"></script><script src="../assets/edition.js"></script>
+<script src="../assets/site.js"></script><script src="../assets/collection-showcase.js" defer></script>
+<script src="../assets/edition.js"></script>
 </body></html>
