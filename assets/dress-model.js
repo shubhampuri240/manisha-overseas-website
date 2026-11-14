@@ -17,13 +17,70 @@
   const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   if(reduced)spin=false;
   const syncToggle=()=>{if(toggle)toggle.innerHTML=spin?'Ⅱ&nbsp; Pause rotation':'▶&nbsp; Resume rotation';};
+  function installInteractiveFallback(){
+    const ctx=canvas.getContext('2d');
+    if(!ctx){stage.classList.add('fallback-active');syncToggle();return;}
+    if(fallback)fallback.style.display='none';
+    stage.classList.add('fallback-active','has-2d-fallback');
+    let style=0,tone='#fffdf7',fabric='cotton',pattern='plain',trims=true,rotation=-.12,zoom=1,drag=false,lastX=0,raf=0;
+    const profiles=[
+      {flare:1,length:1,sleeves:1,pants:false},
+      {flare:.78,length:1,sleeves:.8,pants:true},
+      {flare:.84,length:.94,sleeves:.86,pants:false},
+      {flare:.94,length:1.04,sleeves:1,pants:false},
+      {flare:1.08,length:1,sleeves:1,pants:false},
+      {flare:1.22,length:1.04,sleeves:1.08,pants:false},
+      {flare:.98,length:1.16,sleeves:.88,pants:false}
+    ];
+    function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight),d=Math.min(devicePixelRatio||1,1.6);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(d,0,0,d,0,0);}
+    function path(p){
+      ctx.beginPath();
+      if(p.pants){ctx.moveTo(-62,-145);ctx.lineTo(62,-145);ctx.lineTo(75,12);ctx.lineTo(48,220);ctx.lineTo(5,220);ctx.lineTo(0,26);ctx.lineTo(-5,220);ctx.lineTo(-48,220);ctx.lineTo(-75,12);ctx.closePath();}
+      else{const hem=205*p.length,flare=105*p.flare;ctx.moveTo(-52,-155);ctx.lineTo(52,-155);ctx.lineTo(50,-18);ctx.bezierCurveTo(65,10,flare*.72,hem*.55,flare,hem);ctx.lineTo(-flare,hem);ctx.bezierCurveTo(-flare*.72,hem*.55,-65,10,-50,-18);ctx.closePath();}
+      ctx.moveTo(-52,-150);ctx.lineTo(-42,-180);ctx.lineTo(42,-180);ctx.lineTo(52,-150);ctx.lineTo(47,-8);ctx.lineTo(-47,-8);ctx.closePath();
+      const sleeve=48*p.sleeves;
+      ctx.moveTo(-48,-145);ctx.bezierCurveTo(-75-sleeve*.45,-168,-105,-118,-78,-80);ctx.lineTo(-47,-95);
+      ctx.moveTo(48,-145);ctx.bezierCurveTo(75+sleeve*.45,-168,105,-118,78,-80);ctx.lineTo(47,-95);
+    }
+    function draw(){
+      const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
+      ctx.clearRect(0,0,w,h);ctx.save();ctx.translate(w/2,h*.48);ctx.scale(zoom,zoom);ctx.transform(Math.cos(rotation),0,Math.sin(rotation)*.34,1,0,0);
+      const p=profiles[style],grad=ctx.createLinearGradient(-120,-180,120,220);grad.addColorStop(0,'#fff');grad.addColorStop(.22,tone);grad.addColorStop(.78,tone);grad.addColorStop(1,'#8b7965');
+      ctx.shadowColor='#0008';ctx.shadowBlur=24;ctx.shadowOffsetY=18;path(p);ctx.fillStyle=grad;ctx.fill('evenodd');ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+      ctx.save();path(p);ctx.clip('evenodd');
+      if(pattern==='stripe'){ctx.strokeStyle='#665b50aa';ctx.lineWidth=5;for(let x=-220;x<220;x+=25){ctx.beginPath();ctx.moveTo(x,-230);ctx.lineTo(x+90,270);ctx.stroke();}}
+      if(pattern==='floral'||pattern==='eyelet'){for(let y=-140;y<260;y+=36)for(let x=-100;x<110;x+=34){ctx.strokeStyle=pattern==='eyelet'?'#8d765d99':'#725d4caa';ctx.lineWidth=1.4;ctx.beginPath();for(let k=0;k<6;k++){const a=k*Math.PI/3;ctx.ellipse(x+Math.cos(a)*7,y+Math.sin(a)*7,4,8,a,0,Math.PI*2);}ctx.stroke();ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fillStyle='#8b7258';ctx.fill();}}
+      if(fabric==='linen'||fabric==='cotton'){ctx.strokeStyle='#ffffff55';ctx.lineWidth=1;for(let y=-210;y<250;y+=7){ctx.beginPath();ctx.moveTo(-180,y);ctx.lineTo(180,y+2);ctx.stroke();}}
+      ctx.restore();
+      if(trims){ctx.strokeStyle='#b89c78';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-48,-8);ctx.lineTo(48,-8);ctx.stroke();if(!p.pants){ctx.beginPath();ctx.moveTo(-p.flare*105,205*p.length);ctx.lineTo(p.flare*105,205*p.length);ctx.stroke();}}
+      ctx.restore();if(spin&&!drag)rotation+=.003;raf=requestAnimationFrame(draw);
+    }
+    function setStyle(i){style=Math.max(0,Math.min(6,Number(i)||0));}
+    function setTone(v){tone=String(v||'#fffdf7');}
+    function setFabric(v){fabric=v||'cotton';}
+    function setPattern(v){pattern=v||'plain';}
+    function setTrims(v){trims=!!v;}
+    function resetView(){rotation=-.12;zoom=1;spin=true;setTone('#fffdf7');setFabric('cotton');setPattern('plain');setStyle(0);setTrims(true);syncToggle();}
+    toggle?.addEventListener('click',()=>{spin=!spin;syncToggle();});
+    canvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;canvas.setPointerCapture?.(e.pointerId);});
+    canvas.addEventListener('pointermove',e=>{if(!drag)return;rotation+=(e.clientX-lastX)*.009;lastX=e.clientX;});
+    const stop=()=>drag=false;canvas.addEventListener('pointerup',stop);canvas.addEventListener('pointercancel',stop);
+    canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.7,Math.min(1.45,zoom-e.deltaY*.001));},{passive:false});
+    reset?.addEventListener('click',resetView);
+    document.getElementById('zoom-in')?.addEventListener('click',()=>zoom=Math.min(1.45,zoom+.08));
+    document.getElementById('zoom-out')?.addEventListener('click',()=>zoom=Math.max(.7,zoom-.08));
+    window.ManishaDressStudio={setStyle,setTone,setFabric,setPattern,setTrims,zoom:d=>zoom=Math.max(.7,Math.min(1.45,zoom-d*.12)),reset:resetView,pause:()=>{spin=false;syncToggle();},resume:()=>{spin=true;syncToggle();}};
+    const ro=new ResizeObserver(resize);ro.observe(stage);resize();syncToggle();draw();
+    window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);ro.disconnect();});
+  }
+
   toggle?.addEventListener('click',()=>{spin=!spin;syncToggle();if(fallback)fallback.classList.toggle('paused',!spin);});
 
-  if(!window.THREE){stage.classList.add('fallback-active');syncToggle();return;}
+  if(!window.THREE){installInteractiveFallback();return;}
   const THREE=window.THREE;
   try{
     renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
-  }catch(e){stage.classList.add('fallback-active');syncToggle();return;}
+  }catch(e){installInteractiveFallback();return;}
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,window.innerWidth<720?1.25:1.7));
   renderer.setSize(stage.clientWidth,stage.clientHeight,false);
   renderer.outputColorSpace=THREE.SRGBColorSpace;
