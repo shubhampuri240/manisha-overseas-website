@@ -22,24 +22,25 @@ jobs:
           python - <<'PY'
           from pathlib import Path, PurePosixPath
           from zipfile import ZipFile
-          import shutil
+          import csv, io, shutil
           archive = Path("assets/visuals/Manisha_Overseas_Website_Assets_Update_v7.zip")
           if not archive.exists():
               raise SystemExit("The V7 website assets ZIP is missing.")
           root = Path(".").resolve()
           with ZipFile(archive) as z:
-              for info in z.infolist():
-                  name = PurePosixPath(info.filename)
-                  if name.is_absolute() or ".." in name.parts:
+              manifest = csv.DictReader(io.TextIOWrapper(z.open("WEB_ASSET_MANIFEST.csv"), encoding="utf-8-sig"))
+              approved = {row["relative_path"] for row in manifest if row.get("status") == "APPROVED_FOR_WEBSITE"}
+              for filename in approved:
+                  name = PurePosixPath(filename)
+                  if name.is_absolute() or ".." in name.parts or not name.parts or name.parts[0] != "01_WEB_READY_ASSETS":
                       continue
-                  if name.parts and name.parts[0] == "01_WEB_READY_ASSETS" and not info.is_dir():
-                      rel = Path(*name.parts[1:])
-                      dest = (root / "assets" / "manisha" / rel).resolve()
-                      if root not in dest.parents:
-                          continue
-                      dest.parent.mkdir(parents=True, exist_ok=True)
-                      with z.open(info) as src, dest.open("wb") as dst:
-                          shutil.copyfileobj(src, dst)
+                  rel = Path(*name.parts[1:])
+                  dest = (root / "assets" / "manisha" / rel).resolve()
+                  if root not in dest.parents:
+                      continue
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  with z.open(filename) as src, dest.open("wb") as dst:
+                      shutil.copyfileobj(src, dst)
               for filename in ("website-assets.json", "WEB_ASSET_MANIFEST.csv"):
                   try:
                       data = z.read(filename)
@@ -48,7 +49,7 @@ jobs:
                   dest = root / "assets" / "manisha" / filename
                   dest.parent.mkdir(parents=True, exist_ok=True)
                   dest.write_bytes(data)
-          print("Approved website images extracted to assets/manisha/.")
+          print(f"Extracted {len(approved)} approved website images to assets/manisha/.")
           PY
       - name: Commit extracted assets
         run: |
