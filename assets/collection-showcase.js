@@ -1,14 +1,15 @@
 (() => {
   const root=document.querySelector('[data-collection-showcase]');
   if(!root)return;
+  const catalogue=window.MANISHA_CATALOGUE_IMAGES||{};
   const slides=[
-    {name:'Cotton Dresses',line:'Natural texture. Modern form.',desc:'Breathable cotton foundations and relaxed silhouettes for everyday, occasion and seasonal assortments.',image:'../assets/visuals/collection-01.webp',href:'cotton-dresses.html',number:'01',type:'Cotton foundations'},
-    {name:'Schiffli & Cutwork',line:'Detail that draws the eye.',desc:'Eyelet, embroidery and considered surface details for distinctive womenswear collections.',image:'../assets/visuals/fabric-01.webp',href:'schiffli-cutwork.html',number:'02',type:'Surface detail'},
-    {name:'Printed Dresses',line:'A little colour. A lot of character.',desc:'Print-led dresses and expressive pieces for contemporary wholesale collections.',image:'../assets/visuals/collection-02.webp',href:'printed-dresses.html',number:'03',type:'Print stories'},
-    {name:'Tops & Blouses',line:'Everyday forms, elevated.',desc:'Versatile tops and blouse silhouettes designed to bring texture and personality to a range.',image:'../assets/visuals/garment-detail-06.webp',href:'tops-blouses.html',number:'04',type:'Everyday forms'},
-    {name:'Co-ord Sets',line:'Together, by design.',desc:'Coordinated separates that create a considered look across seasons and occasions.',image:'../assets/visuals/collection-03.webp',href:'coord-sets.html',number:'05',type:'Coordinated dressing'},
-    {name:'Skirts & Pants',line:'Modern separates. More possibilities.',desc:'Contemporary separates that give buyers flexible options for building an assortment.',image:'../assets/visuals/collection-05.webp',href:'skirts-pants.html',number:'06',type:'Modern separates'},
-    {name:'Resort Wear & Kaftans',line:'Made for warmer days.',desc:'Relaxed resort silhouettes and kaftan directions for warm-weather edits.',image:'../assets/visuals/collection-04.webp',href:'resort-kaftans.html',number:'07',type:'Warm-weather edits'}
+    {name:"Style 6821",line:"A statement in print.",desc:"Kasturi catalogue · front and back references available for review.",image:catalogue["6821"]?.front||"../assets/visuals/collection-01.webp",href:"../dress-studio.html?style=6821",number:"01",type:"Kasturi catalogue"},
+    {name:"Style 3476",line:"Colour with a softer rhythm.",desc:"Kasturi catalogue · front and back references available for review.",image:catalogue["3476"]?.front||"../assets/visuals/collection-02.webp",href:"../dress-studio.html?style=3476",number:"02",type:"Kasturi catalogue"},
+    {name:"Style 9152",line:"A flowing printed silhouette.",desc:"Kasturi catalogue · full-length and detail references available for review.",image:catalogue["9152"]?.front||"../assets/visuals/collection-03.webp",href:"../dress-studio.html?style=9152",number:"03",type:"Kasturi catalogue"},
+    {name:"Style 4638",line:"An expressive floral story.",desc:"Kasturi catalogue · front and back references available for review.",image:catalogue["4638"]?.front||"../assets/visuals/collection-04.webp",href:"../dress-studio.html?style=4638",number:"04",type:"Kasturi catalogue"},
+    {name:"Style 7284",line:"A print made to stand out.",desc:"Kasturi catalogue · front and back references available for review.",image:catalogue["7284"]?.front||"../assets/visuals/collection-05.webp",href:"../dress-studio.html?style=7284",number:"05",type:"Kasturi catalogue"},
+    {name:"Style 1509",line:"A tiered look with movement.",desc:"Kasturi catalogue · front and back references available for review.",image:catalogue["1509"]?.front||"../assets/visuals/collection-06.webp",href:"../dress-studio.html?style=1509",number:"06",type:"Kasturi catalogue"},
+    {name:"Style 2941",line:"A layered printed finish.",desc:"Kasturi catalogue · front and back references available for review.",image:catalogue["2941"]?.front||"../assets/visuals/collection-01.webp",href:"../dress-studio.html?style=2941",number:"07",type:"Kasturi catalogue"}
   ];
   const image=root.querySelector('[data-showcase-image]');
   const imageLink=root.querySelector('[data-showcase-image-link]');
@@ -33,7 +34,7 @@
     const s=slides[active],dotList=dots.querySelectorAll('button');
     image.classList.add('is-changing');
     window.setTimeout(()=>{
-      image.src=s.image;image.alt=s.name+' collection visual';
+      image.src=s.image;image.alt=s.name+' approved catalogue garment photograph';
       imageLink.href=s.href;title.textContent=s.name;line.textContent=s.line;desc.textContent=s.desc;category.textContent=s.type;
       count.textContent=s.number+' / 07';cta.href=s.href;
       image.classList.remove('is-changing');
