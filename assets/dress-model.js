@@ -18,7 +18,8 @@
   if(reduced)spin=false;
   const syncToggle=()=>{if(toggle)toggle.innerHTML=spin?'Ⅱ&nbsp; Pause rotation':'▶&nbsp; Resume rotation';};
   function installInteractiveFallback(){
-    const ctx=canvas.getContext('2d');
+    let drawCanvas=canvas,ctx=drawCanvas.getContext('2d');
+    if(!ctx){const replacement=document.createElement('canvas');replacement.id=canvas.id;replacement.setAttribute('aria-label','Interactive garment concept. Drag to rotate.');replacement.style.cssText=canvas.style.cssText;canvas.replaceWith(replacement);drawCanvas=replacement;ctx=drawCanvas.getContext('2d');}
     if(!ctx){stage.classList.add('fallback-active');syncToggle();return;}
     if(fallback)fallback.style.display='none';
     stage.classList.add('fallback-active','has-2d-fallback');
@@ -32,7 +33,7 @@
       {flare:1.22,length:1.04,sleeves:1.08,pants:false},
       {flare:.98,length:1.16,sleeves:.88,pants:false}
     ];
-    function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight),d=Math.min(devicePixelRatio||1,1.6);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(d,0,0,d,0,0);}
+    function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight),d=Math.min(devicePixelRatio||1,1.6);drawCanvas.width=Math.round(w*d);drawCanvas.height=Math.round(h*d);drawCanvas.style.width=w+'px';drawCanvas.style.height=h+'px';ctx.setTransform(d,0,0,d,0,0);}
     function path(p){
       ctx.beginPath();
       if(p.pants){ctx.moveTo(-62,-145);ctx.lineTo(62,-145);ctx.lineTo(75,12);ctx.lineTo(48,220);ctx.lineTo(5,220);ctx.lineTo(0,26);ctx.lineTo(-5,220);ctx.lineTo(-48,220);ctx.lineTo(-75,12);ctx.closePath();}
@@ -62,7 +63,7 @@
     function setTrims(v){trims=!!v;}
     function resetView(){rotation=-.12;zoom=1;spin=true;setTone('#fffdf7');setFabric('cotton');setPattern('plain');setStyle(0);setTrims(true);syncToggle();}
     toggle?.addEventListener('click',()=>{spin=!spin;syncToggle();});
-    canvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;canvas.setPointerCapture?.(e.pointerId);});
+    drawCanvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;drawCanvas.setPointerCapture?.(e.pointerId);});
     canvas.addEventListener('pointermove',e=>{if(!drag)return;rotation+=(e.clientX-lastX)*.009;lastX=e.clientX;});
     const stop=()=>drag=false;canvas.addEventListener('pointerup',stop);canvas.addEventListener('pointercancel',stop);
     canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.7,Math.min(1.45,zoom-e.deltaY*.001));},{passive:false});
