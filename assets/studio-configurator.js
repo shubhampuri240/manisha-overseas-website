@@ -1,12 +1,12 @@
 (()=>{"use strict";
 const styles=[
-{code:"4638",name:"Floral printed long dress",col:0,label:"Back view"},
-{code:"6821",name:"Printed wide-leg one-piece",col:1,label:"Back view"},
-{code:"3476",name:"Printed long dress",col:2,label:"Back view"},
-{code:"7284",name:"Printed long dress with open-back tie detail",col:3,label:"Open-back detail"},
-{code:"1509",name:"Printed tiered long dress",col:4,label:"Back view"},
-{code:"2941",name:"Printed tiered long dress",col:5,label:"Back view"},
-{code:"9152",name:"Green printed long dress",col:6,label:"Detail view"}
+{code:"4638",name:"Floral printed long dress",label:"Back view",front:"assets/manisha/collections/kasturi-catalogue/style-4638/style-4638-front.webp",back:"assets/manisha/collections/kasturi-catalogue/style-4638/style-4638-back.webp"},
+{code:"6821",name:"Printed wide-leg one-piece",label:"Back view",front:"assets/manisha/collections/kasturi-catalogue/style-6821/style-6821-front.webp",back:"assets/manisha/collections/kasturi-catalogue/style-6821/style-6821-back.webp"},
+{code:"3476",name:"Printed long dress",label:"Back view",front:"assets/manisha/collections/kasturi-catalogue/style-3476/style-3476-front.webp",back:"assets/manisha/collections/kasturi-catalogue/style-3476/style-3476-back.webp"},
+{code:"7284",name:"Printed long dress with open-back tie detail",label:"Open-back detail",front:"assets/manisha/collections/kasturi-catalogue/style-7284/style-7284-front.webp",back:"assets/manisha/collections/kasturi-catalogue/style-7284/style-7284-back.webp"},
+{code:"1509",name:"Printed tiered long dress",label:"Back view",front:"assets/manisha/collections/kasturi-catalogue/style-1509/style-1509-front.webp",back:"assets/manisha/collections/kasturi-catalogue/style-1509/style-1509-back.webp"},
+{code:"2941",name:"Printed tiered long dress",label:"Back view",front:"assets/manisha/collections/kasturi-catalogue/style-2941/style-2941-front.webp",back:"assets/manisha/collections/kasturi-catalogue/style-2941/style-2941-back.webp"},
+{code:"9152",name:"Green printed long dress",label:"Detail view",front:"assets/manisha/collections/kasturi-catalogue/style-9152/style-9152-full.webp",back:"assets/manisha/collections/kasturi-catalogue/style-9152/style-9152-detail.webp"}
 ];
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 
@@ -15,7 +15,7 @@ menuButton?.addEventListener("click",()=>{const open=siteNav.classList.toggle("i
 siteNav?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{siteNav.classList.remove("is-open");menuButton?.setAttribute("aria-expanded","false");if(menuButton)menuButton.textContent="☰";}));
 const stage=$("#dress-stage"),photo=$("#studio-photo-view"),photoFrame=$("#photo-reference-frame"),column=$(".studio-stage-column");
 let selected=0,mode="3d",side="front",toneName="Chalk",fabricName="Soft weave",patternName="Plain",trims=true;
-function applyPhoto(){const st=styles[selected],entry=window.MANISHA_CATALOGUE_IMAGES?.[st.code],image=entry?.[side];photoFrame.style.backgroundImage=image ? "url("+JSON.stringify(image)+")" : "url(visuals/studio/garment-reference-sprite.webp)";photoFrame.style.backgroundSize=image ? "contain" : "700% 200%";photoFrame.style.backgroundPosition=image ? "center" : (st.col*100/6)+"% "+(side==="front"?"0%":"100%");photoFrame.style.backgroundRepeat="no-repeat";photoFrame.style.backgroundColor="#f1ece2";$("#photo-style-caption").textContent="STYLE "+st.code+" / "+(side==="front"?"FRONT VIEW":st.label.toUpperCase());$("[data-photo-side]").forEach(b=>b.classList.toggle("is-active",b.dataset.photoSide===side));}
+function applyPhoto(){const st=styles[selected],imagePath=side==="front"?st.front:st.back;photoFrame.style.backgroundImage='url("'+imagePath+'")';photoFrame.style.backgroundSize="contain";photoFrame.style.backgroundPosition="center";photoFrame.style.backgroundRepeat="no-repeat";photoFrame.style.backgroundColor="#f1ece2";$("#photo-style-caption").textContent="STYLE "+st.code+" / "+(side==="front"?"FRONT VIEW":st.label.toUpperCase());$$("[data-photo-side]").forEach(b=>b.classList.toggle("is-active",b.dataset.photoSide===side));}
 function updateQuote(){const st=styles[selected],p=new URLSearchParams({category:"printed-dresses",style:st.code,colour:toneName,texture:fabricName,pattern:patternName,finish:trims?"Seam and trim details on":"Standard"});$("#quote-style").href="contact.html?"+p.toString();}
 function selectStyle(i){selected=Math.max(0,Math.min(styles.length-1,i));const s=styles[selected];window.ManishaDressStudio?.setStyle?.(selected);$$("[data-style-index]").forEach((b,n)=>b.classList.toggle("is-selected",n===selected));$("#selected-style-code").textContent="STYLE "+s.code;$("#selected-style-name").textContent=s.name;$("#brief-style").textContent=s.code;$("#stage-style-title").textContent="Style "+s.code+" · "+(mode==="3d"?"3D concept preview":"catalogue reference");applyPhoto();updateQuote();}
 function setMode(m){mode=m==="photo"?"photo":"3d";stage.classList.toggle("is-photo-mode",mode==="photo");photo.setAttribute("aria-hidden",String(mode!=="photo"));column.classList.toggle("is-photo-mode",mode==="photo");$$("[data-stage-mode]").forEach(b=>b.classList.toggle("is-active",b.dataset.stageMode===mode));$("#stage-style-title").textContent="Style "+styles[selected].code+" · "+(mode==="3d"?"3D concept preview":"catalogue reference");$("#stage-view-label").textContent=mode==="3d"?"CONCEPT FORM · 3D":"STYLE "+styles[selected].code+" · "+side.toUpperCase();$("#stage-status").textContent=mode==="3d"?"3D concept loaded · drag the garment to rotate":"Catalogue photo · "+(side==="front"?"front":"back / detail")+" reference";applyPhoto();}
