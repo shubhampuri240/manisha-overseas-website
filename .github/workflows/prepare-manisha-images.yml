@@ -1,0 +1,63 @@
+name: Prepare Manisha website images
+on:
+  workflow_dispatch:
+  push:
+    branches: [staging]
+    paths:
+      - 'assets/visuals/Manisha_Overseas_Website_Assets_Update_v7.zip'
+      - 'assets/visuals/ADD_PACKING_AND_EXPORT_PHOTOS_HERE.txt'
+permissions:
+  contents: write
+jobs:
+  extract-approved-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out staging
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - name: Extract approved website images
+        run: |
+          python - <<'PY'
+          from pathlib import Path, PurePosixPath
+          from zipfile import ZipFile
+          import shutil
+          archive = Path("assets/visuals/Manisha_Overseas_Website_Assets_Update_v7.zip")
+          if not archive.exists():
+              raise SystemExit("The V7 website assets ZIP is missing.")
+          root = Path(".").resolve()
+          with ZipFile(archive) as z:
+              for info in z.infolist():
+                  name = PurePosixPath(info.filename)
+                  if name.is_absolute() or ".." in name.parts:
+                      continue
+                  if name.parts and name.parts[0] == "01_WEB_READY_ASSETS" and not info.is_dir():
+                      rel = Path(*name.parts[1:])
+                      dest = (root / "assets" / "manisha" / rel).resolve()
+                      if root not in dest.parents:
+                          continue
+                      dest.parent.mkdir(parents=True, exist_ok=True)
+                      with z.open(info) as src, dest.open("wb") as dst:
+                          shutil.copyfileobj(src, dst)
+              for filename in ("website-assets.json", "WEB_ASSET_MANIFEST.csv"):
+                  try:
+                      data = z.read(filename)
+                  except KeyError:
+                      continue
+                  dest = root / "assets" / "manisha" / filename
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  dest.write_bytes(data)
+          print("Approved website images extracted to assets/manisha/.")
+          PY
+      - name: Commit extracted assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/manisha
+          if git diff --cached --quiet; then
+            echo "No image changes to commit."
+          else
+            git commit -m "Publish approved high-resolution Manisha image assets"
+            git push origin staging
+          fi
