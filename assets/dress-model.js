@@ -62,11 +62,10 @@
     function setPattern(v){pattern=v||'plain';}
     function setTrims(v){trims=!!v;}
     function resetView(){rotation=-.12;zoom=1;spin=true;setTone('#fffdf7');setFabric('cotton');setPattern('plain');setStyle(0);setTrims(true);syncToggle();}
-    toggle?.addEventListener('click',()=>{spin=!spin;syncToggle();});
     drawCanvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;drawCanvas.setPointerCapture?.(e.pointerId);});
-    canvas.addEventListener('pointermove',e=>{if(!drag)return;rotation+=(e.clientX-lastX)*.009;lastX=e.clientX;});
-    const stop=()=>drag=false;canvas.addEventListener('pointerup',stop);canvas.addEventListener('pointercancel',stop);
-    canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.7,Math.min(1.45,zoom-e.deltaY*.001));},{passive:false});
+    drawCanvas.addEventListener('pointermove',e=>{if(!drag)return;rotation+=(e.clientX-lastX)*.009;lastX=e.clientX;});
+    const stop=()=>drag=false;drawCanvas.addEventListener('pointerup',stop);drawCanvas.addEventListener('pointercancel',stop);
+    drawCanvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.7,Math.min(1.45,zoom-e.deltaY*.001));},{passive:false});
     reset?.addEventListener('click',resetView);
     document.getElementById('zoom-in')?.addEventListener('click',()=>zoom=Math.min(1.45,zoom+.08));
     document.getElementById('zoom-out')?.addEventListener('click',()=>zoom=Math.max(.7,zoom-.08));
