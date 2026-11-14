@@ -1,1 +1,4 @@
 The supplied image set contains stock/storage views, but no clear, professional packing cartons, shipping labels or export-dispatch sequence. Add genuine packing and dispatch photos here.
+
+
+Website image deployment: the approved V7 ZIP is unpacked by .github/workflows/prepare-manisha-images.yml into assets/manisha/ so the live pages use individual original image files, not sprite strips.
