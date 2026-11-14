@@ -2,3 +2,5 @@ The supplied image set contains stock/storage views, but no clear, professional 
 
 
 Website image deployment: the approved V7 ZIP is unpacked by .github/workflows/prepare-manisha-images.yml into assets/manisha/ so the live pages use individual original image files, not sprite strips.
+
+Image extraction workflow updated to publish only entries marked APPROVED_FOR_WEBSITE in the manifest.
