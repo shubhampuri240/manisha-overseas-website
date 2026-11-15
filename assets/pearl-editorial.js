@@ -1,0 +1,2 @@
+/* Progressive enhancement: content remains readable without JS. */
+(()=>{const els=document.querySelectorAll('.mo-statement, .home-collections .section-intro, .manufacturing-copy, .schiffli-copy');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;els.forEach(el=>el.classList.add('mo-reveal'));const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('mo-visible');io.unobserve(entry.target)}}),{threshold:.12});els.forEach(el=>io.observe(el));})();
