@@ -1,0 +1,24 @@
+/* 21st.dev-inspired editorial motion enhancement for Manisha Overseas.
+   Lightweight CSS only: no image recompression or third-party dependencies. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-page .hero-copy > * { animation: mo-rise-in .85s both; }
+  .home-page .hero-copy > :nth-child(2) { animation-delay: .12s; }
+  .home-page .hero-copy > :nth-child(3) { animation-delay: .24s; }
+  .home-page .hero-copy > :nth-child(4) { animation-delay: .36s; }
+  @keyframes mo-rise-in { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .home-page .collection-tiles .tile { overflow:hidden; isolation:isolate; }
+  .home-page .collection-tiles .tile img { transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .5s; }
+  .home-page .collection-tiles .tile:hover img,
+  .home-page .collection-tiles .tile:focus-visible img { transform:scale(1.055); }
+  .home-page .collection-tiles .tile span { transition:transform .3s ease; }
+  .home-page .collection-tiles .tile:hover span { transform:translateY(-4px); }
+  .home-page .journey a img { transition:transform .65s cubic-bezier(.2,.7,.2,1); }
+  .home-page .journey a { overflow:hidden; }
+  .home-page .journey a:hover img { transform:scale(1.04); }
+  .home-page .hero-buttons a { transition:transform .25s ease,box-shadow .25s ease; }
+  .home-page .hero-buttons a:hover { transform:translateY(-3px); }
+}
+.home-page a:focus-visible { outline:2px solid #cba86d; outline-offset:4px; }
+@media (prefers-reduced-motion: reduce) {
+  .home-page *, .home-page *::before, .home-page *::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
+}
