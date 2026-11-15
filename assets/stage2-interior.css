@@ -1,0 +1,52 @@
+/* Stage 2 · Shared finishing details for Manisha Overseas marketing pages.
+   Uses the original, approved photographs with no blur or replacement imagery. */
+:root { --mo-editorial-navy:#102b38; --mo-editorial-cream:#f5f0e8; --mo-editorial-gold:#ac9069; }
+html { scroll-padding-top: 84px; }
+body { -webkit-font-smoothing: antialiased; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 3px solid #c4a06f; outline-offset: 3px;
+}
+.company-page, .collections-index-page, .campaigns-page { background: var(--mo-editorial-cream); }
+.company-page .edition-nav.light-nav,
+.collections-index-page .edition-nav.light-nav {
+  border-bottom: 1px solid rgba(25,32,34,.12);
+}
+.company-page .edition-nav nav a,
+.collections-index-page .edition-nav nav a,
+.campaigns-page .edition-nav nav a {
+  transition: color .2s ease;
+}
+.company-page .edition-nav nav a:hover,
+.collections-index-page .edition-nav nav a:hover,
+.campaigns-page .edition-nav nav a:hover { color: #9a7a4e; }
+.company-page .cx-page-hero { background: #eee7db; }
+.company-page .cx-page-hero h1,
+.company-page .cx-section h2,
+.collections-index-page .collection-directory-copy h1,
+.campaigns-page .campaigns-intro h1 {
+  letter-spacing: -.05em; text-wrap: balance;
+}
+.company-page .cx-client-grid article,
+.collections-index-page .directory-card,
+.campaigns-page .campaign-banner { transition: box-shadow .28s ease; }
+.company-page .cx-client-grid article:hover,
+.collections-index-page .directory-card:hover { box-shadow: 0 14px 38px rgba(26,32,30,.075); }
+.company-page img, .collections-index-page img, .campaigns-page img,
+.manufacturing-gallery-page img, .inner-v3 img {
+  filter: none !important; image-rendering: auto !important;
+}
+.company-page .edition-footer a:hover,
+.collections-index-page .edition-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media(max-width:720px) {
+  html { scroll-padding-top: 70px; }
+  .company-page .edition-nav nav,
+  .collections-index-page .edition-nav nav,
+  .campaigns-page .edition-nav nav { max-height:calc(100svh - 68px); overflow-y:auto; }
+  .company-page .cx-page-hero { padding-top: 74px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .company-page .cx-client-grid article,
+  .collections-index-page .directory-card,
+  .campaigns-page .campaign-banner { transition:none; }
+}
