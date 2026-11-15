@@ -1,0 +1,243 @@
+/* Stage 2 · Manisha Overseas premium editorial refinement
+   All garment photography is existing, approved catalogue material.
+   This layer never applies blur, artificial upscaling, or synthetic garments. */
+:root {
+  --stage2-ink: #132027;
+  --stage2-navy: #092c43;
+  --stage2-cream: #f5f0e8;
+  --stage2-gold: #b89b73;
+  --stage2-line: rgba(27, 38, 43, .18);
+}
+html { scroll-padding-top: 86px; }
+.home-page { overflow-x: clip; }
+.home-page a:focus-visible,
+.home-page button:focus-visible,
+.mo-atelier-feature a:focus-visible {
+  outline: 3px solid #d9b788; outline-offset: 4px; border-radius: 2px;
+}
+.mo-skip-link {
+  position: fixed; top: -120px; left: 20px; z-index: 1000;
+  padding: 12px 20px; background: white; color: #102638;
+  font: 700 13px 'DM Sans', Arial, sans-serif;
+}
+.mo-skip-link:focus { top: 18px; }
+.home-page .edition-nav {
+  transition: background-color .4s ease, box-shadow .4s ease, border-color .4s ease;
+  padding-left: clamp(18px, 3.8vw, 76px);
+  padding-right: clamp(18px, 3.8vw, 76px);
+}
+.home-page .edition-nav.is-scrolled {
+  position: fixed;
+  background: rgba(10, 31, 44, .97);
+  border-color: rgba(255,255,255,.15);
+  box-shadow: 0 16px 42px rgba(0,0,0,.14);
+}
+.home-page .edition-nav .brand {
+  letter-spacing: -.035em;
+  white-space: nowrap;
+}
+.home-page .edition-nav nav > a,
+.home-page .edition-nav .nav-drop > a {
+  font-size: 10px;
+  letter-spacing: .105em;
+  transition: color .25s ease;
+}
+.home-page .edition-nav nav > a:hover,
+.home-page .edition-nav .nav-drop > a:hover { color: #e9cfab; }
+.home-page .edition-nav nav .nav-quote {
+  background: #faf3e9; color: #102536;
+  border: 1px solid #faf3e9; border-radius: 0;
+  padding: 14px 19px;
+  transition: background .3s ease, color .3s ease;
+  white-space: nowrap;
+}
+.home-page .edition-nav nav .nav-quote:hover { color: #fff; background: transparent; }
+.home-page .ref-hero {
+  background: #0a5277;
+  min-height: 700px;
+}
+.home-page .ref-hero::before { opacity: .65; }
+.home-page .ref-hero .hero-backdrop {
+  background: linear-gradient(90deg, rgba(6,30,45,.82) 0%, rgba(6,36,55,.58) 36%, rgba(6,36,55,.12) 76%),
+    linear-gradient(0deg, rgba(6,24,38,.36), transparent 36%);
+}
+.home-page .hero-catalogue-photo { background: #0a5277; }
+.home-page .hero-catalogue-photo img {
+  filter: none !important; image-rendering: auto !important;
+}
+.home-page .hero-copy h1 {
+  max-width: 810px;
+  text-wrap: balance;
+  font-size: clamp(56px, 6.15vw, 105px);
+  line-height: 1.015;
+}
+.home-page .hero-copy p { font-size: clamp(13px, 1vw, 16px); line-height: 1.8; }
+.home-page .hero-copy .micro { color: #f5d5aa; }
+.home-page .hero-buttons a { min-height: 48px; }
+.home-page .hero-buttons .btn-cream {
+  background: #f5f0e8; color: #172834;
+  transition: background .25s ease, transform .25s ease;
+}
+.home-page .hero-buttons .btn-cream:hover { background: #e9d4b7; transform: translateY(-2px); }
+.home-page .studio-hero-cta { color: #fff; }
+.home-page .hero-catalogue-photo figcaption {
+  max-width: 35%; text-align: right; line-height: 1.6;
+}
+.home-page .mo-statement { border-bottom: 1px solid var(--stage2-line); }
+.home-page .mo-statement h2 { text-wrap: balance; }
+.home-page .photo-edit-section,
+.home-page .home-collections,
+.home-page .manufacturing-band,
+.home-page .schiffli-feature { position: relative; }
+.home-page .photo-edit-card img,
+.home-page .home-collections img,
+.home-page .manufacturing-band img,
+.home-page .schiffli-feature img,
+.home-page .studio-teaser img {
+  filter: none !important;
+  image-rendering: auto !important;
+}
+.home-page .photo-edit-card:focus-within,
+.home-page .photo-edit-card:hover { box-shadow: 0 15px 40px rgba(26,29,28,.09); }
+.home-page .edition-footer a:focus-visible { outline-color: #e9d4b7; }
+
+/* Exclusive editorial atelier chapter, staged between photography and collections. */
+.mo-atelier-feature {
+  display: grid;
+  grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr);
+  min-height: 680px;
+  background: #102b38;
+  color: #f7f0e8;
+  overflow: hidden;
+}
+.mo-atelier-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(70px, 8vw, 130px) clamp(30px, 7vw, 126px);
+}
+.mo-atelier-label {
+  text-transform: uppercase;
+  letter-spacing: .24em;
+  color: #d5b891;
+  font: 600 10px 'DM Sans', Arial, sans-serif;
+}
+.mo-atelier-copy h2 {
+  font: 400 clamp(50px, 5.7vw, 94px)/1.035 'Playfair Display', Georgia, serif;
+  letter-spacing: -.055em;
+  margin: 28px 0 30px;
+  text-wrap: balance;
+}
+.mo-atelier-copy h2 em { color: #d6b68f; font-weight: 400; }
+.mo-atelier-copy > p {
+  max-width: 420px; font-size: 14px; line-height: 1.9; color: #d2d7d6;
+}
+.mo-atelier-links { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 18px 28px; margin-top: 32px; }
+.mo-atelier-links a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  border-bottom: 1px solid rgba(255,255,255,.48); padding-bottom: 5px;
+  font: 700 11px 'DM Sans', Arial, sans-serif;
+  letter-spacing: .08em; text-transform: uppercase;
+  transition: color .25s ease, border-color .25s ease;
+}
+.mo-atelier-links a:hover { color: #f0c999; border-color: #f0c999; }
+.mo-atelier-visual {
+  position: relative; display: grid; place-items: center;
+  min-height: 680px; padding: 7% 13% 15% 6%;
+  background: #c7c9bc;
+}
+.mo-atelier-main {
+  width: min(100%, 490px); aspect-ratio: 4/5; margin: 0;
+  background: #d7d6c7; display: grid; place-items: center;
+  border: 1px solid rgba(255,255,255,.7);
+}
+.mo-atelier-main img {
+  width: 100%; height: 100%; object-fit: contain;
+  image-rendering: auto; filter: none; display: block;
+}
+.mo-atelier-inset {
+  position: absolute; margin: 0;
+  left: 2%; bottom: 5%; width: min(38%, 255px);
+  background: #e6e1d7; padding: 8px;
+  box-shadow: 0 20px 45px rgba(28,37,35,.25);
+}
+.mo-atelier-inset img {
+  width: 100%; aspect-ratio: 4/3; height: auto;
+  display: block; object-fit: contain; image-rendering: auto; filter: none;
+}
+.mo-atelier-inset figcaption {
+  padding: 9px 3px 3px; color: #36413d;
+  font: 700 9px 'DM Sans', Arial, sans-serif;
+  letter-spacing: .09em; text-transform: uppercase;
+}
+.mo-atelier-photo-note {
+  position: absolute; right: 4%; bottom: 5%;
+  color: #344c4d; font: 700 9px 'DM Sans', Arial, sans-serif;
+  letter-spacing: .15em; text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+.mo-atelier-feature.mo-reveal,
+.mo-atelier-feature.mo-visible { opacity: 1; transform: none; }
+@media (max-width: 1450px) {
+  .home-page .edition-nav nav > a[href="pages.html"],
+  .home-page .edition-nav nav > a[href="fabrics-craftsmanship.html"] { display: none; }
+}
+@media (max-width: 1180px) {
+  .home-page .edition-nav nav > a[href="campaigns.html"] { display: none; }
+  .home-page .edition-nav nav { gap: 12px; }
+  .mo-atelier-feature { min-height: 570px; }
+  .mo-atelier-visual { min-height: 570px; padding-right: 9%; }
+}
+@media (min-width: 721px) and (max-width: 950px) {
+  .home-page .edition-nav { padding-inline: 20px; }
+  .home-page .edition-nav nav > a[href="about.html"],
+  .home-page .edition-nav nav > a[href="manufacturing.html"] { display: none; }
+  .home-page .edition-nav .brand { font-size: 20px; }
+}
+@media (max-width: 720px) {
+  html { scroll-padding-top: 70px; }
+  .home-page .edition-nav { height: 68px; padding: 0 6%; }
+  .home-page .edition-nav nav {
+    top: 68px; background: #102b38; color: #fff;
+    max-height: calc(100svh - 68px); overflow-y: auto;
+    padding: 20px 7% 30px;
+  }
+  .home-page .edition-nav nav > a[href="pages.html"],
+  .home-page .edition-nav nav > a[href="fabrics-craftsmanship.html"],
+  .home-page .edition-nav nav > a[href="campaigns.html"] { display: block; }
+  .home-page .edition-nav nav .nav-quote { text-align: center; margin-top: 8px; }
+  .home-page .ref-hero { min-height: 710px; height: 100svh; max-height: 940px; }
+  .home-page .ref-hero .hero-backdrop {
+    background: linear-gradient(0deg, rgba(7,30,47,.96) 0%, rgba(7,30,47,.72) 30%, rgba(7,30,47,.05) 74%);
+  }
+  .home-page .hero-copy { left: 7%; bottom: 10%; max-width: 88%; }
+  .home-page .hero-copy h1 { font-size: clamp(46px, 10.5vw, 72px); line-height: 1.04; }
+  .home-page .hero-copy p { font-size: 12px; max-width: 320px; }
+  .home-page .hero-catalogue-photo img {
+    width: 100% !important; top: 6% !important; height: 71% !important;
+    object-fit: contain !important; object-position: right top !important;
+    opacity: .92 !important;
+  }
+  .home-page .hero-buttons { gap: 7px 15px; }
+  .home-page .hero-buttons a { min-height: 44px; font-size: 10px; }
+  .home-page .mo-editorial-kicker { font-size: 8px; letter-spacing: .16em; }
+  .mo-atelier-feature { grid-template-columns: 1fr; }
+  .mo-atelier-copy { padding: 66px 7% 62px; }
+  .mo-atelier-copy h2 { font-size: clamp(49px, 10vw, 70px); }
+  .mo-atelier-copy > p { font-size: 13px; }
+  .mo-atelier-visual { min-height: 525px; padding: 8% 12% 17%; }
+  .mo-atelier-main { max-height: 490px; }
+  .mo-atelier-inset { width: min(43%, 215px); left: 3%; bottom: 4%; }
+  .mo-atelier-photo-note { right: 3%; bottom: 4%; }
+}
+@media (max-width: 390px) {
+  .home-page .hero-copy { bottom: 8%; }
+  .home-page .hero-copy h1 { font-size: 44px; }
+  .home-page .hero-buttons a { padding: 11px 12px; }
+  .mo-atelier-visual { min-height: 440px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .home-page .edition-nav, .home-page .hero-buttons .btn-cream,
+  .mo-atelier-links a { transition: none; }
+}
