@@ -58,3 +58,26 @@ function addCompanyNavMenu(){const nav=document.querySelector('.edition-nav nav'
    target.appendChild(button);
  });
 })();
+
+// Keep the selected photograph with the wholesale brief.
+if(studioMessage && params.has('reference') && !studioMessage.value.trim()) {
+ const reference=params.get('reference').slice(0,180).replace(/-/g,' ');
+ studioMessage.value='I would like to enquire about this photographed look: '+reference+'.\nPlease confirm fabric, sizing, availability and quotation.';
+}
+// GitHub Pages serves the catalogue; send enquiries through the buyer's email app.
+if(location.hostname.endsWith('.github.io') || location.protocol==='file:') {
+ const form=document.querySelector('form[action="submit-enquiry.php"]');
+ if(form) {
+  form.querySelector('button[type="submit"]').textContent='Open email enquiry ↗';
+  form.querySelector('.form-note').textContent='Your email app will open with your enquiry details. Review and send the message there to contact Manisha Overseas.';
+  form.addEventListener('submit',event=>{
+   event.preventDefault();
+   if(!form.reportValidity())return;
+   const fields=new FormData(form);
+   if(fields.get('website'))return;
+   const labels={name:'Name',email:'Email',company:'Company',country:'Country',company_type:'Business type',category:'Category',quantity:'Quantity',timeline:'Timeline',message:'Project details'};
+   const lines=Object.entries(labels).map(([key,label])=>label+': '+(fields.get(key)||'Not specified'));
+   location.href='mailto:salil@manishaexports.com?subject='+encodeURIComponent('Wholesale enquiry — '+(fields.get('company')||fields.get('name')))+'&body='+encodeURIComponent(lines.join('\n\n'));
+  });
+ }
+}

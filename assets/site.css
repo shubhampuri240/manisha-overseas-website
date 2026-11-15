@@ -123,3 +123,13 @@ body{background:var(--paper);color:var(--ink)}
 .studio-entry-button:hover{background:#78814d;transform:translateY(-2px)}
 .detail-image .studio-entry-button{bottom:15px;right:15px}
 @media(max-width:620px){.studio-entry-button{right:7px;bottom:7px;padding:8px 9px;font-size:7px!important;letter-spacing:.06em}.detail-image .studio-entry-button{right:8px;bottom:8px}}
+
+/* Compact navigation before the desktop links outgrow the header. */
+@media(max-width:1100px){
+ .header .nav{position:relative;justify-content:space-between}
+ .header .menu-toggle{display:block;min-height:44px;min-width:44px;background:none;border:0;font-size:25px;cursor:pointer}
+ .header .navlinks{display:none;position:absolute;top:100%;left:-20px;right:-20px;z-index:30;background:#f4f0e8;color:#20211d;padding:18px 24px;flex-direction:column;gap:6px;align-items:stretch;max-height:80svh;overflow:auto}
+ .header .navlinks.open{display:flex}
+ .header .navlinks>a{padding:12px 0}
+ .inner-v3 .header .navlinks .nav-cta{color:#f4f0e8;padding:14px 16px}
+}

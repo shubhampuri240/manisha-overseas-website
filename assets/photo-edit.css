@@ -1,0 +1,63 @@
+/* Supplied company photography: keep complete garments visible. */
+.photo-refresh .ref-hero{background:#233b36;min-height:720px;height:760px;max-height:none;isolation:isolate}
+.photo-refresh .hero-backdrop{background:radial-gradient(ellipse at 0 100%,#53726555,transparent 70%);z-index:-1}
+.photo-refresh .hero-copy{left:6%;top:150px;max-width:43%;right:auto}
+.photo-refresh .hero-copy h1{font-size:clamp(64px,6.1vw,86px);margin-top:19px}
+.photo-refresh .hero-copy p{max-width:370px;font-size:14px;line-height:1.7}
+.photo-refresh .hero-buttons{flex-wrap:wrap;gap:17px 22px;max-width:430px}
+.photo-refresh .hero-index[hidden]{display:none}
+.photo-refresh .hero-caption{display:none}
+.hero-catalogue-photo{position:absolute;inset:100px 3% 0 52%;margin:0;background:#d7dfd0;display:flex;justify-content:center;overflow:hidden}
+.hero-catalogue-photo>img{width:100%;height:100%;object-fit:contain;object-position:center top}
+.hero-catalogue-photo figcaption{position:absolute;inset:auto 0 0;padding:15px 20px;background:#20352ef0;color:#fff;font-size:10px;letter-spacing:.15em;display:flex;gap:18px;justify-content:space-between}
+.hero-catalogue-photo figcaption span{font-size:8px;letter-spacing:.08em}
+.photo-edit-section{padding:80px 6%;background:#f4f0e8}
+.photo-edit-heading{display:flex;justify-content:space-between;align-items:end;gap:45px;margin-bottom:34px}
+.photo-edit-heading h2{font:500 clamp(38px,4.6vw,62px)/1.04 var(--serif);letter-spacing:-.045em;margin:15px 0 0}
+.photo-edit-heading h2 em{font-weight:500;color:#617265}
+.photo-edit-heading p{max-width:365px;font-size:13px;line-height:1.8;color:#5b5d54;margin:0 0 18px}
+.photo-edit-heading .text-arrow{font-size:12px}
+.photo-edit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 22px}
+.photo-edit-card{min-width:0}
+.photo-edit-open{position:relative;display:block;width:100%;padding:0;border:0;background:#e8e5df;cursor:zoom-in;overflow:hidden;aspect-ratio:4/5}
+.photo-edit-open img{width:100%;height:100%;object-fit:contain;transition:transform .4s}
+.photo-edit-open:hover img{transform:scale(1.025)}
+.photo-edit-open>span{position:absolute;right:12px;bottom:12px;background:#f4f0e8ee;padding:9px 11px;font:11px var(--sans);color:#1b322a}
+.photo-edit-meta{padding:17px 0;border-bottom:1px solid #cfcfc3}
+.photo-edit-meta small{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#687562}
+.photo-edit-meta h3{font:500 23px/1.2 var(--serif);margin:7px 0 12px}
+.photo-edit-meta a{font-size:11px;text-decoration:underline;text-underline-offset:4px}
+.photo-viewer{width:min(1100px,94vw);height:min(900px,92svh);max-height:92svh;max-width:94vw;padding:0;border:0;background:#f4f0e8;color:#17191b}
+.photo-viewer::backdrop{background:#11231bd9}
+.photo-viewer-layout{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.photo-viewer-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;font:10px var(--sans);letter-spacing:.15em;border-bottom:1px solid #d1d2c6}
+.photo-viewer button{min-width:44px;min-height:44px;border:1px solid #b9c1b1;background:transparent;font:18px var(--sans);cursor:pointer;color:inherit}
+.photo-viewer-image{width:100%;height:100%;object-fit:contain;min-height:0;background:#e6e7df}
+.photo-viewer-footer{display:flex;gap:18px;align-items:center;padding:16px 22px;flex-wrap:wrap}
+.photo-viewer-footer h2{font:500 23px/1.15 var(--serif);margin:0;flex:1}
+.photo-viewer-footer a{padding:13px 17px;background:#233b36;color:#fff;font:12px var(--sans)}
+.photo-viewer-controls{display:flex;gap:7px}
+.photo-edit-intro{background:#e7ebe0!important}
+.photo-refresh .home-collections{padding:45px 6%;grid-template-columns:230px 1fr;gap:28px}
+.photo-refresh .collection-tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.photo-refresh .tile{height:280px}
+.photo-refresh .tile img{object-fit:contain}
+.photo-refresh .manufacturing-band{padding:40px 6%;grid-template-columns:230px 1fr;gap:28px}
+.photo-refresh .journey{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.photo-refresh .journey a{height:215px}
+.photo-refresh .schiffli-photo{height:380px}
+.photo-refresh .studio-teaser-image img{object-fit:contain;background:#e5e6dc}
+.product-photo-gallery{display:grid;gap:20px;align-content:start}
+.product-photo-gallery figure{margin:0;background:#e6e5df}
+.product-photo-gallery img{width:100%;height:auto;max-height:760px;object-fit:contain}
+.product-photo-gallery figcaption{padding:12px 16px;font-size:12px;border-top:1px solid #d0d0c3}
+.approved-product-image img,.product-card img,.page-image img{object-fit:contain;background:#e8e7df}
+.enquiry-card-photo,.enquiry-visual{background:#e4e8df;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;min-height:300px;padding:30px;color:#2e493c;text-align:center}
+.enquiry-visual{min-height:460px}
+.enquiry-card-photo b,.enquiry-visual b{font:500 30px var(--serif)}
+.enquiry-card-photo span,.enquiry-visual span{font-size:12px;line-height:1.7;max-width:240px}
+:focus-visible{outline:3px solid #b88843;outline-offset:5px}
+@media(max-width:1200px) and (min-width:721px){.edition-nav nav{gap:12px;font-size:10px}.edition-nav .brand-sub,.edition-nav .brand-divider{display:none}.edition-nav{gap:16px;padding-inline:3%}.edition-nav .studio-nav-link{padding:11px 8px}.edition-nav nav .nav-quote{padding:12px 10px}}
+@media(max-width:950px){.photo-edit-section{padding:55px 5%}.photo-edit-grid{gap:25px 15px}.photo-edit-meta h3{font-size:20px}.photo-refresh .hero-copy h1{font-size:68px}.photo-refresh .hero-copy p{font-size:12px}.hero-catalogue-photo{left:53%;right:0}.hero-catalogue-photo figcaption span{display:none}.photo-refresh .home-collections,.photo-refresh .manufacturing-band{grid-template-columns:1fr}.photo-refresh .tile{height:300px}.photo-refresh .journey a{height:210px}}
+@media(max-width:720px){.photo-refresh .ref-hero{height:auto;min-height:0;padding-top:105px}.photo-refresh .hero-copy{position:relative;inset:auto;max-width:none;padding:0 6% 35px}.photo-refresh .hero-copy h1{font-size:clamp(59px,13vw,82px);line-height:.95}.photo-refresh .hero-copy p{font-size:14px;max-width:100%}.hero-catalogue-photo{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:4/5}.hero-catalogue-photo>img{height:100%;width:100%}.hero-catalogue-photo figcaption span{display:block}.photo-refresh .hero-caption{display:none}.photo-refresh .hero-buttons{gap:16px}.photo-refresh .hero-buttons>a:last-child{font-size:12px}.photo-edit-heading{display:block}.photo-edit-heading p{margin-top:20px}.photo-edit-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 13px}.photo-edit-meta h3{font-size:19px}.photo-edit-meta a{font-size:11px;line-height:1.7;display:inline-block;padding-block:4px}.photo-edit-meta small{font-size:8px}.photo-edit-open>span{font-size:9px;right:6px;bottom:6px;padding:7px}.photo-refresh .collection-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.photo-refresh .tile{height:240px}.photo-refresh .journey{grid-template-columns:repeat(2,minmax(0,1fr))}.photo-refresh .journey a{height:200px}.photo-viewer-footer{padding:12px;gap:10px}.photo-viewer-footer h2{flex-basis:calc(100% - 110px);font-size:20px}.photo-viewer-footer a{width:100%;text-align:center}.photo-viewer-toolbar{padding:8px 12px}.photo-viewer-controls button{min-width:44px}.photo-edit-intro h1{font-size:clamp(42px,11vw,68px)!important}.photo-refresh .schiffli-photo{height:290px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.photo-edit-open img{transition:none}}

@@ -1,12 +1,14 @@
-# Visual asset notes
+# Website photography update — 15 November 2026
 
-This edition uses original AI-generated editorial concept images created specifically for the Manisha Overseas website.
+Website photographs are selected from the user-supplied **Website-Ready Approved Photos** bundle in the Manishaoverseas Google Drive folder:
+https://drive.google.com/drive/folders/1EOzMjMFAvzVRhlnrR8TKmUPBvU9vddNA
 
-Assets are stored locally in `assets/visuals/` and include:
-- `hero-schiffli-campaign.webp` — homepage campaign hero
-- `collection-01.webp` to `collection-06.webp` — editorial collection images
-- `process-01.webp` to `process-06.webp` — manufacturing journey concepts
-- `fabric-01.webp` to `fabric-04.webp` — close-up textile/embroidery concepts
-- `garment-detail-01.webp` to `garment-detail-06.webp` — garment and styling details
+Approved ZIP: https://drive.google.com/file/d/1B9llloVWugqxqQrXXs16o0A-R_hugxEa/view
 
-The images are illustrative and should not be represented as actual product samples or photographs of the Manisha Overseas factory. They should be replaced by approved real product and factory images when available.
+All 77 approved WebP files were already present on the live `staging` branch under `assets/visuals/` and `assets/manisha/`; their bytes were compared with the Drive download. This update connects the photographs to the homepage, the latest photo edit, matching collection/product pages and company stories. No duplicate image upload or synthetic garment recreation was necessary.
+
+The newest Drive ZIP was inspected. It contains alternate views, collages and labelled JPEGs of many of the same looks. The curated approved WebPs preserve clearer individual photographs. The photo edit features the ten approved photographs from the 6 November WhatsApp set.
+
+Only photographs marked APPROVED_FOR_WEBSITE in the supplied manifest were selected. Folders marked Not for Website or Do Not Publish were excluded. Missing photo categories use development enquiry cards. Front/back photographs are presented as supplied; fabric composition, technique, sizing, availability and prices remain subject to confirmation.
+
+The interactive 3D studio remains a concept tool; it is not a digital twin of the selected photograph. Its concept textures and model are separate from the supplied catalogue photographs.
