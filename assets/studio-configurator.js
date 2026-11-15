@@ -307,6 +307,8 @@
     state.mode = 'photo';
   }
   try { $('#saved-look-panel').hidden = !localStorage.getItem('manishaAtelierLook'); } catch { /* Storage is optional. */ }
+  // A direct link can open the procedural 3D study; normal catalogue visits default to the real photo.
+  if (params.get('mode') === '3d' && !state.imported) state.mode = '3d';
   syncEngine(); refresh(); updateBackend(); showMode(state.mode);
   window.addEventListener('studio:ready', updateBackend);
   window.addEventListener('studio:state', event => { if (!syncing && event.detail?.view === 'manual') { state.view = 'manual'; state.spinning = false; refresh(); } });
