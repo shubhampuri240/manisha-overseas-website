@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AI Try-On Lab · Internal Evaluation | Manisha Overseas</title>
+<style>
+:root{color-scheme:light;--ink:#142921;--cream:#f6f4ec;--green:#234537;--border:#d8ded4}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.6 "Segoe UI",Arial,sans-serif}
+header{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:24px clamp(20px,5vw,90px);border-bottom:1px solid var(--border)}
+a{color:inherit}header .brand{font-weight:750;text-decoration:none;letter-spacing:.22em;font-size:14px}header nav a{margin-left:20px;text-decoration:none}
+main{max-width:1260px;margin:auto;padding:50px 24px 100px}
+.kicker{letter-spacing:.17em;text-transform:uppercase;font-size:11px;font-weight:700;color:#557465}
+h1{font:normal clamp(40px,6vw,80px)/1.05 Georgia,serif;letter-spacing:-.045em;margin:10px 0 18px}
+h1 em{font-style:italic;color:#6c8b74}.lede{font-size:17px;max-width:750px;color:#42534a;margin-bottom:25px}
+.notice{border:1px solid #bd9c6d;background:#fff7e9;border-radius:12px;padding:22px 25px;margin:24px 0 40px}
+.notice strong{display:block;font-weight:750;font-size:16px}.notice p{margin:8px 0 0}
+h2{font:normal 32px Georgia,serif;letter-spacing:-.02em}
+.catalogue{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:14px;margin:18px 0 36px}
+.look{background:#fff;border:1px solid var(--border);text-align:left;padding:0;cursor:pointer;border-radius:10px;overflow:hidden;color:var(--ink)}
+.look[aria-pressed=true]{outline:3px solid #52816b;outline-offset:2px}
+.look img{display:block;width:100%;aspect-ratio:4/5;object-fit:contain;background:#eeeae3}
+.look span{display:block;padding:12px;font-weight:600;font-size:12px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:16px;padding:clamp(18px,3vw,36px);margin-top:24px}
+label{display:block;font-weight:600}
+.text-field{width:100%;padding:13px 15px;border:1px solid #b7c5bd;border-radius:8px;margin:10px 0 16px;font:inherit}
+.confirm{display:flex;align-items:flex-start;gap:10px;margin:20px 0}
+.confirm input{margin-top:6px;transform:scale(1.15)}
+button.launch{border:0;color:#fff;background:var(--green);border-radius:8px;padding:14px 22px;font-weight:700;cursor:pointer}
+button.launch:disabled{background:#96a39b;cursor:not-allowed}
+.helper{font-size:13px;color:#51665c}.panel iframe{width:100%;height:850px;border:1px solid var(--border);border-radius:12px;margin-top:24px;background:white}
+#message{min-height:24px;color:#7b3823}#mount[hidden]{display:none}
+@media(max-width:630px){header nav a{margin-left:10px;font-size:12px}main{padding-top:32px}h1{font-size:43px} .panel iframe{height:990px}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="index.html">MANISHA OVERSEAS</a><nav><a href="dress-studio.html">Dress Photo Studio</a><a href="index.html">Home</a></nav></header>
+<main>
+<div class="kicker">Stage 04 / Restricted internal research build</div>
+<h1>The virtual<br><em>fitting lab.</em></h1>
+<p class="lede">Explore authentic Manisha Overseas catalogue styles and test how open-source AI might portray them on an adult participant. This is a separate prototype, not the live Dress Studio.</p>
+<section class="notice" aria-label="Licensing and privacy warning">
+<strong>Not approved for commercial customers</strong>
+<p>The FASHN VTON v1.5 base model is Apache 2.0, but the standard inference pipeline depends on a human parser with a non-commercial research/evaluation restriction. This page must remain an internal test until commercial permission or a fully licensed replacement is confirmed.</p>
+<p>When you connect a Hugging Face Space, photos are uploaded directly to that Space, not GitHub. Hugging Face/Gradio can cache uploaded photos and generated results temporarily and file URLs may be reachable by others with the link. Use consenting adult test images only, not sensitive customer photos.</p>
+</section>
+<h2>01 / Choose a catalogue reference</h2>
+<p class="helper">These are original garment photographs, not 3D models. Select the matching style again inside your evaluation Space when it opens.</p>
+<div class="catalogue" id="catalogue">
+<button class="look" aria-pressed="true" data-style="4638"><img src="assets/visuals/style-4638-front.webp" alt="Style 4638 floral long dress" loading="lazy"><span>Style 4638 · Floral dress</span></button>
+<button class="look" aria-pressed="false" data-style="6821"><img src="assets/visuals/style-6821-front.webp" alt="Style 6821 printed wide-leg one-piece" loading="lazy"><span>Style 6821 · One-piece</span></button>
+<button class="look" aria-pressed="false" data-style="3476"><img src="assets/visuals/style-3476-front.webp" alt="Style 3476 printed long dress" loading="lazy"><span>Style 3476 · Printed dress</span></button>
+<button class="look" aria-pressed="false" data-style="7284"><img src="assets/visuals/style-7284-front.webp" alt="Style 7284 open-back dress" loading="lazy"><span>Style 7284 · Open-back</span></button>
+<button class="look" aria-pressed="false" data-style="1509"><img src="assets/visuals/style-1509-front.webp" alt="Style 1509 tiered long dress" loading="lazy"><span>Style 1509 · Tiered dress</span></button>
+<button class="look" aria-pressed="false" data-style="2941"><img src="assets/visuals/style-2941-front.webp" alt="Style 2941 tiered printed dress" loading="lazy"><span>Style 2941 · Printed tiered</span></button>
+<button class="look" aria-pressed="false" data-style="9152"><img src="assets/visuals/style-9152-full.webp" alt="Style 9152 green printed long dress" loading="lazy"><span>Style 9152 · Green dress</span></button>
+</div>
+<section class="panel" aria-labelledby="space-heading">
+<h2 id="space-heading">02 / Connect your free evaluation Space</h2>
+<p>After creating a personal Hugging Face ZeroGPU Space using the files in <code>stage4/huggingface-space</code>, paste its HTTPS URL here. No API key is required for this iframe-based lab.</p>
+<label for="space-url">Your Hugging Face Space URL</label>
+<input class="text-field" id="space-url" placeholder="https://huggingface.co/spaces/YOURNAME/manisha-tryon-lab" autocomplete="off" spellcheck="false">
+<p class="helper">Use your own Space, not the commercial FASHN API. Access to free hosting depends on your Hugging Face account eligibility and daily GPU quota.</p>
+<label class="confirm"><input id="research-only" type="checkbox"> <span>This is a non-commercial internal evaluation. I will use only consenting adult test photos and I understand Hugging Face may temporarily cache uploads and outputs.</span></label>
+<button class="launch" id="launch" type="button">Open evaluation Space</button>
+<p id="message" role="status" aria-live="polite"></p>
+<div id="mount" hidden><p><a id="direct-link" href="#" target="_blank" rel="noopener noreferrer">Open the evaluation Space in a new tab</a> if the embedded view does not load.</p></div>
+</section>
+</main>
+<script>
+document.querySelectorAll(".look").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll(".look").forEach(item=>item.setAttribute("aria-pressed",String(item===button)));
+ });
+});
+document.getElementById("launch").addEventListener("click",()=>{
+ const message=document.getElementById("message");
+ const mount=document.getElementById("mount");
+ const raw=document.getElementById("space-url").value.trim();
+ if(!document.getElementById("research-only").checked){message.textContent="Confirm the restricted evaluation and photo-handling notice first.";return;}
+ let url;try{url=new URL(raw);}catch{message.textContent="Enter a valid HTTPS Hugging Face Space URL.";return;}
+ if(url.protocol!=="https:"||url.username||url.password){message.textContent="Only HTTPS Hugging Face Spaces are allowed.";return;}
+ let embed="";
+ if(url.hostname==="huggingface.co"){
+  const bits=url.pathname.split("/").filter(Boolean);
+  if(bits.length===3&&bits[0]==="spaces"&&/^[A-Za-z0-9_-]+$/.test(bits[1])&&/^[A-Za-z0-9_.-]+$/.test(bits[2])){
+   embed="https://"+bits[1]+"-"+bits[2].replace(/_/g,"-")+".hf.space/";
+  }
+ }else if(/^[a-z0-9-]+\.hf\.space$/i.test(url.hostname)&&url.pathname==="/"){
+  embed=url.origin+"/";
+ }
+ if(!embed){message.textContent="Use https://huggingface.co/spaces/USER/SPACE or the exact .hf.space address.";return;}
+ mount.replaceChildren();
+ const anchor=document.createElement("a");anchor.href=embed;anchor.target="_blank";anchor.rel="noopener noreferrer";anchor.textContent="Open this evaluation Space in a new tab";mount.appendChild(anchor);
+ const frame=document.createElement("iframe");frame.src=embed;frame.title="Manisha Overseas research-only try-on Space";frame.referrerPolicy="no-referrer";frame.loading="lazy";frame.setAttribute("allow","clipboard-read; clipboard-write");mount.appendChild(frame);
+ mount.hidden=false;message.textContent="Evaluation Space connected. Uploads inside the frame go to the Hugging Face Space, not this website.";
+});
+</script>
+</body>
+</html>
