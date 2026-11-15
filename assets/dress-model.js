@@ -1,317 +1,250 @@
-/*
-  Manisha Overseas — 3D Studio / Reference Dress 01
-  Original procedural 3D concept shaped from the user-supplied reference:
-  square neckline, short puff sleeves, fitted/smocked bodice and full eyelet midi skirt.
-  It is a visual concept, not a measured production model or tech pack.
-*/
-(()=>{
-  const canvas=document.getElementById('dress-canvas');
-  if(!canvas)return;
-  const stage=canvas.parentElement;
-  const fallback=stage.querySelector('.studio-fallback');
-  const toggle=document.getElementById('rotate-toggle');
-  const reset=document.getElementById('reset-view');
-  const hint=document.getElementById('dress-view-hint');
-  let spin=true,renderer,scene,camera,garment,drag=false,lastX=0,lastY=0,raf=0;
-  let materialSet=[],initialCameraZ=8.8;
-  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  if(reduced)spin=false;
-  const syncToggle=()=>{if(toggle)toggle.innerHTML=spin?'Ⅱ&nbsp; Pause rotation':'▶&nbsp; Resume rotation';};
-  function installInteractiveFallback(){
-    let drawCanvas=canvas,ctx=drawCanvas.getContext('2d');
-    if(!ctx){const replacement=document.createElement('canvas');replacement.id=canvas.id;replacement.setAttribute('aria-label','Interactive garment concept. Drag to rotate.');replacement.style.cssText=canvas.style.cssText;canvas.replaceWith(replacement);drawCanvas=replacement;ctx=drawCanvas.getContext('2d');}
-    if(!ctx){stage.classList.add('fallback-active');syncToggle();return;}
-    if(fallback)fallback.style.display='none';
-    stage.classList.add('fallback-active','has-2d-fallback');
-    let style=0,tone='#fffdf7',fabric='cotton',pattern='plain',trims=true,rotation=-.12,zoom=1,drag=false,lastX=0,raf=0;
-    const profiles=[
-      {flare:1,length:1,sleeves:1,pants:false},
-      {flare:.78,length:1,sleeves:.8,pants:true},
-      {flare:.84,length:.94,sleeves:.86,pants:false},
-      {flare:.94,length:1.04,sleeves:1,pants:false},
-      {flare:1.08,length:1,sleeves:1,pants:false},
-      {flare:1.22,length:1.04,sleeves:1.08,pants:false},
-      {flare:.98,length:1.16,sleeves:.88,pants:false}
-    ];
-    function resize(){const w=Math.max(1,stage.clientWidth),h=Math.max(1,stage.clientHeight),d=Math.min(devicePixelRatio||1,1.6);drawCanvas.width=Math.round(w*d);drawCanvas.height=Math.round(h*d);drawCanvas.style.width=w+'px';drawCanvas.style.height=h+'px';ctx.setTransform(d,0,0,d,0,0);}
-    function path(p){
-      ctx.beginPath();
-      if(p.pants){ctx.moveTo(-62,-145);ctx.lineTo(62,-145);ctx.lineTo(75,12);ctx.lineTo(48,220);ctx.lineTo(5,220);ctx.lineTo(0,26);ctx.lineTo(-5,220);ctx.lineTo(-48,220);ctx.lineTo(-75,12);ctx.closePath();}
-      else{const hem=205*p.length,flare=105*p.flare;ctx.moveTo(-52,-155);ctx.lineTo(52,-155);ctx.lineTo(50,-18);ctx.bezierCurveTo(65,10,flare*.72,hem*.55,flare,hem);ctx.lineTo(-flare,hem);ctx.bezierCurveTo(-flare*.72,hem*.55,-65,10,-50,-18);ctx.closePath();}
-      ctx.moveTo(-52,-150);ctx.lineTo(-42,-180);ctx.lineTo(42,-180);ctx.lineTo(52,-150);ctx.lineTo(47,-8);ctx.lineTo(-47,-8);ctx.closePath();
-      const sleeve=48*p.sleeves;
-      ctx.moveTo(-48,-145);ctx.bezierCurveTo(-75-sleeve*.45,-168,-105,-118,-78,-80);ctx.lineTo(-47,-95);
-      ctx.moveTo(48,-145);ctx.bezierCurveTo(75+sleeve*.45,-168,105,-118,78,-80);ctx.lineTo(47,-95);
-    }
-    function draw(){
-      const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
-      ctx.clearRect(0,0,w,h);ctx.save();ctx.translate(w/2,h*.48);ctx.scale(zoom,zoom);ctx.transform(Math.cos(rotation),0,Math.sin(rotation)*.34,1,0,0);
-      const p=profiles[style],grad=ctx.createLinearGradient(-120,-180,120,220);grad.addColorStop(0,'#fff');grad.addColorStop(.22,tone);grad.addColorStop(.78,tone);grad.addColorStop(1,'#8b7965');
-      ctx.shadowColor='#0008';ctx.shadowBlur=24;ctx.shadowOffsetY=18;path(p);ctx.fillStyle=grad;ctx.fill('evenodd');ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-      ctx.save();path(p);ctx.clip('evenodd');
-      if(pattern==='stripe'){ctx.strokeStyle='#665b50aa';ctx.lineWidth=5;for(let x=-220;x<220;x+=25){ctx.beginPath();ctx.moveTo(x,-230);ctx.lineTo(x+90,270);ctx.stroke();}}
-      if(pattern==='floral'||pattern==='eyelet'){for(let y=-140;y<260;y+=36)for(let x=-100;x<110;x+=34){ctx.strokeStyle=pattern==='eyelet'?'#8d765d99':'#725d4caa';ctx.lineWidth=1.4;ctx.beginPath();for(let k=0;k<6;k++){const a=k*Math.PI/3;ctx.ellipse(x+Math.cos(a)*7,y+Math.sin(a)*7,4,8,a,0,Math.PI*2);}ctx.stroke();ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fillStyle='#8b7258';ctx.fill();}}
-      if(fabric==='linen'||fabric==='cotton'){ctx.strokeStyle='#ffffff55';ctx.lineWidth=1;for(let y=-210;y<250;y+=7){ctx.beginPath();ctx.moveTo(-180,y);ctx.lineTo(180,y+2);ctx.stroke();}}
-      ctx.restore();
-      if(trims){ctx.strokeStyle='#b89c78';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-48,-8);ctx.lineTo(48,-8);ctx.stroke();if(!p.pants){ctx.beginPath();ctx.moveTo(-p.flare*105,205*p.length);ctx.lineTo(p.flare*105,205*p.length);ctx.stroke();}}
-      ctx.restore();if(spin&&!drag)rotation+=.003;raf=requestAnimationFrame(draw);
-    }
-    function setStyle(i){style=Math.max(0,Math.min(6,Number(i)||0));}
-    function setTone(v){tone=String(v||'#fffdf7');}
-    function setFabric(v){fabric=v||'cotton';}
-    function setPattern(v){pattern=v||'plain';}
-    function setTrims(v){trims=!!v;}
-    function resetView(){rotation=-.12;zoom=1;spin=true;setTone('#fffdf7');setFabric('cotton');setPattern('plain');setStyle(0);setTrims(true);syncToggle();}
-    drawCanvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;drawCanvas.setPointerCapture?.(e.pointerId);});
-    drawCanvas.addEventListener('pointermove',e=>{if(!drag)return;rotation+=(e.clientX-lastX)*.009;lastX=e.clientX;});
-    const stop=()=>drag=false;drawCanvas.addEventListener('pointerup',stop);drawCanvas.addEventListener('pointercancel',stop);
-    drawCanvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.7,Math.min(1.45,zoom-e.deltaY*.001));},{passive:false});
-    reset?.addEventListener('click',resetView);
-    document.getElementById('zoom-in')?.addEventListener('click',()=>zoom=Math.min(1.45,zoom+.08));
-    document.getElementById('zoom-out')?.addEventListener('click',()=>zoom=Math.max(.7,zoom-.08));
-    window.ManishaDressStudio={setStyle,setTone,setFabric,setPattern,setTrims,zoom:d=>zoom=Math.max(.7,Math.min(1.45,zoom-d*.12)),reset:resetView,pause:()=>{spin=false;syncToggle();},resume:()=>{spin=true;syncToggle();}};
-    const ro=new ResizeObserver(resize);ro.observe(stage);resize();syncToggle();draw();
-    window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);ro.disconnect();});
+/* Manisha Overseas · digital atelier.
+   Procedural garment studies are editable concepts, not digital twins or fit models. */
+(() => {
+  'use strict';
+  let canvas = document.getElementById('dress-canvas');
+  if (!canvas) return;
+  const stage = canvas.parentElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const state = {backend:'pending', ready:false, style:0, tone:'#fffdf7', fabric:'cotton', pattern:'plain', trims:true, view:'orbit', lighting:'daylight', motion:'still', spinning:!reduced.matches};
+  const clamp = (n,a,b) => Math.max(a, Math.min(b,n));
+  let change = () => {}, draw = () => {}, frame = 0, visible = true, interacting = false;
+  let targetAngle = -.2, angle = -.2, targetPitch = .025, pitch = .025, distance = 9.4, targetDistance = 9.4, cameraFocus = -.62, targetFocus = -.62;
+  let pointers = new Map(), lastX = 0, lastY = 0, pinchDistance = 0;
+  let lastTime = 0, elapsed = 0, alive = true;
+  function emit(name='studio:state') {
+    stage.dataset.renderer = state.backend;
+    window.dispatchEvent(new CustomEvent(name,{detail:{...state}}));
   }
-
-  toggle?.addEventListener('click',()=>{spin=!spin;syncToggle();if(fallback)fallback.classList.toggle('paused',!spin);});
-
-  if(!window.THREE){installInteractiveFallback();return;}
-  const THREE=window.THREE;
-  try{
-    renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
-  }catch(e){installInteractiveFallback();return;}
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,window.innerWidth<720?1.25:1.7));
-  renderer.setSize(stage.clientWidth,stage.clientHeight,false);
-  renderer.outputColorSpace=THREE.SRGBColorSpace;
-  renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.05;
-
-  scene=new THREE.Scene();
-  camera=new THREE.PerspectiveCamera(32,stage.clientWidth/Math.max(stage.clientHeight,1),.1,100);
-  camera.position.set(0,.0,initialCameraZ);
-  scene.add(new THREE.HemisphereLight(0xfffaf2,0x8d7862,2.0));
-  const key=new THREE.DirectionalLight(0xfff0da,3.0);key.position.set(-3.5,5.5,6);scene.add(key);
-  const fill=new THREE.DirectionalLight(0xdce9f7,1.0);fill.position.set(4,1,4);scene.add(fill);
-  const rim=new THREE.DirectionalLight(0xffffff,1.7);rim.position.set(1,4,-4);scene.add(rim);
-
-  function makeLaceMaps(){
-    const size=1024;
-    const colour=document.createElement('canvas');colour.width=colour.height=size;
-    const c=colour.getContext('2d');
-    c.fillStyle='#f5eee3';c.fillRect(0,0,size,size);
-    // subtle woven fibres
-    for(let y=0;y<size;y+=5){c.strokeStyle=(y%10===0)?'rgba(154,133,107,.12)':'rgba(255,255,255,.30)';c.lineWidth=1;c.beginPath();c.moveTo(0,y);c.lineTo(size,y+2);c.stroke();}
-    for(let x=0;x<size;x+=9){c.strokeStyle='rgba(166,145,119,.055)';c.lineWidth=1;c.beginPath();c.moveTo(x,0);c.lineTo(x+2,size);c.stroke();}
-    const cell=128;
-    for(let yy=0;yy<size;yy+=cell){
-      for(let xx=0;xx<size;xx+=cell){
-        c.save();c.translate(xx+cell/2,yy+cell/2);
-        c.strokeStyle='rgba(166,139,105,.78)';c.lineWidth=4;
-        c.beginPath();c.arc(0,0,39,0,Math.PI*2);c.stroke();
-        for(let k=0;k<8;k++){
-          const a=k*Math.PI/4,px=Math.cos(a)*28,py=Math.sin(a)*28;
-          c.fillStyle='rgba(255,255,255,.62)';
-          c.beginPath();c.ellipse(px,py,12,22,a,0,Math.PI*2);c.fill();
-          c.strokeStyle='rgba(176,149,113,.82)';c.lineWidth=3;
-          c.beginPath();c.ellipse(px,py,12,22,a,0,Math.PI*2);c.stroke();
-          c.strokeStyle='rgba(255,255,255,.85)';c.lineWidth=1.4;
-          c.beginPath();c.ellipse(px,py,7,16,a,0,Math.PI*2);c.stroke();
-        }
-        c.fillStyle='rgba(172,142,105,.9)';c.beginPath();c.arc(0,0,4.5,0,Math.PI*2);c.fill();
-        c.restore();
-      }
-    }
-    const alpha=document.createElement('canvas');alpha.width=alpha.height=size;
-    const a=alpha.getContext('2d');a.fillStyle='#fff';a.fillRect(0,0,size,size);
-    for(let yy=0;yy<size;yy+=cell){for(let xx=0;xx<size;xx+=cell){
-      a.save();a.translate(xx+cell/2,yy+cell/2);a.globalCompositeOperation='destination-out';
-      // real transparency openings: eyelets around each floral rosette
-      for(let k=0;k<8;k++){const ang=k*Math.PI/4;const px=Math.cos(ang)*28,py=Math.sin(ang)*28;a.beginPath();a.ellipse(px,py,5.8,12,ang,0,Math.PI*2);a.fill();}
-      a.beginPath();a.arc(0,0,3.2,0,Math.PI*2);a.fill();a.restore();
-    }}
-    const map=new THREE.CanvasTexture(colour);map.wrapS=map.wrapT=THREE.RepeatWrapping;map.repeat.set(1.7,2.0);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=renderer.capabilities.getMaxAnisotropy();
-    const alphaMap=new THREE.CanvasTexture(alpha);alphaMap.wrapS=alphaMap.wrapT=THREE.RepeatWrapping;alphaMap.repeat.copy(map.repeat);alphaMap.anisotropy=renderer.capabilities.getMaxAnisotropy();
-    return {map,alphaMap};
+  function wake() { if (alive && state.backend!=='unavailable' && !frame && !document.hidden && visible) frame=requestAnimationFrame(tick); }
+  function tick(now) {
+    frame=0;
+    if (!alive || document.hidden || !visible) return;
+    if (stage.classList.contains('is-photo-mode')) {lastTime=0;return;}
+    const dt=Math.min((now-(lastTime||now))/1000,.045);lastTime=now;elapsed+=dt;
+    if (state.spinning && !interacting) targetAngle+=dt*.16;
+    const damp=1-Math.exp(-dt*9);
+    angle+=(targetAngle-angle)*damp;pitch+=(targetPitch-pitch)*damp;
+    distance+=(targetDistance-distance)*damp;cameraFocus+=(targetFocus-cameraFocus)*damp;
+    draw(elapsed,dt);
+    const transitioning=Math.abs(targetAngle-angle)>.0002 || Math.abs(targetPitch-pitch)>.0002 || Math.abs(targetDistance-distance)>.001 || Math.abs(targetFocus-cameraFocus)>.001;
+    if (state.spinning || (state.motion==='breeze'&&!reduced.matches) || transitioning || interacting || change.pending) wake();
   }
-  const maps=makeLaceMaps();
-  const cloth=new THREE.MeshPhysicalMaterial({map:maps.map,alphaMap:maps.alphaMap,color:0xffffff,roughness:.86,metalness:0,side:THREE.DoubleSide,transparent:true,alphaTest:.16,clearcoat:.08,clearcoatRoughness:.9});
-  const lining=new THREE.MeshStandardMaterial({color:0xf7f0e6,roughness:.94,side:THREE.DoubleSide});
-  const piping=new THREE.MeshStandardMaterial({color:0xd6c3a5,roughness:.84});
-  const stitch=new THREE.MeshStandardMaterial({color:0xcdb795,roughness:.9});
-  materialSet=[cloth];
-  garment=new THREE.Group();scene.add(garment);
-  const skirtAssembly=new THREE.Group();garment.add(skirtAssembly);
-  const bodiceAssembly=new THREE.Group();garment.add(bodiceAssembly);
-  const sleevesAssembly=new THREE.Group();garment.add(sleevesAssembly);
-  const pantsAssembly=new THREE.Group();garment.add(pantsAssembly);pantsAssembly.visible=false;
-
-  function meshFromGrid(rows,cols,fn,material){
-    const vertices=[],uv=[],indices=[];
-    for(let r=0;r<=rows;r++){
-      const v=r/rows;
-      for(let col=0;col<=cols;col++){
-        const u=col/cols,pt=fn(u,v,r,col);
-        vertices.push(pt.x,pt.y,pt.z);uv.push(u,v);
-      }
-    }
-    for(let r=0;r<rows;r++)for(let col=0;col<cols;col++){
-      const a=r*(cols+1)+col,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);
-    }
-    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(indices);g.computeVertexNormals();
-    return new THREE.Mesh(g,material);
-  }
-  // Full, softly gathered midi skirt: narrow waist, broad hem, slight natural folds.
-  const skirt=meshFromGrid(72,128,(u,v)=>{
-    const a=u*Math.PI*2;
-    const r=.34+1.05*Math.pow(v,1.18);
-    const fold=(Math.sin(a*9+v*4.2)*.035+Math.sin(a*17-v*3.1)*.012)*(.25+.75*v);
-    const radius=r+fold;
-    const y=.12-2.34*v+.018*Math.sin(a*8+v*5)*v;
-    return new THREE.Vector3(Math.cos(a)*radius,y,Math.sin(a)*radius*.60);
-  },cloth);
-  skirtAssembly.add(skirt);
-  // Tier seam trims follow the same flare and are positioned as delicate stitched rows.
-  function tierRing(v){
-    const r=.34+1.05*Math.pow(v,1.18),y=.12-2.34*v;
-    const points=[];for(let i=0;i<=160;i++){const a=i/160*Math.PI*2,rr=r+(Math.sin(a*9+v*4.2)*.035)*(.25+.75*v);points.push(new THREE.Vector3(Math.cos(a)*rr,y,Math.sin(a)*rr*.60));}
-    const curve=new THREE.CatmullRomCurve3(points);
-    const line=new THREE.Mesh(new THREE.TubeGeometry(curve,160,.009,5,false),stitch);skirtAssembly.add(line);
-  }
-  tierRing(.36);tierRing(.70);tierRing(.91);
-
-  // Fitted bodice with a lowered square front neckline and a natural back neckline.
-  const bodice=meshFromGrid(42,128,(u,v)=>{
-    const a=u*Math.PI*2;
-    const bottom=-.03;
-    const top=1.06-.22*Math.pow(Math.max(0,Math.sin(a)),14);
-    const y=bottom+(top-bottom)*v;
-    const rx=.34+.125*Math.sin(Math.min(1,v)*Math.PI*.82);
-    const rz=.235+.055*Math.sin(Math.min(1,v)*Math.PI*.82);
-    const waistPinch=1-.055*Math.exp(-Math.pow((v-.18)/.10,2));
-    return new THREE.Vector3(Math.cos(a)*rx*waistPinch,y,Math.sin(a)*rz*waistPinch);
-  },cloth);
-  bodiceAssembly.add(bodice);
-  // Smocking rows around the bodice, subtle enough to preserve the clean product look.
-  for(let i=0;i<8;i++){
-    const v=.34+i*.055,points=[];
-    for(let j=0;j<=100;j++){
-      const a=j/100*Math.PI*2,top=1.06-.22*Math.pow(Math.max(0,Math.sin(a)),14),y=-.03+(top+.03)*v;
-      const rx=.34+.125*Math.sin(v*Math.PI*.82),rz=.235+.055*Math.sin(v*Math.PI*.82);
-      points.push(new THREE.Vector3(Math.cos(a)*rx*1.006,y,Math.sin(a)*rz*1.012));
-    }
-    const curve=new THREE.CatmullRomCurve3(points);
-    bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(curve,100,.006,4,false),stitch));
-  }
-  // Square neckline piping: front edge and short side rises.
-  const necklinePoints=[
-    new THREE.Vector3(-.43,.87,.17),new THREE.Vector3(-.36,.84,.23),new THREE.Vector3(-.20,.84,.265),
-    new THREE.Vector3(0,.84,.27),new THREE.Vector3(.20,.84,.265),new THREE.Vector3(.36,.84,.23),new THREE.Vector3(.43,.87,.17)
-  ];
-  const neckCurve=new THREE.CatmullRomCurve3(necklinePoints);
-  bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(neckCurve,64,.025,8,false),piping));
-  // Shoulder straps and back neckline finish.
-  for(const sign of [-1,1]){
-    const strapCurve=new THREE.CatmullRomCurve3([
-      new THREE.Vector3(sign*.43,.87,.17),new THREE.Vector3(sign*.47,.99,.12),new THREE.Vector3(sign*.43,1.08,0),new THREE.Vector3(sign*.35,1.08,-.16)
-    ]);
-    bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(strapCurve,28,.023,8,false),piping));
-  }
-  // Waist seam with a subtle self-fabric band.
-  const waistPts=[];for(let i=0;i<=128;i++){const a=i/128*Math.PI*2;waistPts.push(new THREE.Vector3(Math.cos(a)*.355,.035,Math.sin(a)*.245));}
-  bodiceAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(waistPts),128,.018,6,false),piping));
-
-  // Short, softly puffed sleeves and their gathered cuffs.
-  function puffSleeve(side){
-    const sleeve=new THREE.Mesh(new THREE.SphereGeometry(1,56,40),cloth);
-    sleeve.scale.set(.34,.30,.285);sleeve.position.set(side*.52,.76,0);sleeve.rotation.z=-side*.18;sleevesAssembly.add(sleeve);
-    const cuffPts=[];const cx=side*.73,cy=.58;
-    for(let i=0;i<=96;i++){const a=i/96*Math.PI*2;cuffPts.push(new THREE.Vector3(cx,cy+Math.cos(a)*.135,Math.sin(a)*.205));}
-    sleevesAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cuffPts),96,.021,6,false),piping));
-    // small sleeve-gather rows around the crown
-    for(let k=0;k<3;k++){
-      const ring=new THREE.Mesh(new THREE.TorusGeometry(.24-k*.018,.006,5,64),stitch);
-      ring.position.set(side*.52,.79+k*.055,0);ring.rotation.y=Math.PI/2;ring.rotation.z=-side*.18;sleevesAssembly.add(ring);
-    }
-  }
-  puffSleeve(-1);puffSleeve(1);
-
-  // Wide-leg one-piece option for catalogue Style 6821.
-  for(const side of [-1,1]){
-    const leg=new THREE.Mesh(new THREE.CylinderGeometry(.32,.25,2.34,64,2,true),cloth);
-    leg.position.set(side*.19,-1.20,0);pantsAssembly.add(leg);
-    const inner=new THREE.Mesh(new THREE.CylinderGeometry(.305,.238,2.32,64,2,true),lining);
-    inner.position.copy(leg.position);pantsAssembly.add(inner);
-  }
-  const pantWaist=new THREE.Mesh(new THREE.TorusGeometry(.36,.025,8,96),piping);
-  pantWaist.position.y=-.015;pantsAssembly.add(pantWaist);
-
-  // Delicate hem scallops / stitch edge.
-  const hemPts=[];for(let i=0;i<=192;i++){const a=i/192*Math.PI*2;const r=1.39+.022*Math.sin(a*24);hemPts.push(new THREE.Vector3(Math.cos(a)*r,-2.22,Math.sin(a)*r*.60));}
-  skirtAssembly.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(hemPts),192,.018,6,false),piping));
-  garment.position.y=.15;garment.rotation.y=-.28;
-
-  // Floating atelier turntable and soft contact shadow.
-  const shadow=new THREE.Mesh(new THREE.CircleGeometry(1.9,96),new THREE.MeshBasicMaterial({color:0x786751,transparent:true,opacity:.12}));shadow.rotation.x=-Math.PI/2;shadow.position.set(0,-2.25,0);scene.add(shadow);
-  const orbitMat=new THREE.MeshBasicMaterial({color:0xbba17e,transparent:true,opacity:.42});
-  const orbit=new THREE.Mesh(new THREE.TorusGeometry(1.65,.008,5,128),orbitMat);orbit.rotation.x=Math.PI/2;orbit.position.y=-2.12;orbit.scale.z=.62;scene.add(orbit);
-
-  // Drag to rotate; wheel to zoom; buttons pause and reset.
-  canvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture?.(e.pointerId);});
-  canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;garment.rotation.y+=dx*.009;garment.rotation.x=Math.max(-.16,Math.min(.16,garment.rotation.x+dy*.002));lastX=e.clientX;lastY=e.clientY;});
-  const stopDrag=()=>{drag=false;};canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);canvas.addEventListener('pointerleave',stopDrag);
-  canvas.addEventListener('wheel',e=>{e.preventDefault();camera.position.z=Math.max(6.5,Math.min(11.5,camera.position.z+e.deltaY*.006));},{passive:false});
-  reset?.addEventListener('click',()=>{garment.rotation.set(0,-.28,0);camera.position.set(0,0,initialCameraZ);});
-  // White, ivory and powder-blue fabric previews.
-  document.querySelectorAll('[data-dress-tone]').forEach(btn=>btn.addEventListener('click',()=>{
-    const hex=btn.dataset.dressTone==='blue'?0xc4d3dc:(btn.dataset.dressTone==='sand'?0xe5d2b6:0xffffff);
-    cloth.color.setHex(hex);document.querySelectorAll('[data-dress-tone]').forEach(b=>b.classList.toggle('is-active',b===btn));
-  }));
-
-  const resize=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);};
-  const ro=new ResizeObserver(resize);ro.observe(stage);
-  const inView=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){if(!raf)animate();}else if(raf){cancelAnimationFrame(raf);raf=0;}},{threshold:.02});inView.observe(stage);
-  function animate(){raf=requestAnimationFrame(animate);if(spin&&!drag)garment.rotation.y+=.0031;garment.position.y=.15+Math.sin(performance.now()*.0009)*.018;renderer.render(scene,camera);}
-  stage.classList.add('has-webgl');if(fallback)fallback.setAttribute('aria-hidden','true');
-  syncToggle();animate();
-  window.addEventListener('pagehide',()=>{if(raf)cancelAnimationFrame(raf);ro.disconnect();inView.disconnect();renderer.dispose();maps.map.dispose();maps.alphaMap.dispose();});
-  // Controls exposed to the design workspace. They affect the 3D concept only.
-  let currentFabric='cotton',currentPattern='plain',customTexture=null;
-  const trimMeshes=[];garment.traverse(o=>{if(o.isMesh&&(o.material===piping||o.material===stitch))trimMeshes.push(o);});
-  function makeSurfaceTexture(fabricType,patternType){
-    const size=512,c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');
-    ctx.fillStyle=fabricType==='linen'?'#e8dfd2':fabricType==='drape'?'#eee6d9':'#f3ede2';ctx.fillRect(0,0,size,size);
-    if(fabricType==='linen'||fabricType==='cotton'){for(let i=0;i<size;i+=fabricType==='linen'?5:8){ctx.strokeStyle=fabricType==='linen'?'rgba(133,112,88,.13)':'rgba(154,137,113,.08)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,size);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(size,i);ctx.stroke();}}
-    if(fabricType==='drape'){for(let i=0;i<50;i++){ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(i*13,0);ctx.bezierCurveTo(i*13-35,170,i*13+35,320,i*13,512);ctx.stroke();}}
-    if(patternType==='stripe'){ctx.strokeStyle='rgba(114,96,76,.56)';ctx.lineWidth=5;for(let x=-512;x<size+512;x+=54){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+512,size);ctx.stroke();}}
-    else if(patternType==='floral'){for(let y=24;y<size;y+=90)for(let x=24;x<size;x+=90){ctx.save();ctx.translate(x,y);ctx.strokeStyle='rgba(125,104,82,.68)';ctx.lineWidth=2;for(let k=0;k<6;k++){ctx.rotate(Math.PI/3);ctx.beginPath();ctx.ellipse(0,17,7,16,0,0,Math.PI*2);ctx.stroke();}ctx.beginPath();ctx.arc(0,0,4,0,Math.PI*2);ctx.fillStyle='rgba(150,124,91,.8)';ctx.fill();ctx.restore();}}
-    const texture=new THREE.CanvasTexture(c);texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(fabricType==='drape'?1.15:1.7,2);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=renderer.capabilities.getMaxAnisotropy();return texture;
-  }
-  function applySurface(){if(customTexture){customTexture.dispose();customTexture=null;}if(currentPattern==='eyelet'){cloth.map=maps.map;cloth.alphaMap=maps.alphaMap;cloth.transparent=true;cloth.alphaTest=.16;cloth.roughness=.86;}else{customTexture=makeSurfaceTexture(currentFabric,currentPattern);cloth.map=customTexture;cloth.alphaMap=null;cloth.transparent=false;cloth.alphaTest=0;cloth.roughness=currentFabric==='drape'?.48:(currentFabric==='linen'?.98:.88);}cloth.needsUpdate=true;}
-  const styleProfiles=[
-    {skirt:[1,1,1],bodice:[1,1,1],sleeves:[1,1,1]},
-    {pants:true,skirt:[1,1,1],bodice:[1.06,1,1.04],sleeves:[.88,.92,.9]},
-    {skirt:[.76,1.04,.82],bodice:[.96,1,1],sleeves:[.9,1,.92]},
-    {skirt:[.92,1.08,.94],bodice:[1.04,1.02,1.04],sleeves:[.96,1,1]},
-    {skirt:[1.13,1.08,1.12],bodice:[1,1,1],sleeves:[1.04,1,1.04]},
-    {skirt:[1.27,1.02,1.24],bodice:[1.02,1,1.02],sleeves:[1.1,1.02,1.1]},
-    {skirt:[1.03,1.18,1.02],bodice:[.96,1.06,.96],sleeves:[.92,.96,.92]}
-  ];
-  function applyStyle(index){
-    const p=styleProfiles[Math.max(0,Math.min(styleProfiles.length-1,Number(index)||0))];
-    skirtAssembly.visible=!p.pants;pantsAssembly.visible=!!p.pants;
-    skirtAssembly.scale.set(...p.skirt);bodiceAssembly.scale.set(...p.bodice);sleevesAssembly.scale.set(...p.sleeves);
-  }
-  applyStyle(0);
-  window.ManishaDressStudio={
-    setStyle(index){applyStyle(index);},
-    setTone(hex){cloth.color.set(hex);cloth.needsUpdate=true;},
-    setFabric(name){currentFabric=name;applySurface();},
-    setPattern(name){currentPattern=name;applySurface();},
-    setTrims(show){trimMeshes.forEach(m=>m.visible=!!show);},
-    zoom(delta){camera.position.z=Math.max(6.3,Math.min(12,camera.position.z+delta));},
-    reset(){garment.rotation.set(0,-.28,0);camera.position.set(0,0,initialCameraZ);spin=true;syncToggle();currentFabric='cotton';currentPattern='plain';applySurface();cloth.color.set('#fffdf7');applyStyle(0);this.setTrims(true);},
-    pause(){spin=false;syncToggle();},resume(){spin=true;syncToggle();}
+  function invalidate() { change();wake(); }
+  const api = {
+    setStyle(index) { state.style=clamp(Math.round(Number(index)||0),0,6);change('style');emit();wake(); },
+    setTone(hex) { if(/^#[0-9a-f]{6}$/i.test(hex)) {state.tone=hex;invalidate();emit();} },
+    setFabric(name) { state.fabric=['cotton','linen','drape','eyelet'].includes(name)?name:'cotton';invalidate();emit(); },
+    setPattern(name) { state.pattern=['plain','stripe','floral','eyelet'].includes(name)?name:'plain';invalidate();emit(); },
+    setTrims(value) {state.trims=!!value;invalidate();emit();},
+    zoom(delta) {targetDistance=clamp(targetDistance+Number(delta||0),5.1,11.5);wake();},
+    setView(view) {
+      state.view=['front','back','detail','orbit'].includes(view)?view:'front';
+      targetPitch=state.view==='detail'?.02:.025;
+      if(state.view==='detail'){targetAngle=-.12;targetDistance=5.1;targetFocus=.4;state.spinning=false;}
+      else {targetDistance=9.4;targetFocus=-.62;const turns=Math.round(targetAngle/(Math.PI*2))*Math.PI*2;targetAngle=turns+(state.view==='back'?Math.PI:state.view==='orbit'?-.32:0);state.spinning=state.view==='orbit'&&!reduced.matches;}
+      emit();wake();
+    },
+    setLighting(name) {state.lighting=['daylight','warm','gallery'].includes(name)?name:'daylight';invalidate();emit();},
+    setMotion(name) {state.motion=name==='breeze'?'breeze':'still';invalidate();emit();},
+    pause() {state.spinning=false;emit();wake();},
+    resume() {state.spinning=true;state.view='orbit';emit();wake();},
+    reset() {Object.assign(state,{tone:'#fffdf7',fabric:'cotton',pattern:'plain',trims:true,motion:'still',lighting:'daylight'});change('style');this.setView('orbit');},
+    capture() {try {draw(elapsed,0);return canvas.toDataURL('image/png');}catch {return null;}},
+    getState() {return {...state,angle,distance};}
   };
-
+  window.ManishaDressStudio=api;
+  // The controller owns zoom/reset buttons; this engine owns canvas gestures.
+  function installGestures() {
+    canvas.addEventListener('pointerdown',event=>{
+      pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});interacting=true;lastX=event.clientX;lastY=event.clientY;state.view='manual';state.spinning=false;emit();
+      canvas.setPointerCapture?.(event.pointerId);canvas.style.cursor='grabbing';
+      if(pointers.size===2){const p=[...pointers.values()];pinchDistance=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);}
+      wake();
+    });
+    canvas.addEventListener('pointermove',event=>{
+      if(!pointers.has(event.pointerId))return;
+      pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      if(pointers.size===2){const p=[...pointers.values()],d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);targetDistance=clamp(targetDistance-(d-pinchDistance)*.016,5.1,11.5);pinchDistance=d;}
+      else {targetAngle+=(event.clientX-lastX)*.009;targetPitch=clamp(targetPitch+(event.clientY-lastY)*.0022,-.2,.2);}
+      lastX=event.clientX;lastY=event.clientY;wake();
+    });
+    const release=event=>{pointers.delete(event.pointerId);interacting=pointers.size>0;if(!interacting)canvas.style.cursor='grab';else{const p=[...pointers.values()][0];lastX=p.x;lastY=p.y;}wake();};
+    canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('lostpointercapture',release);
+    canvas.addEventListener('wheel',event=>{if(!event.ctrlKey && matchMedia('(pointer:coarse)').matches)return;event.preventDefault();api.zoom(clamp(event.deltaY,-120,120)*.004);},{passive:false});
+    canvas.tabIndex=0;
+    canvas.setAttribute('aria-label','3D garment concept. Use arrow keys to rotate, plus and minus to zoom.');
+    canvas.addEventListener('keydown',event=>{
+      if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-'].includes(event.key)){event.preventDefault();state.view='manual';state.spinning=false;emit();
+        if(event.key==='ArrowLeft')targetAngle-=.22;if(event.key==='ArrowRight')targetAngle+=.22;
+        if(event.key==='ArrowUp')targetPitch=clamp(targetPitch-.06,-.2,.2);if(event.key==='ArrowDown')targetPitch=clamp(targetPitch+.06,-.2,.2);
+        if(event.key==='+'||event.key==='=')api.zoom(-.4);if(event.key==='-')api.zoom(.4);wake();
+      }
+    });
+  }
+  let resize=()=>{}, cleanup=()=>{};
+  function installFallback() {
+    // A labelled, responsive 2D study still lets buyers explore colour and silhouette.
+    let context;
+    try {context=canvas.getContext('2d');}catch {}
+    if(!context){const replacement=document.createElement('canvas');replacement.id=canvas.id;canvas.replaceWith(replacement);canvas=replacement;context=canvas.getContext('2d');}
+    state.backend='2d';state.ready=!!context;stage.classList.add('has-2d-fallback');stage.classList.remove('has-webgl');
+    const fallback=stage.querySelector('.studio-fallback');if(fallback)fallback.hidden=!!context;
+    if(!context){emit('studio:ready');return;}
+    const c=context;
+    resize=()=>{const d=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(stage.clientWidth*d);canvas.height=Math.round(stage.clientHeight*d);canvas.style.width='100%';canvas.style.height='100%';c.setTransform(d,0,0,d,0,0);wake();};
+    change=()=>{};
+    draw=()=>{
+      const w=stage.clientWidth,h=stage.clientHeight,s=Math.min(w/440,h/540)*(8.6/distance),isPants=state.style===1;
+      c.clearRect(0,0,w,h);c.fillStyle=state.lighting==='warm'?'#eee1ce':'#edeae3';c.fillRect(0,0,w,h);
+      c.save();c.translate(w/2,h*.47+(cameraFocus+.4)*65);c.scale(s,s);
+      c.fillStyle='#71806c22';c.beginPath();c.ellipse(0,220,138,14,0,0,Math.PI*2);c.fill();
+      c.scale(.78+Math.abs(Math.cos(angle))*.22,1);
+      c.beginPath();c.moveTo(-42,-175);c.bezierCurveTo(-17,-128,17,-128,42,-175);c.lineTo(63,-145);c.lineTo(43,-45);
+      if(isPants){c.lineTo(75,204);c.lineTo(9,204);c.lineTo(0,20);c.lineTo(-9,204);c.lineTo(-75,204);}
+      else {const flare=[116,0,98,120,136,149,126][state.style];c.bezierCurveTo(65,40,flare,135,flare,204);c.quadraticCurveTo(0,220,-flare,204);c.bezierCurveTo(-flare,135,-65,40,-43,-45);}
+      c.lineTo(-63,-145);c.closePath();
+      const gradient=c.createLinearGradient(-130,0,130,0);gradient.addColorStop(0,'#6b7668');gradient.addColorStop(.22,state.tone);gradient.addColorStop(.46,'#ffffff');gradient.addColorStop(.68,state.tone);gradient.addColorStop(1,'#7b8174');c.fillStyle=gradient;c.fill();
+      c.save();c.clip();c.lineWidth=state.fabric==='linen'?1:.5;c.strokeStyle='#64715a26';for(let x=-160;x<160;x+=8){c.beginPath();c.moveTo(x,-190);c.bezierCurveTo(x*.58,-40,x*.7,90,x*1.2,230);c.stroke();}
+      if(state.pattern==='stripe'){c.strokeStyle='#55604688';c.lineWidth=3;for(let x=-180;x<180;x+=27){c.beginPath();c.moveTo(x,-210);c.lineTo(x+60,240);c.stroke();}}
+      if(state.pattern==='floral'||state.pattern==='eyelet'){c.strokeStyle='#77856788';for(let y=-150;y<220;y+=36)for(let x=-140;x<140;x+=31){c.beginPath();for(let k=0;k<6;k++){const a=k*Math.PI/3;c.ellipse(x+Math.cos(a)*6,y+Math.sin(a)*6,3,6,a,0,Math.PI*2);}c.stroke();}}
+      c.restore();if(state.trims){c.strokeStyle='#99886d';c.lineWidth=1.2;c.beginPath();c.moveTo(-43,-45);c.lineTo(43,-45);c.stroke();}
+      c.restore();c.fillStyle='#657261';c.font='10px Arial';c.textAlign='center';c.fillText('2D SILHOUETTE PREVIEW',w/2,h-25);
+    };
+    resize();installGestures();emit('studio:ready');wake();
+  }
+  function installWebGL() {
+    const T=window.THREE;
+    if(!T){installFallback();return;}
+    let renderer;
+    try {renderer=new T.WebGLRenderer({canvas,alpha:false,antialias:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});}catch {installFallback();return;}
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1,innerWidth<720?1.35:1.75));
+    renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.14;
+    renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+    const scene=new T.Scene();scene.background=new T.Color('#eee9df');scene.fog=new T.Fog('#eee9df',14,28);
+    const camera=new T.PerspectiveCamera(32,1,.1,50);
+    const hemi=new T.HemisphereLight('#fffaf0','#c5c6b7',.9);scene.add(hemi);
+    const key=new T.DirectionalLight('#fff4dc',1.8);key.position.set(-3.5,5,5.5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-4;key.shadow.camera.right=4;key.shadow.camera.top=4;key.shadow.camera.bottom=-4;key.shadow.normalBias=.035;key.shadow.bias=-.00025;key.shadow.radius=5;scene.add(key);
+    const fill=new T.DirectionalLight('#d8e8ed',.6);fill.position.set(4,2,3);scene.add(fill);
+    const rim=new T.DirectionalLight('#fff8e8',1.05);rim.position.set(1,3,-4);scene.add(rim);
+    const targetTone=new T.Color(state.tone);
+    const cloth=new T.MeshPhysicalMaterial({color:state.tone,roughness:.77,metalness:0,side:T.DoubleSide,sheen:.8,sheenColor:new T.Color('#e9e4d7'),sheenRoughness:.7,bumpScale:.016});
+    const lining=new T.MeshStandardMaterial({color:state.tone,roughness:.9,side:T.DoubleSide});
+    const seam=new T.MeshStandardMaterial({color:'#c5bda9',roughness:.87});
+    const root=new T.Group();scene.add(root);
+    const garment=new T.Group();root.add(garment);
+    const trimGroup=new T.Group();garment.add(trimGroup);
+    let clothParts=[],textures=[],transition=1,currentSurface='';
+    const profiles=[
+      {flare:1.02,length:2.55,neck:.26,sleeve:0,tiers:0,back:.96},
+      {pants:true,flare:.95,length:2.48,neck:.36,sleeve:.42,tiers:0,back:.96},
+      {flare:.90,length:2.54,neck:.40,sleeve:.60,tiers:0,back:1.01},
+      {flare:1.05,length:2.59,neck:.30,sleeve:0,tiers:0,back:.64},
+      {flare:1.14,length:2.51,neck:.36,sleeve:.28,tiers:3,back:1.01},
+      {flare:1.25,length:2.54,neck:.30,sleeve:.22,tiers:3,back:1.01},
+      {flare:1.04,length:2.66,neck:.24,sleeve:0,tiers:2,back:.98}
+    ];
+    function grid(rows,cols,fn,material=cloth,include=()=>true){
+      const pos=[],uv=[],indices=[];
+      for(let row=0;row<=rows;row++)for(let col=0;col<=cols;col++){const p=fn(col/cols,row/rows);pos.push(...p);uv.push(col/cols,row/rows);}
+      for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){if(!include((col+.5)/cols,(row+.5)/rows))continue;const a=row*(cols+1)+col,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);}
+      const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(indices);geo.computeVertexNormals();
+      const mesh=new T.Mesh(geo,material);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;
+    }
+    function thread(points,width=.006){const m=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points),Math.max(24,points.length*2),width,4,false),seam);trimGroup.add(m);return m;}
+    function skirtPoint(u,v,p){
+      const a=u*Math.PI*2,base=.37+p.flare*Math.pow(v,1.22),fold=(Math.sin(a*12+v*.7)*.065+Math.sin(a*23-v*1.3)*.014)*(.22+v*.78);
+      const r=base+fold;return [Math.cos(a)*r,.01-p.length*v+.008*Math.sin(a*12)*v,Math.sin(a)*r*.57];
+    }
+    function rebuild(){
+      [...garment.children].forEach(child=>{if(child===trimGroup)return;garment.remove(child);child.traverse(o=>o.geometry?.dispose());});
+      [...trimGroup.children].forEach(child=>{trimGroup.remove(child);child.geometry?.dispose();});clothParts=[];
+      const p=profiles[state.style];
+      const torsoPoint=(u,v)=>{
+        const a=u*Math.PI*2,front=Math.max(0,Math.sin(a)),back=Math.max(0,-Math.sin(a));
+        const top=1.18-p.neck*Math.pow(front,5)-(1.18-p.back)*Math.pow(back,6);
+        const width=.37+.14*Math.sin(v*Math.PI*.78),depth=.235+.042*Math.sin(v*Math.PI*.8);
+        const shoulder=1-.08*Math.pow(v,5)*Math.sin(a)**2;
+        const pleat=.007*Math.sin(a*14)*Math.sin(v*Math.PI);
+        return [Math.cos(a)*(width+pleat)*shoulder,top*v,Math.sin(a)*(depth+pleat)*shoulder];
+      };
+      const torso=grid(40,96,torsoPoint,cloth,(u,v)=>{const a=u*Math.PI*2,d=Math.min(a,Math.abs(a-Math.PI),Math.PI*2-a);return (d/.34)**2+((v-.755)/.225)**2>=1;});garment.add(torso);
+      for(const side of[0,Math.PI]){const armhole=[];for(let i=0;i<=72;i++){const t=i/72*Math.PI*2;const a=side+Math.cos(t)*.34,v=.755+Math.sin(t)*.225;armhole.push(new T.Vector3(...torsoPoint(a/(Math.PI*2),v)));}thread(armhole,.008);}
+      // A fine rolled neckline follows the actual upper edge of the garment mesh.
+      const neckline=[];for(let i=0;i<=96;i++){const a=i/96*Math.PI*2,front=Math.max(0,Math.sin(a)),back=Math.max(0,-Math.sin(a));const y=1.18-p.neck*front**5-(1.18-p.back)*back**6,r=.37+.14*Math.sin(Math.PI*.78);neckline.push(new T.Vector3(Math.cos(a)*r*(1-.08*Math.sin(a)**2),y,Math.sin(a)*(.235+.042*Math.sin(Math.PI*.8))*(1-.08*Math.sin(a)**2)));}thread(neckline,.009);
+      const waist=[];for(let i=0;i<=96;i++){const a=i/96*Math.PI*2;waist.push(new T.Vector3(Math.cos(a)*.377,.012,Math.sin(a)*.244));}thread(waist,.011);
+      if(p.pants){
+        for(const side of[-1,1]){
+          const leg=grid(48,64,(u,v)=>{const a=u*Math.PI*2,r=.22+.15*Math.pow(v,.85),flute=.018*Math.sin(a*8+v)*v;return [side*(.205+.15*v)+Math.cos(a)*(r+flute),-.02-p.length*v,Math.sin(a)*(r+flute)*.76];});garment.add(leg);clothParts.push({mesh:leg,original:leg.geometry.attributes.position.array.slice()});
+          const line=[];for(let j=0;j<=38;j++){const v=j/38;line.push(new T.Vector3(side*(.205+.15*v),-.02-p.length*v,(.22+.15*v)*.76+.005));}thread(line,.004);
+        }
+      }else{
+        const skirt=grid(54,96,(u,v)=>skirtPoint(u,v,p));garment.add(skirt);clothParts.push({mesh:skirt,original:skirt.geometry.attributes.position.array.slice()});
+        for(let tier=1;tier<=p.tiers;tier++){const v=tier/(p.tiers+1),line=[];for(let i=0;i<=96;i++)line.push(new T.Vector3(...skirtPoint(i/96,v,p)));thread(line,.005);}
+        const hem=[];for(let i=0;i<=128;i++)hem.push(new T.Vector3(...skirtPoint(i/128,1,p)));thread(hem,.009);
+        // A discreet inner lining keeps eyelet openings from exposing the whole form.
+        const inner=grid(28,64,(u,v)=>{const pt=skirtPoint(u,v*.91,p);pt[0]*=.982;pt[2]*=.98;return pt;},lining);garment.add(inner);
+      }
+      if(p.sleeve){
+        for(const side of[-1,1]){
+          const sleeve=grid(22,48,(u,v)=>{const a=u*Math.PI*2,r=.255-.045*v+.025*Math.sin(v*Math.PI),length=p.sleeve;return [side*(.43+length*v),.94-.30*v+Math.cos(a)*r*.56,Math.sin(a)*r];});garment.add(sleeve);
+          const cuff=[];for(let j=0;j<=64;j++){const a=j/64*Math.PI*2; cuff.push(new T.Vector3(side*(.43+p.sleeve),.64+Math.cos(a)*.21*.56,Math.sin(a)*.21));}thread(cuff,.008);
+        }
+      }
+      // Long, delicate side seams read as tailoring rather than a wire overlay.
+      for(const side of[-1,1]){const line=[];for(let i=0;i<=25;i++){const v=i/25;line.push(new T.Vector3(side*(.37+.14*Math.sin(v*Math.PI*.78)),v*1.18,0));}thread(line,.004);}
+      transition=reduced.matches?1:.935;
+    }
+    function surface(){
+      const keyName=state.fabric+'-'+state.pattern;if(keyName===currentSurface)return;currentSurface=keyName;
+      textures.forEach(t=>t.dispose());textures=[];
+      const size=512,c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');
+      ctx.fillStyle='#f1efe9';ctx.fillRect(0,0,size,size);
+      const weave=state.fabric==='linen'?4:state.fabric==='drape'?9:6;
+      for(let i=0;i<size;i+=weave){ctx.strokeStyle=i%(weave*2)?'#cecfc230':'#ffffff70';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,size);ctx.moveTo(0,i);ctx.lineTo(size,i);ctx.stroke();}
+      if(state.pattern==='stripe'){ctx.strokeStyle='#6b7864';ctx.lineWidth=5;for(let x=0;x<size;x+=44){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,size);ctx.stroke();}}
+      if(state.pattern==='floral'||state.pattern==='eyelet'||state.fabric==='eyelet'){
+        for(let y=34;y<size;y+=85)for(let x=34;x<size;x+=85){ctx.save();ctx.translate(x+(y%2)*15,y);ctx.strokeStyle=state.pattern==='floral'?'#667761':'#b6b8a5';ctx.lineWidth=state.pattern==='floral'?2.7:1.7;for(let k=0;k<6;k++){const a=k*Math.PI/3;ctx.beginPath();ctx.ellipse(Math.cos(a)*12,Math.sin(a)*12,6,11,a,0,Math.PI*2);ctx.stroke();}ctx.fillStyle='#9b9e87';ctx.beginPath();ctx.arc(0,0,3,0,Math.PI*2);ctx.fill();ctx.restore();}
+      }
+      const map=new T.CanvasTexture(c);map.wrapS=map.wrapT=T.RepeatWrapping;map.repeat.set(2.8,3.2);map.colorSpace=T.SRGBColorSpace;map.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);textures.push(map);cloth.map=map;
+      const bumpCanvas=document.createElement('canvas');bumpCanvas.width=bumpCanvas.height=128;const b=bumpCanvas.getContext('2d');b.fillStyle='#888';b.fillRect(0,0,128,128);for(let i=0;i<128;i+=4){b.fillStyle='#999';b.fillRect(i,0,1,128);b.fillStyle='#777';b.fillRect(0,i,128,1);}const bump=new T.CanvasTexture(bumpCanvas);bump.wrapS=bump.wrapT=T.RepeatWrapping;bump.repeat.set(8,8);textures.push(bump);cloth.bumpMap=bump;cloth.bumpScale=state.fabric==='linen'?.032:state.fabric==='drape'?.007:.016;cloth.roughness=state.fabric==='drape'?.48:state.fabric==='linen'?.95:.77;
+      cloth.needsUpdate=true;
+    }
+    // Real soft shadow on an ivory floor plus a low studio plinth.
+    const floor=new T.Mesh(new T.PlaneGeometry(200,200),new T.MeshStandardMaterial({color:'#e4dfd5',roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-2.82;floor.receiveShadow=true;scene.add(floor);
+    const plinth=new T.Mesh(new T.CylinderGeometry(1.72,1.76,.07,96),new T.MeshStandardMaterial({color:'#e8e3d8',roughness:.9}));plinth.position.y=-2.78;plinth.receiveShadow=true;scene.add(plinth);
+    const ring=new T.Mesh(new T.TorusGeometry(1.70,.006,4,128),new T.MeshBasicMaterial({color:'#b7b09c'}));ring.rotation.x=Math.PI/2;ring.position.y=-2.737;scene.add(ring);
+    const shadowCanvas=document.createElement('canvas');shadowCanvas.width=shadowCanvas.height=128;const sc=shadowCanvas.getContext('2d'),grad=sc.createRadialGradient(64,64,4,64,64,63);grad.addColorStop(0,'rgba(45,55,40,.22)');grad.addColorStop(.5,'rgba(45,55,40,.09)');grad.addColorStop(1,'rgba(45,55,40,0)');sc.fillStyle=grad;sc.fillRect(0,0,128,128);const shadowTexture=new T.CanvasTexture(shadowCanvas);const shadow=new T.Mesh(new T.PlaneGeometry(3.5,2.4),new T.MeshBasicMaterial({map:shadowTexture,transparent:true,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.position.set(0,-2.731,0);scene.add(shadow);
+    const moods={daylight:{background:'#eee9df',key:'#fff4dc',fill:'#d8e8ed',intensity:1.8,exposure:.96},warm:{background:'#eddfca',key:'#ffd9a0',fill:'#efdfcc',intensity:1.9,exposure:.94},gallery:{background:'#dfe5df',key:'#f2f7ff',fill:'#a4c2c5',intensity:2.1,exposure:.94}};
+    let lightMood='';
+    change=reason=>{
+      if(reason==='style')rebuild();targetTone.set(state.tone);surface();trimGroup.visible=state.trims;
+      if(lightMood!==state.lighting){lightMood=state.lighting;const m=moods[lightMood];scene.background.set(m.background);scene.fog.color.set(m.background);floor.material.color.set(m.background);key.color.set(m.key);fill.color.set(m.fill);key.intensity=m.intensity;renderer.toneMappingExposure=m.exposure;}
+      change.pending=true;
+    };
+    let normalFrame=0;
+    draw=(time,dt)=>{
+      const smooth=dt?1-Math.exp(-dt*8):1;
+      cloth.color.lerp(targetTone,smooth);lining.color.lerp(targetTone,smooth);
+      const colourDistance=Math.abs(cloth.color.r-targetTone.r)+Math.abs(cloth.color.g-targetTone.g)+Math.abs(cloth.color.b-targetTone.b);
+      transition+=(1-transition)*smooth;root.scale.setScalar(transition);root.position.y=(1-transition)*.7;
+      root.rotation.set(pitch,angle,0);
+      const breeze=state.motion==='breeze'&&!reduced.matches;
+      for(const part of clothParts){const positions=part.mesh.geometry.attributes.position,original=part.original;for(let i=0;i<positions.count;i++){const j=i*3,weight=clamp(-original[j+1]/2.7,0,1);positions.array[j]=original[j]+(breeze?Math.sin(time*1.3+original[j]*2+original[j+1]*1.5)*.025*weight*weight:0);positions.array[j+2]=original[j+2]+(breeze?Math.cos(time*1.1+original[j+1]*2+original[j]*2)*.016*weight:0);}positions.needsUpdate=true;if(normalFrame%8===0)part.mesh.geometry.computeVertexNormals();}normalFrame++;
+      camera.position.set(0,cameraFocus+.45,distance);camera.lookAt(0,cameraFocus,0);renderer.render(scene,camera);
+      change.pending=colourDistance>.001||transition<.9995;
+    };
+    resize=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);wake();};
+    cleanup=()=>{garment.traverse(o=>o.geometry?.dispose());textures.forEach(t=>t.dispose());[cloth,lining,seam].forEach(m=>m.dispose());shadowTexture.dispose();renderer.dispose();};
+    canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();state.ready=false;state.backend='unavailable';emit();if(frame)cancelAnimationFrame(frame);frame=0;});
+    canvas.addEventListener('webglcontextrestored',()=>{state.ready=true;state.backend='webgl';emit('studio:ready');wake();});
+    rebuild();change();resize();installGestures();state.backend='webgl';state.ready=true;stage.classList.add('has-webgl');stage.classList.remove('has-2d-fallback');const fallback=stage.querySelector('.studio-fallback');if(fallback)fallback.hidden=true;emit('studio:ready');wake();
+  }
+  installWebGL();
+  const observer=new ResizeObserver(()=>resize());observer.observe(stage);
+  const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible){lastTime=0;wake();}else if(frame){cancelAnimationFrame(frame);frame=0;}},{threshold:.01});intersection.observe(stage);
+  document.addEventListener('visibilitychange',()=>{lastTime=0;if(document.hidden&&frame){cancelAnimationFrame(frame);frame=0;}else wake();});
+  reduced.addEventListener('change',()=>{if(reduced.matches){state.spinning=false;state.motion='still';}emit();wake();});
+  window.addEventListener('pagehide',event=>{if(frame)cancelAnimationFrame(frame);frame=0;if(event.persisted)return;alive=false;observer.disconnect();intersection.disconnect();cleanup();});
+  window.addEventListener('pageshow',event=>{if(event.persisted){lastTime=0;wake();}});
 })();

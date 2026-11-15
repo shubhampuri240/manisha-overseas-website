@@ -24,5 +24,12 @@ GitHub Pages publishes the `staging` branch. Keep existing studio and company fe
 
 On GitHub Pages, the enquiry form opens the buyer's email app with the selected photo/style reference and enquiry details. No enquiry is sent until the buyer sends it in their email app. On PHP hosting, the existing enquiry handler still requires configuration and testing.
 
-## 3D Dress Studio reference update
-The 3D Dress Studio now features a white square-neck eyelet midi dress inspired by the reference image supplied by the user. It includes a front product reference image, a new high-resolution generated product-style visual, a procedural rotating Three.js model, pause/reset, drag-to-rotate, scroll-to-zoom and fabric tone previews. See `DRESS-STUDIO-REFERENCE-NOTES.md` for source and usage notes.
+## The 3D Atelier
+
+The existing `dress-studio.html` page now contains the responsive 3D Atelier: seven catalogue references, sculpted procedural garment studies, damped drag/pinch/keyboard rotation, camera presets, fabric/colour/pattern/trim controls, lighting moods and optional cloth breeze. The rendering runtime is vendored at `assets/vendor/three-0.152.2.min.js` with its MIT licence.
+
+The studio saves and restores complete looks in local browser storage, exports PNG previews, copies or downloads a text brief, and passes the selected reference and concept options into the enquiry page. Catalogue mode shows the original front/back/detail photographs. The procedural 3D form remains a design study rather than a measured replica or fit model.
+
+Reduced-motion settings disable automatic motion by default. Rendering pauses offscreen, in hidden tabs and while viewing photographs. Devices without WebGL receive a clearly labelled illustrated concept preview and keep access to the catalogue photographs.
+
+The active page uses `studio-loader.js`, `dress-model.js`, `studio-configurator.js` and `studio-configurator.css`. The older `studio-enhancements.js` and try-on assets remain in the repository but are not loaded by the static GitHub Pages studio.

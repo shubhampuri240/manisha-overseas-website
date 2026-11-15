@@ -1,22 +1,21 @@
-(()=>{"use strict";
-const load=src=>new Promise((resolve,reject)=>{
- const script=document.createElement("script");
- script.src=src;script.async=false;
- script.onload=()=>resolve(true);
- script.onerror=()=>reject(new Error("Could not load "+src));
- document.body.appendChild(script);
-});
-(async()=>{
- let threeReady=false;
- for(const src of [
-  "https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js",
-  "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"
- ]){
-  try{await load(src);if(window.THREE){threeReady=true;break;}}catch(e){}
- }
- if(!threeReady)document.documentElement.classList.add("studio-three-unavailable");
- for(const src of ["assets/dress-model.js","assets/studio-configurator.js","assets/studio-enhancements.js","assets/edition.js"]){
-  try{await load(src);}catch(e){console.error("Manisha Studio script failed:",src,e);}
- }
-})();
+/* Keep the studio self-contained: no external rendering runtime is required. */
+(() => {
+  'use strict';
+  function load(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src; script.async = false;
+      script.onload = resolve; script.onerror = () => reject(new Error(`Unable to load ${src}`));
+      document.body.append(script);
+    });
+  }
+  (async () => {
+    try { await load('assets/vendor/three-0.152.2.min.js'); } catch { document.documentElement.classList.add('studio-three-unavailable'); }
+    try { await load('assets/dress-model.js?v=atelier-2'); } catch { document.documentElement.classList.add('studio-renderer-unavailable'); }
+    try { await load('assets/studio-configurator.js?v=atelier-2'); }
+    catch {
+      document.getElementById('studio-loading').hidden = true;
+      document.getElementById('stage-status').textContent = 'The interactive studio could not start. You can still browse all catalogue photographs in Collections.';
+    }
+  })();
 })();
