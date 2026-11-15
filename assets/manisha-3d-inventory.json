@@ -1,0 +1,106 @@
+{
+  "schema": "manisha-overseas-garment-3d-inventory-v1",
+  "auditedOn": "2026-11-15",
+  "repository": "shubhampuri240/manisha-overseas-website",
+  "branch": "staging",
+  "genuineGarmentMeshes": [],
+  "native3DModelFiles": [],
+  "note": "No GLB/GLTF/OBJ/FBX/BLEND/USDZ files found in the repository trees or file-name-matched Google Drive searches. The working WebGL design study generates THREE.BufferGeometry meshes at runtime; it is true interactive 3D geometry but not a scanned or CAD-authored replica of the actual photographed garments. A 2D fallback is available when WebGL is not supported.",
+  "inputAssets": {
+    "photographedReferenceType": "Original style-specific catalogue photographs (2D)",
+    "sourceDirectory": "assets/visuals/",
+    "renderer": "assets/dress-model.js",
+    "configurator": "assets/studio-configurator.js",
+    "overlay": "assets/stage3-controls.js"
+  },
+  "supportedStyles": [
+    {
+      "style": "4638",
+      "description": "Floral printed long dress",
+      "geometry": "procedural mesh / concept",
+      "photos": [
+        "assets/visuals/style-4638-front.webp",
+        "assets/visuals/style-4638-back.webp"
+      ],
+      "exact3DModel": null
+    },
+    {
+      "style": "6821",
+      "description": "Printed wide-leg one-piece",
+      "geometry": "procedural mesh / concept",
+      "photos": [
+        "assets/visuals/style-6821-front.webp",
+        "assets/visuals/style-6821-back.webp"
+      ],
+      "exact3DModel": null
+    },
+    {
+      "style": "3476",
+      "description": "Printed long dress",
+      "geometry": "procedural mesh / concept",
+      "photos": [
+        "assets/visuals/style-3476-front.webp",
+        "assets/visuals/style-3476-back.webp"
+      ],
+      "exact3DModel": null
+    },
+    {
+      "style": "7284",
+      "description": "Open-back printed long dress",
+      "geometry": "procedural mesh / concept",
+      "photos": [
+        "assets/visuals/style-7284-front.webp",
+        "assets/visuals/style-7284-back.webp"
+      ],
+      "exact3DModel": null
+    },
+    {
+      "style": "1509",
+      "description": "Printed tiered long dress",
+      "geometry": "procedural mesh / concept",
+      "photos": [
+        "assets/visuals/style-1509-front.webp",
+        "assets/visuals/style-1509-back.webp"
+      ],
+      "exact3DModel": null
+    },
+    {
+      "style": "2941",
+      "description": "Printed tiered long dress",
+      "geometry": "procedural mesh / concept",
+      "photos": [
+        "assets/visuals/style-2941-front.webp",
+        "assets/visuals/style-2941-back.webp"
+      ],
+      "exact3DModel": null
+    },
+    {
+      "style": "9152",
+      "description": "Green printed long dress",
+      "geometry": "procedural mesh / concept",
+      "photos": [
+        "assets/visuals/style-9152-full.webp",
+        "assets/visuals/style-9152-detail.webp"
+      ],
+      "exact3DModel": null
+    }
+  ],
+  "visualControls": {
+    "rotatableGeometry": true,
+    "orbit": true,
+    "turnByDegrees": true,
+    "conceptColourSwatches": true,
+    "photoChangeColour": false,
+    "colourAccuracy": "Illustrative; not proof of production colourway",
+    "realisticClothSimulation": false,
+    "accurateSizing": false
+  },
+  "real3DIntakeChecklist": [
+    "Confirm the garment style code and ownership/permission for model usage",
+    "Provide .glb/.gltf from CLO3D/Marvelous Designer/Blender or approved modeling vendor, ideally plus sample and tech pack",
+    "Verify front, side, back, print placement, trims, silhouettes and production colourways against physical sample",
+    "Compress geometry and textures for fast mobile web loading",
+    "Display model with GLTFLoader or model-viewer and label verified 3D model",
+    "Keep unverified generic/third-party models labelled as illustrative, not actual Manisha products"
+  ]
+}
