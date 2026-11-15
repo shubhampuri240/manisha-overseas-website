@@ -24,12 +24,12 @@ GitHub Pages publishes the `staging` branch. Keep existing studio and company fe
 
 On GitHub Pages, the enquiry form opens the buyer's email app with the selected photo/style reference and enquiry details. No enquiry is sent until the buyer sends it in their email app. On PHP hosting, the existing enquiry handler still requires configuration and testing.
 
-## The 3D Atelier
+## The Dress Photo Studio
 
-The existing `dress-studio.html` page now contains the responsive 3D Atelier: seven catalogue references, sculpted procedural garment studies, damped drag/pinch/keyboard rotation, camera presets, fabric/colour/pattern/trim controls, lighting moods and optional cloth breeze. The rendering runtime is vendored at `assets/vendor/three-0.152.2.min.js` with its MIT licence.
+`dress-studio.html` opens directly with the supplied model photographs. The main stage preserves the actual garment print, cut and drape. It offers full-length front/back/detail photographs, crossfade transitions, zoom, pan, swipe navigation, an optional photo-view slideshow, saved references, original-image exports and photo-specific enquiries.
 
-The studio saves and restores complete looks in local browser storage, exports PNG previews, copies or downloads a text brief, and passes the selected reference and concept options into the enquiry page. Catalogue mode shows the original front/back/detail photographs. The procedural 3D form remains a design study rather than a measured replica or fit model.
+Two photographs are not presented as a continuous 360-degree model. Close-up enlarges the selected image. Colour, material, lighting and simulated cloth controls are hidden in photo mode, and concept settings are omitted from photo enquiries.
 
-Reduced-motion settings disable automatic motion by default. Rendering pauses offscreen, in hidden tabs and while viewing photographs. Devices without WebGL receive a clearly labelled illustrated concept preview and keep access to the catalogue photographs.
+The existing procedural 3D design study remains an explicit secondary option. Its local rendering runtime loads only if the visitor selects that mode. The form is a visual concept, not a measured digital twin of the photographed garment. Original photographs load without requiring WebGL.
 
-The active page uses `studio-loader.js`, `dress-model.js`, `studio-configurator.js` and `studio-configurator.css`. The older `studio-enhancements.js` and try-on assets remain in the repository but are not loaded by the static GitHub Pages studio.
+The primary page uses `studio-loader.js`, `studio-configurator.js`, `studio-configurator.css` and `studio-photo.css`; the optional design study adds `assets/vendor/three-0.152.2.min.js` and `dress-model.js`. The older virtual try-on assets remain inactive on GitHub Pages.

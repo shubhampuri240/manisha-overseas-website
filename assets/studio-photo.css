@@ -1,0 +1,167 @@
+/* Manisha Overseas · original garment photography takes the stage. */
+.photo-led-studio:not(.is-concept-mode) [data-concept-only]{display:none!important}
+.photo-led-studio.is-concept-mode [data-photo-only]{display:none!important}
+.photo-led-studio .studio-intro{padding:30px 0 24px;gap:20px 45px}
+.photo-led-studio .studio-intro h1{font-size:clamp(36px,3.7vw,54px);line-height:1.06;margin-top:10px}
+.photo-led-studio .studio-intro>div:first-child>p{margin-top:14px;font-size:12px;max-width:560px}
+.photo-led-studio .studio-intro-meta{padding-bottom:3px}
+.photo-led-studio .studio-app-topbar{min-height:62px;margin-bottom:12px;padding-block:10px}
+.photo-led-studio .studio-workspace{grid-template-columns:220px minmax(0,1fr) 270px;gap:18px}
+.photo-led-studio .studio-stage.is-photo-mode{height:760px;min-height:500px;background:#e9e3d7}
+.photo-led-studio .studio-stage.is-photo-mode::before{inset:18px;border-color:#5c65531c;z-index:1}
+.photo-led-studio .studio-stage.is-photo-mode::after{inset:0;left:0;right:0;bottom:0;height:100%;border-radius:0;background:radial-gradient(ellipse at 50% 30%,#f5f0e5 0%,#ece5d8 65%,#ded6c8 100%);z-index:0}
+.photo-led-studio .studio-stage.is-photo-mode .studio-stage-mark{top:22px;left:25px;right:25px;font-size:8px;letter-spacing:.13em;color:#6d7461}
+.photo-led-studio .studio-stage.is-photo-mode .studio-photo-view{display:flex;padding:54px 50px 83px;background:transparent;overflow:hidden;touch-action:pan-y}
+.photo-led-studio .photo-reference-frame{position:relative;display:block;isolation:isolate;width:100%;height:100%;max-width:none;margin:0;transform:translate(var(--photo-x,0px),var(--photo-y,0px)) scale(var(--photo-scale,1));transform-origin:50% 50%;transition:transform .38s cubic-bezier(.2,.7,.2,1);will-change:transform;cursor:zoom-in}
+.photo-led-studio .photo-reference-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;filter:drop-shadow(0 15px 21px #293e2b18);user-select:none;-webkit-user-drag:none;pointer-events:none;transition:none;border:0;background:transparent}
+.photo-led-studio #photo-reference-image{z-index:1;opacity:1}
+.photo-led-studio #photo-outgoing-image{z-index:2;opacity:0}
+.photo-led-studio .photo-reference-frame.is-photo-transition #photo-reference-image{animation:photo-shot-in .65s cubic-bezier(.2,.65,.2,1) both}
+.photo-led-studio .photo-reference-frame.is-photo-transition #photo-outgoing-image{animation:photo-shot-out .65s cubic-bezier(.2,.65,.2,1) both}
+.photo-led-studio .studio-stage.is-switching .photo-reference-frame img{animation:none}
+.photo-led-studio .studio-stage.is-playing #photo-reference-image{animation:photo-editorial-drift 7.5s ease-in-out infinite alternate}
+.photo-led-studio .studio-stage.is-playing .photo-reference-frame.is-photo-transition #photo-reference-image{animation:photo-shot-in .65s cubic-bezier(.2,.65,.2,1) both}
+.photo-led-studio .studio-stage.is-photo-zoomed .photo-reference-frame,.photo-led-studio .photo-reference-frame.is-zoomed{cursor:grab}
+.photo-led-studio .studio-stage.is-photo-panning .photo-reference-frame,.photo-led-studio .photo-reference-frame.is-panning{cursor:grabbing;transition:none}
+.photo-led-studio .studio-stage.is-photo-zoomed .studio-photo-view{touch-action:none}
+.photo-led-studio .photo-view-caption{bottom:21px;left:25px;right:25px;font-size:8px;letter-spacing:.1em;pointer-events:none;z-index:3;color:#68715d}
+.photo-led-studio .photo-view-caption b{font-weight:400;font-size:8px;letter-spacing:.08em}
+.photo-stage-controls{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:7;display:flex;align-items:center;gap:3px;padding:4px;border:1px solid #5d6b4d35;background:#f7f3e9ed;box-shadow:0 6px 22px #253b2910;backdrop-filter:blur(12px)}
+.photo-stage-controls button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:62px;min-height:40px;padding:9px 13px;border:0;background:transparent;color:#596b4e;font:11px var(--sans);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.photo-stage-controls button:hover{background:#e5e9d9}
+.photo-stage-controls button.is-active,.photo-stage-controls button[aria-pressed="true"]{color:#f5f1e6;background:#263d30}
+.photo-stage-controls button:disabled{opacity:.42;cursor:default}
+.photo-led-studio .studio-stage-footer{min-height:65px;gap:12px;padding:13px 18px;background:#eee9df}
+.photo-playback{display:flex;align-items:center;gap:11px;flex-wrap:wrap;justify-content:flex-end}
+#photo-play-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:9px 13px;border:1px solid #4b634c42;background:#e0e6d4;color:#304a35;font:11px var(--sans);white-space:nowrap;cursor:pointer;transition:background .2s}
+#photo-play-toggle:hover{background:#d2dec2}
+#photo-play-toggle[aria-pressed="true"]{color:#f6f2e9;background:#304a35;border-color:#304a35}
+#photo-motion-label{font-size:9px;color:#76806b;line-height:1.5;letter-spacing:.03em}
+.photo-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:17px 0 12px}
+.photo-strip button{display:flex;flex-direction:column;align-items:stretch;gap:9px;min-width:0;padding:6px;border:1px solid #aebf9140;background:#ffffff03;color:#c4d0b7;text-align:left;cursor:pointer;transition:border-color .2s,background .2s}
+.photo-strip button img{display:block;width:100%;height:135px;object-fit:contain;background:#e8e0d4;pointer-events:none}
+.photo-strip button>span,.photo-strip button>small{font-size:10px;line-height:1.5;padding:0 4px 4px}
+.photo-strip button.is-active,.photo-strip button[aria-pressed="true"]{background:#d4df9510;border-color:#d4df95;color:#f0f2de}
+.photo-strip button:hover{border-color:#d4df9590;background:#ffffff08}
+.photo-reference-notes{font-size:11px;line-height:1.75;color:#b3c0a7;margin:12px 0 0}
+.photo-reference-notes strong,.photo-reference-notes b{font-weight:500;color:#e7edda}
+.photo-help{display:flex;align-items:center;gap:9px;font-size:10px;line-height:1.65;color:#a9b89c;padding:12px 2px 0;margin:0}
+.photo-source-caption{font-size:9px;line-height:1.7;color:#a4b295;letter-spacing:.03em;margin:11px 0 0}
+.photo-led-studio .stage-mode-switch{max-width:100%}
+.photo-led-studio .stage-mode-switch button{font-size:10px;padding:8px 12px;min-height:39px}
+.photo-led-studio .stage-mode-switch button[data-stage-mode="3d"]{font-size:9px;color:#728066}
+.photo-led-studio .stage-mode-switch button[data-stage-mode="3d"][aria-pressed="true"]{color:#f4f0e8}
+.photo-led-studio .studio-stage.is-photo-mode .stage-zoom-tools button:disabled{opacity:.35}
+.photo-led-studio .studio-stage.is-photo-mode .studio-expand{top:50px}
+.photo-led-studio .studio-stage.is-photo-mode .stage-corner-note{display:none}
+.photo-led-studio .studio-right-rail{gap:16px}
+.photo-led-studio .style-picker{max-height:690px}
+.photo-led-studio .studio-disclaimer-inline{padding-top:12px}
+.photo-led-studio .studio-stage.is-expanded.is-photo-mode{height:calc(100svh - 32px)!important}
+.photo-led-studio .studio-stage.is-expanded .studio-photo-view{padding:50px 70px 85px}
+@keyframes photo-shot-in{from{opacity:.18;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes photo-shot-out{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-12px)}}
+@keyframes photo-editorial-drift{from{transform:scale(1)}to{transform:scale(1.035) translateY(-3px)}}
+@media(min-width:1600px){.photo-led-studio .studio-workspace{grid-template-columns:240px minmax(0,1fr) 290px}.photo-led-studio .studio-stage.is-photo-mode{height:800px}}
+@media(max-width:1250px){
+ .photo-led-studio .studio-workspace{grid-template-columns:200px minmax(0,1fr) 245px;gap:12px}
+ .photo-led-studio .studio-stage.is-photo-mode{height:720px}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-photo-view{padding:52px 35px 80px}
+ .photo-led-studio .studio-stage-toolbar{flex-wrap:wrap}
+ .photo-led-studio .photo-view-caption b{display:none}
+ .photo-strip button img{height:120px}
+ .photo-led-studio .stage-mode-switch button{padding:8px 10px;font-size:10px}
+ .photo-led-studio .stage-mode-switch button[data-stage-mode="3d"]{font-size:9px}
+}
+@media(max-width:1100px){
+ .photo-led-studio .studio-workspace{grid-template-columns:200px minmax(0,1fr);gap:16px}
+ .photo-led-studio .studio-right-rail{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;align-items:start}
+ .photo-led-studio .studio-stage-toolbar{flex-wrap:nowrap}
+ .photo-led-studio .studio-stage.is-photo-mode{height:740px}
+ .photo-strip{grid-template-columns:repeat(2,minmax(0,1fr));max-width:340px}
+ .photo-strip button img{height:165px}
+ .photo-led-studio .studio-intro{grid-template-columns:1fr .5fr}
+}
+@media(max-width:900px){
+ .photo-led-studio .studio-workspace{grid-template-columns:minmax(0,1fr);gap:18px}
+ .photo-led-studio .studio-stage-column{grid-column:1;grid-row:1}
+ .photo-led-studio .studio-left-rail{grid-column:1;grid-row:2}
+ .photo-led-studio .studio-right-rail{grid-column:1;grid-row:3;grid-template-columns:1fr 1fr}
+ .photo-led-studio .studio-stage.is-photo-mode{height:720px}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-photo-view{padding:50px 55px 80px}
+ .photo-led-studio .studio-stage-toolbar{padding:14px 20px;min-height:74px;gap:14px}
+ .photo-led-studio .style-picker{max-height:none}
+ .photo-led-studio .studio-intro h1{font-size:43px}
+ .photo-led-studio .studio-intro-meta{font-size:9px}
+ .photo-strip button img{height:175px}
+}
+@media(max-width:720px){
+ .photo-led-studio .studio-intro{padding:24px 4px 20px}
+ .photo-led-studio .studio-intro h1{font-size:40px;line-height:1.08;margin-top:11px}
+ .photo-led-studio .studio-intro>div:first-child>p{font-size:11px;line-height:1.75;margin-top:12px;max-width:480px}
+ .photo-led-studio .studio-app-topbar{padding:12px 0;gap:12px;margin-bottom:10px}
+ .photo-led-studio .studio-stage.is-photo-mode{height:620px;min-height:480px}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-photo-view{padding:48px 40px 78px}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-stage-mark{font-size:7px;top:20px;left:20px;right:20px}
+ .photo-led-studio .studio-stage.is-photo-mode::before{inset:13px}
+ .photo-led-studio .photo-view-caption{left:20px;right:20px;bottom:17px;font-size:7px;max-width:95%;line-height:1.6}
+ .photo-stage-controls{bottom:28px;gap:2px;padding:3px;max-width:calc(100% - 32px)}
+ .photo-stage-controls button{min-height:40px;min-width:60px;padding:8px 12px;font-size:11px}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-expand{top:43px;right:13px;width:37px;height:37px}
+ .photo-led-studio .studio-stage-footer{padding:12px 14px;min-height:70px;gap:11px;align-items:center}
+ .photo-playback{justify-content:flex-start;gap:8px;flex:1}
+ #photo-motion-label{font-size:8px;max-width:130px}
+ #photo-play-toggle{min-height:40px;font-size:10px;padding:8px 12px}
+ .photo-led-studio .stage-mode-switch button{min-height:39px;font-size:10px;padding:8px 11px}
+ .photo-led-studio .stage-mode-switch button[data-stage-mode="3d"]{font-size:9px}
+ .photo-led-studio .studio-right-rail{gap:14px}
+ .photo-strip button img{height:160px}
+ .photo-reference-notes{font-size:10px}
+ .photo-help{font-size:10px;line-height:1.65;padding-top:11px}
+ .photo-source-caption{font-size:9px}
+ .photo-led-studio .studio-stage.is-expanded.is-photo-mode{height:calc(100svh - 16px)!important}
+ .photo-led-studio .studio-stage.is-expanded .studio-photo-view{padding:52px 42px 82px}
+}
+@media(max-width:540px){
+ .photo-led-studio .studio-intro{padding:22px 5px 18px}
+ .photo-led-studio .studio-intro h1{font-size:37px}
+ .photo-led-studio .studio-intro>div:first-child>p{font-size:11px;max-width:330px}
+ .photo-led-studio .studio-stage.is-photo-mode{height:560px;min-height:460px}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-photo-view{padding:46px 25px 75px}
+ .photo-led-studio .studio-stage-toolbar{padding:13px 14px;gap:11px;flex-wrap:wrap}
+ .photo-led-studio .studio-stage-toolbar>div:first-child{flex-basis:100%}
+ .photo-led-studio .stage-mode-switch{display:flex;width:100%}
+ .photo-led-studio .stage-mode-switch button{flex:1;font-size:11px;min-height:39px}
+ .photo-led-studio .stage-mode-switch button[data-stage-mode="3d"]{font-size:10px;flex:.85}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-stage-mark{font-size:6px;gap:8px;letter-spacing:.08em}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-stage-mark span:last-child{max-width:40%;text-align:right}
+ .photo-stage-controls{bottom:27px;max-width:calc(100% - 30px)}
+ .photo-stage-controls button{min-width:54px;padding:8px 10px;font-size:10px}
+ .photo-led-studio .photo-view-caption{bottom:12px;left:17px;right:17px;font-size:6px;letter-spacing:.07em}
+ .photo-led-studio .studio-stage-footer{padding:12px;gap:10px}
+ .photo-led-studio .studio-stage-footer .stage-footer-note{flex-basis:100%;min-width:100%}
+ .photo-playback{flex-basis:100%;justify-content:space-between}
+ #photo-motion-label{max-width:none;font-size:9px}
+ .photo-led-studio .studio-right-rail{grid-template-columns:minmax(0,1fr)}
+ .photo-strip{max-width:none;margin-top:16px;gap:12px}
+ .photo-strip button img{height:190px}
+ .photo-strip button>span,.photo-strip button>small{font-size:11px;padding:0 6px 5px}
+ .photo-reference-notes{font-size:11px}
+ .photo-led-studio .studio-stage.is-photo-mode .stage-zoom-tools{right:10px}
+ .photo-led-studio .studio-stage.is-photo-mode .stage-zoom-tools button{width:36px;height:38px}
+}
+@media(max-width:375px){
+ .photo-led-studio .studio-intro h1{font-size:34px}
+ .photo-led-studio .studio-stage.is-photo-mode{height:530px}
+ .photo-led-studio .studio-stage.is-photo-mode .studio-photo-view{padding-inline:22px}
+ .photo-stage-controls button{min-width:50px;padding-inline:8px}
+ .photo-strip button img{height:175px}
+}
+@media(prefers-reduced-motion:reduce){
+ .photo-led-studio .photo-reference-frame,.photo-led-studio .photo-reference-frame img{transition:none!important;animation:none!important}
+ .photo-led-studio .studio-stage.is-playing #photo-reference-image{transform:none!important}
+}
+.photo-led-studio .photo-help{display:block}
+.photo-led-studio .photo-help>b{display:block;margin-bottom:6px;font-size:12px;font-weight:500;color:#d5dfc8}
+.photo-led-studio .photo-help p{margin:0;line-height:1.8}
+.photo-led-studio .photo-view-tools{display:none!important}

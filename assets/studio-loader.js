@@ -1,21 +1,22 @@
-/* Keep the studio self-contained: no external rendering runtime is required. */
+/* Photographs load first. The optional design study loads only when requested. */
 (() => {
   'use strict';
   function load(src) {
     return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = src; script.async = false;
-      script.onload = resolve; script.onerror = () => reject(new Error(`Unable to load ${src}`));
-      document.body.append(script);
+      const script = document.createElement('script'); script.src = src; script.async = false;
+      script.onload = resolve; script.onerror = () => reject(new Error(`Unable to load ${src}`)); document.body.append(script);
     });
   }
-  (async () => {
-    try { await load('assets/vendor/three-0.152.2.min.js'); } catch { document.documentElement.classList.add('studio-three-unavailable'); }
-    try { await load('assets/dress-model.js?v=atelier-2'); } catch { document.documentElement.classList.add('studio-renderer-unavailable'); }
-    try { await load('assets/studio-configurator.js?v=atelier-2'); }
-    catch {
-      document.getElementById('studio-loading').hidden = true;
-      document.getElementById('stage-status').textContent = 'The interactive studio could not start. You can still browse all catalogue photographs in Collections.';
-    }
-  })();
+  let rendererPromise;
+  window.loadManishaRenderer = () => {
+    if (!rendererPromise) rendererPromise = (async () => {
+      try { await load('assets/vendor/three-0.152.2.min.js'); } catch { document.documentElement.classList.add('studio-three-unavailable'); }
+      await load('assets/dress-model.js?v=atelier-2');
+    })().catch(error => { rendererPromise = null; throw error; });
+    return rendererPromise;
+  };
+  load('assets/studio-configurator.js?v=photo-3').catch(() => {
+    document.getElementById('studio-loading').hidden = true;
+    document.getElementById('stage-status').textContent = 'The photograph is ready. Reload to enable the studio controls, or explore the collection pages.';
+  });
 })();
