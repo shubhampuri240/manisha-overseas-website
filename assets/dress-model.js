@@ -33,6 +33,12 @@
   function invalidate() { change();wake(); }
   const api = {
     setStyle(index) { state.style=clamp(Math.round(Number(index)||0),0,6);change('style');emit();wake(); },
+    // Stage 3: incremental real 3D mesh rotation; never moves a photograph.
+    turnBy(degrees) {
+      const amount=clamp(Number(degrees)||0,-90,90)*Math.PI/180;
+      if(!amount)return;
+      targetAngle+=amount;state.view='manual';state.spinning=false;emit();wake();
+    },
     setTone(hex) { if(/^#[0-9a-f]{6}$/i.test(hex)) {state.tone=hex;invalidate();emit();} },
     setFabric(name) { state.fabric=['cotton','linen','drape','eyelet'].includes(name)?name:'cotton';invalidate();emit(); },
     setPattern(name) { state.pattern=['plain','stripe','floral','eyelet'].includes(name)?name:'plain';invalidate();emit(); },
