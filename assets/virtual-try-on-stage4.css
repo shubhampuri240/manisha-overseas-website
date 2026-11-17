@@ -1,0 +1,57 @@
+/* Stage 4 internal evaluation — all classes are scoped to avoid changing other site pages. */
+:root{--vton-ink:#17362f;--vton-deep:#102921;--vton-gold:#a18a61;--vton-paper:#f5f3ed;--vton-muted:#6b776f;--vton-line:#d9ded7}
+*{box-sizing:border-box}
+body.vton-page{margin:0;background:var(--vton-paper);color:var(--vton-ink);font-family:"DM Sans",Arial,sans-serif;line-height:1.55}
+.vton-page a{color:inherit}
+.vton-page button,.vton-page input{font:inherit}
+.vton-top{padding:21px clamp(20px,5vw,90px);display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--vton-line)}
+.vton-mark{display:flex;flex-direction:column;text-decoration:none;letter-spacing:.17em;font-size:13px;font-weight:750;line-height:1.3}
+.vton-mark small{letter-spacing:.27em;font-size:8px;color:var(--vton-muted);padding-top:4px}
+.vton-links{display:flex;gap:23px;flex-wrap:wrap;font-size:12px}
+.vton-links a{text-decoration:none}.vton-links a:hover{text-decoration:underline}
+.vton-main{width:min(1320px,100%);padding:clamp(26px,4vw,55px) clamp(20px,5vw,75px) 90px;margin:0 auto}
+.vton-overline{letter-spacing:.22em;text-transform:uppercase;font-weight:700;font-size:11px;color:#60766b}
+.vton-hero{display:grid;grid-template-columns:1fr 325px;gap:30px;align-items:end;margin-bottom:24px}
+.vton-hero h1{font:500 clamp(45px,6vw,83px)/1.07 "Playfair Display",Georgia,serif;letter-spacing:-.045em;margin:12px 0 18px}
+.vton-hero h1 em{color:#78917f;font-weight:400}
+.vton-hero p{margin:0 0 10px;color:#566960;max-width:700px}
+.vton-status{padding:20px;border-top:1px solid var(--vton-line);border-bottom:1px solid var(--vton-line);font-size:12px;color:#485b50}
+.vton-status strong{display:block;color:var(--vton-ink);font-size:14px;margin-bottom:5px}
+.vton-status span{color:#755a34}
+.vton-workspace{display:grid;grid-template-columns:minmax(200px,.72fr) minmax(260px,1.05fr) minmax(270px,1fr);gap:20px;margin-top:30px;align-items:stretch}
+.vton-pane{background:#fff;border:1px solid var(--vton-line);border-radius:12px;padding:20px;min-width:0}
+.vton-pane h2{font:500 26px/1.2 "Playfair Display",Georgia,serif;margin:7px 0 10px}
+.vton-note{font-size:12px;color:var(--vton-muted)}
+.vton-choices{display:grid;gap:10px;margin-top:18px;max-height:700px;overflow:auto}
+.vton-choice{display:flex;align-items:center;gap:13px;width:100%;border:1px solid var(--vton-line);border-radius:8px;padding:8px;text-align:left;background:#fff;cursor:pointer;color:var(--vton-ink)}
+.vton-choice:hover,.vton-choice:focus-visible{border-color:#668a75}
+.vton-choice[aria-pressed=true]{border:2px solid #3c7660;background:#f0f7f1;padding:7px}
+.vton-choice img{width:59px;height:75px;object-fit:contain;background:#eeeee7;border-radius:5px}
+.vton-choice strong{display:block;font-size:13px}
+.vton-choice span{font-size:11px;color:#6b766e}
+.vton-photo-frame{background:radial-gradient(ellipse at center,#fbfaf6,#e9e9e1);border-radius:8px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.vton-photo-frame img{width:100%;height:100%;object-fit:contain}
+.vton-photo-caption{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-top:12px;font-size:12px}
+.vton-photo-caption strong{font-weight:600}
+.vton-result{aspect-ratio:3/4;border:1px dashed #acb8aa;background:#f6f7f2;border-radius:8px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:25px;text-align:center;overflow:hidden}
+.vton-result img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#f6f7f2}
+.vton-result-icon{font:500 54px/1 "Playfair Display",Georgia,serif;color:#8fa596}
+.vton-result p{font-size:12px;color:var(--vton-muted);max-width:230px}
+.vton-load{display:block;padding:13px 20px;border-radius:7px;background:var(--vton-deep);color:white;text-align:center;font-weight:700;font-size:12px;cursor:pointer;margin-top:16px}
+.vton-load:focus-within{outline:2px solid #8b9c8e;outline-offset:2px}
+.vton-load input{position:absolute;width:1px;height:1px;opacity:0}
+.vton-secondary{display:block;background:transparent;border:1px solid var(--vton-line);padding:10px 14px;border-radius:7px;margin-top:8px;cursor:pointer;color:var(--vton-ink);font-size:12px;width:100%}
+.vton-secondary[hidden]{display:none}
+.vton-msg{min-height:25px;font-size:12px;color:#955330;margin-top:10px}
+.vton-steps{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px}
+.vton-info{padding:25px 28px;border:1px solid var(--vton-line);border-radius:12px}
+.vton-info h2{font:500 28px/1.2 "Playfair Display",Georgia,serif;margin:7px 0 12px}
+.vton-info p{font-size:13px;color:#566960}
+.vton-btn{display:inline-block;text-decoration:none;padding:14px 22px;border-radius:7px;background:#18382b;color:white!important;font-weight:700;font-size:12px;margin-top:8px}
+.vton-btn:hover{background:#37624f}
+.vton-info .vton-btn{max-width:100%}
+.vton-legal{margin-top:23px;border-left:3px solid #b59760;padding:15px 22px;background:#fbf8f1;font-size:12px;color:#615d50}
+.vton-footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--vton-line);padding:25px clamp(20px,5vw,90px);font-size:10px;letter-spacing:.1em;color:var(--vton-muted)}
+@media(max-width:1150px){.vton-workspace{grid-template-columns:230px 1fr}.vton-output-pane{grid-column:1/-1}.vton-output-pane .vton-result{max-height:460px;aspect-ratio:4/3}}
+@media(max-width:730px){.vton-hero{grid-template-columns:1fr}.vton-workspace{grid-template-columns:1fr}.vton-output-pane{grid-column:auto}.vton-choices{grid-template-columns:repeat(2,1fr);max-height:none}.vton-choice img{width:49px;height:66px}.vton-steps{grid-template-columns:1fr}.vton-top{align-items:flex-start;flex-direction:column}}
+@media(max-width:480px){.vton-choices{grid-template-columns:1fr}.vton-hero h1{font-size:45px}}
