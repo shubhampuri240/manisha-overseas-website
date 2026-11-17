@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Internal Manisha Overseas AI virtual try-on research preview with original catalogue photographs and local Colab output review.">
+<title>Virtual Try-On | Research Preview — Manisha Overseas</title>
+<link rel="icon" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/virtual-try-on-stage4.css?v=1">
+<script src="assets/virtual-try-on-stage4.js?v=1" defer></script>
+</head>
+<body class="vton-page">
+<header class="vton-top">
+<a class="vton-mark" href="index.html" aria-label="Manisha Overseas home">MANISHA OVERSEAS<small>CRAFTED IN INDIA</small></a>
+<nav class="vton-links" aria-label="Website links">
+<a href="index.html">Home</a>
+<a href="dress-studio.html">Dress Photo Studio</a>
+<a href="collections/index.html">Collections</a>
+</nav>
+</header>
+<main class="vton-main">
+<section class="vton-hero" aria-label="Introduction">
+<div>
+<div class="vton-overline">Stage 04 / Internal design research</div>
+<h1>See the dress.<br><em>Imagine the fit.</em></h1>
+<p>Connect our real garment photographs with the AI try-on research workflow. Select a catalogue style, run the free Colab evaluation, and review your resulting image here without uploading it to our website.</p>
+</div>
+<div class="vton-status" role="note">
+<strong>Research preview only</strong>
+<span>Not enabled for commercial customer try-on</span>
+<p>No server photo uploads on this page. AI generation happens separately in Google Colab, not on GitHub Pages.</p>
+</div>
+</section>
+<section class="vton-workspace" aria-label="Catalogue and research image comparison">
+<div class="vton-pane">
+<div class="vton-overline">01 / Select an original look</div>
+<h2>Garment library</h2>
+<p class="vton-note">Seven styles photographed by Manisha Overseas. These are real garment photos, not 3D models or AI renders.</p>
+<div class="vton-choices" role="group" aria-label="Garment style choices">
+<button type="button" class="vton-choice" data-code="4638" data-title="Floral long dress" data-file="style-4638-front.webp" aria-pressed="true"><img src="assets/visuals/style-4638-front.webp" alt="" loading="lazy" width="59" height="75"><div><strong>Style 4638</strong><span>Floral long dress</span></div></button>
+<button type="button" class="vton-choice" data-code="6821" data-title="Printed one-piece" data-file="style-6821-front.webp" aria-pressed="false"><img src="assets/visuals/style-6821-front.webp" alt="" loading="lazy" width="59" height="75"><div><strong>Style 6821</strong><span>Printed one-piece</span></div></button>
+<button type="button" class="vton-choice" data-code="3476" data-title="Printed long dress" data-file="style-3476-front.webp" aria-pressed="false"><img src="assets/visuals/style-3476-front.webp" alt="" loading="lazy" width="59" height="75"><div><strong>Style 3476</strong><span>Printed long dress</span></div></button>
+<button type="button" class="vton-choice" data-code="7284" data-title="Open-back dress" data-file="style-7284-front.webp" aria-pressed="false"><img src="assets/visuals/style-7284-front.webp" alt="" loading="lazy" width="59" height="75"><div><strong>Style 7284</strong><span>Open-back dress</span></div></button>
+<button type="button" class="vton-choice" data-code="1509" data-title="Tiered long dress" data-file="style-1509-front.webp" aria-pressed="false"><img src="assets/visuals/style-1509-front.webp" alt="" loading="lazy" width="59" height="75"><div><strong>Style 1509</strong><span>Tiered long dress</span></div></button>
+<button type="button" class="vton-choice" data-code="2941" data-title="Printed tiered dress" data-file="style-2941-front.webp" aria-pressed="false"><img src="assets/visuals/style-2941-front.webp" alt="" loading="lazy" width="59" height="75"><div><strong>Style 2941</strong><span>Printed tiered dress</span></div></button>
+<button type="button" class="vton-choice" data-code="9152" data-title="Green printed dress" data-file="style-9152-full.webp" aria-pressed="false"><img src="assets/visuals/style-9152-full.webp" alt="" loading="lazy" width="59" height="75"><div><strong>Style 9152</strong><span>Green printed dress</span></div></button>
+</div>
+</div>
+<div class="vton-pane">
+<div class="vton-overline">02 / Original garment</div>
+<h2 id="vton-garment-title">Floral long dress</h2>
+<div class="vton-photo-frame">
+<img id="vton-garment" src="assets/visuals/style-4638-front.webp" alt="Manisha Overseas Style 4638 original photograph" width="1185" height="1800" fetchpriority="high">
+</div>
+<div class="vton-photo-caption"><strong id="vton-garment-code">STYLE 4638 / ORIGINAL PHOTOGRAPH</strong><span>Unaltered catalogue reference</span></div>
+</div>
+<div class="vton-pane vton-output-pane">
+<div class="vton-overline">03 / AI research comparison</div>
+<h2>Review your result</h2>
+<div style="display:flex;align-items:center;gap:14px;padding:6px 0 15px">
+<img id="vton-person" src="assets/visuals/style-3476-front.webp" width="57" height="75" style="width:57px;height:75px;object-fit:cover;border-radius:6px" alt="Original Manisha Overseas female-model catalogue photograph, style 3476">
+<div><div id="vton-person-title" style="font-size:11px;font-weight:700;letter-spacing:.08em">REFERENCE MODEL / STYLE 3476</div><p class="vton-note" style="margin:4px 0">Existing catalogue photo for internal AI testing; model-image permissions required</p></div>
+</div>
+<div class="vton-result" aria-label="Locally displayed AI output">
+<div class="vton-result-icon" aria-hidden="true">✧</div>
+<strong>Result appears here</strong>
+<p>Export a generated research result from Colab, then load that image locally to compare it with the original dress.</p>
+<img id="vton-result-image" alt="Locally loaded AI-generated research result, not verified garment fit" hidden>
+</div>
+<label class="vton-load">Load an AI result from your computer
+<input type="file" id="vton-file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" aria-label="Choose a previously generated Colab result image">
+</label>
+<button type="button" class="vton-secondary" id="vton-clear" hidden>Clear local result</button>
+<p class="vton-note">This file stays in your browser during the preview. It is not transmitted or stored by the website. Generated images may alter garment patterns, seams, body shape, or proportions.</p>
+<p id="vton-message" class="vton-msg" role="status" aria-live="polite"></p>
+</div>
+</section>
+<section class="vton-steps" aria-label="Research connection and next steps">
+<div class="vton-info">
+<div class="vton-overline">04 / Free research workflow</div>
+<h2>Run the model in Colab</h2>
+<p>Our previous female-model test worked on the free T4 GPU. The one-click notebook installs the model and performs a new evaluation in a temporary Colab session.</p>
+<p id="vton-colab-hint" class="vton-note">The one-click research notebook currently uses Style 4638 by default.</p>
+<a class="vton-btn" href="https://colab.research.google.com/github/shubhampuri240/manisha-overseas-website/blob/staging/stage4/Manisha_Overseas_One_Click_TryOn_Colab.ipynb" target="_blank" rel="noopener noreferrer">Open free AI research notebook ↗</a>
+<p class="vton-note">Once you save the generated PNG locally, return here and use “Load an AI result” to compare it. This is a link to a separate notebook, not automatic AI generation inside the website.</p>
+</div>
+<div class="vton-info">
+<div class="vton-overline">05 / Website integration status</div>
+<h2>Prepared for a secure backend</h2>
+<p>GitHub Pages hosts the look selection and local result review. A future production backend would securely handle customer uploads and AI inference, after commercial licensing, verified model-photo rights, retention controls, and abuse protection are established.</p>
+<p><strong>Not yet connected:</strong> public inference, live result generation, and customer-photo uploads. We will not impersonate a working online fitting service.</p>
+<a class="vton-btn" href="dress-studio.html">Back to Dress Photo Studio ↗</a>
+</div>
+</section>
+<div class="vton-legal" role="note"><strong>Licensing and privacy hold:</strong> The upstream FASHN VTON base code/weights are Apache-2.0, but its human-parser dependency has a non-commercial research/evaluation restriction. Colab's managed runtimes also do not provide a persistent web-service backend. Images loaded locally here are not sent to the server. Confirm the photographed model's permission for AI edits before wider use. AI preview is not a sizing guarantee.</div>
+</main>
+<footer class="vton-footer"><span>MANISHA OVERSEAS / NOIDA INDIA</span><span>STAGE 04 / INTERNAL RESEARCH PREVIEW · NOT A LIVE CUSTOMER SERVICE</span></footer>
+</body>
+</html>
