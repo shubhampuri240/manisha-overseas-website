@@ -24,12 +24,18 @@ GitHub Pages publishes the `staging` branch. Keep existing studio and company fe
 
 On GitHub Pages, the enquiry form opens the buyer's email app with the selected photo/style reference and enquiry details. No enquiry is sent until the buyer sends it in their email app. On PHP hosting, the existing enquiry handler still requires configuration and testing.
 
-## The Dress Photo Studio
+## The 360° Dress Studio (staging)
 
-`dress-studio.html` opens directly with the supplied model photographs. The main stage preserves the actual garment print, cut and drape. It offers full-length front/back/detail photographs, crossfade transitions, zoom, pan, swipe navigation, an optional photo-view slideshow, saved references, original-image exports and photo-specific enquiries.
+The Dress Studio now defaults to an interactive **rotating Three.js 3D study**. It uses existing Manisha garment photographs to sample approximate textile texture on a rotatable mesh; this is a **photo-inspired reconstruction**, not an accurate CAD model or a multi-angle scan of the actual garment. The seven Kasturi styles have defined rough silhouettes; dress-like pieces from other collection and product cards can also launch in the viewer with their own supplied photographic textile reference, but the generic mesh shape is not garment-specific.
 
-Two photographs are not presented as a continuous 360-degree model. Close-up enlarges the selected image. Colour, material, lighting and simulated cloth controls are hidden in photo mode, and concept settings are omitted from photo enquiries.
+- Drag a 3D garment to rotate, use ±30° turn buttons, auto-rotate, front/back/detail presets, and zoom.
+- Select **From garment photo** to apply the experimental image-based textile sample, or choose a conceptual colour/pattern.
+- The original photo mode is still available and remains the source of truth for print placement, colour, detailing and the manufactured item.
+- Directly link to a specific style: `dress-studio.html?style=4638&mode=3d`.
+- Collection image deep links use `mode=3d` for dress-like products and `mode=photo` for other garments to avoid showing a generic dress model for a shirt or trouser.
+- On devices without WebGL, a clearly labelled 2D illustrated fallback appears.
+- Real fitted 3D models (GLB/GLTF) and production-verified colourways are **not yet available**. This site does not currently support exact simulated fit on a person's photo.
 
-The existing procedural 3D design study remains an explicit secondary option. Its local rendering runtime loads only if the visitor selects that mode. The form is a visual concept, not a measured digital twin of the photographed garment. Original photographs load without requiring WebGL.
+Technical files: `assets/dress-model.js`, `assets/studio-configurator.js`, `assets/studio-loader.js`, `assets/stage3-controls.js`, their stylesheets, and `assets/manisha-3d-inventory.json`.
 
-The primary page uses `studio-loader.js`, `studio-configurator.js`, `studio-configurator.css` and `studio-photo.css`; the optional design study adds `assets/vendor/three-0.152.2.min.js` and `dress-model.js`. The older virtual try-on assets remain inactive on GitHub Pages.
+The optional Try-On service requires a secure separate backend and is not active on GitHub Pages. See `STAGE-3-3D-GARMENT-HANDOFF.md` and `RED-ROSE-RUSSIA-PHOTO-SOURCE-RESEARCH.md` for model commissioning and photography sourcing. **Interactive device/browser QA is still pending**; syntax and file integrity checks alone do not certify finished visual quality.
