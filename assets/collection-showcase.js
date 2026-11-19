@@ -3,13 +3,13 @@
   if(!root)return;
   const catalogue=window.MANISHA_CATALOGUE_IMAGES||{};
   const slides=[
-    {name:"Style 6821",line:"A statement in print.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-6821/style-6821-front.webp",href:"../dress-studio.html?style=6821",number:"01",type:"Kasturi catalogue"},
-    {name:"Style 3476",line:"Colour with a softer rhythm.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-3476/style-3476-front.webp",href:"../dress-studio.html?style=3476",number:"02",type:"Kasturi catalogue"},
-    {name:"Style 9152",line:"A flowing printed silhouette.",desc:"Kasturi catalogue · full-length and detail references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-9152/style-9152-full.webp",href:"../dress-studio.html?style=9152",number:"03",type:"Kasturi catalogue"},
-    {name:"Style 4638",line:"An expressive floral story.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-4638/style-4638-front.webp",href:"../dress-studio.html?style=4638",number:"04",type:"Kasturi catalogue"},
-    {name:"Style 7284",line:"A print made to stand out.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-7284/style-7284-front.webp",href:"../dress-studio.html?style=7284",number:"05",type:"Kasturi catalogue"},
-    {name:"Style 1509",line:"A tiered look with movement.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-1509/style-1509-front.webp",href:"../dress-studio.html?style=1509",number:"06",type:"Kasturi catalogue"},
-    {name:"Style 2941",line:"A layered printed finish.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-2941/style-2941-front.webp",href:"../dress-studio.html?style=2941",number:"07",type:"Kasturi catalogue"}
+    {name:"Style 6821",line:"A statement in print.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-6821/style-6821-front.webp",href:"../dress-studio.html?mode=3d&style=6821",number:"01",type:"Kasturi catalogue"},
+    {name:"Style 3476",line:"Colour with a softer rhythm.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-3476/style-3476-front.webp",href:"../dress-studio.html?mode=3d&style=3476",number:"02",type:"Kasturi catalogue"},
+    {name:"Style 9152",line:"A flowing printed silhouette.",desc:"Kasturi catalogue · full-length and detail references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-9152/style-9152-full.webp",href:"../dress-studio.html?mode=3d&style=9152",number:"03",type:"Kasturi catalogue"},
+    {name:"Style 4638",line:"An expressive floral story.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-4638/style-4638-front.webp",href:"../dress-studio.html?mode=3d&style=4638",number:"04",type:"Kasturi catalogue"},
+    {name:"Style 7284",line:"A print made to stand out.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-7284/style-7284-front.webp",href:"../dress-studio.html?mode=3d&style=7284",number:"05",type:"Kasturi catalogue"},
+    {name:"Style 1509",line:"A tiered look with movement.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-1509/style-1509-front.webp",href:"../dress-studio.html?mode=3d&style=1509",number:"06",type:"Kasturi catalogue"},
+    {name:"Style 2941",line:"A layered printed finish.",desc:"Kasturi catalogue · front and back references available for review.",image:"../assets/manisha/collections/kasturi-catalogue/style-2941/style-2941-front.webp",href:"../dress-studio.html?mode=3d&style=2941",number:"07",type:"Kasturi catalogue"}
   ];
   const image=root.querySelector('[data-showcase-image]');
   const imageLink=root.querySelector('[data-showcase-image-link]');
@@ -35,8 +35,8 @@
     image.classList.add('is-changing');
     window.setTimeout(()=>{
       image.src=s.image;image.alt=s.name+' approved catalogue garment photograph';
-      imageLink.href=s.href;title.textContent=s.name;line.textContent=s.line;desc.textContent=s.desc;category.textContent=s.type;
-      count.textContent=s.number+' / 07';cta.href=s.href;
+      imageLink.href=s.href;imageLink.setAttribute("aria-label","Rotate an approximate 3D study of "+s.name);title.textContent=s.name;line.textContent=s.line;desc.textContent=s.desc;category.textContent=s.type;
+      count.textContent=s.number+' / 07';cta.href=s.href;cta.setAttribute('aria-label','Open a rotating approximate 3D study of '+s.name);cta.innerHTML='Rotate '+s.name+' <span aria-hidden="true">↗</span>';
       image.classList.remove('is-changing');
     },reduced?0:210);
     dotList.forEach((d,i)=>d.setAttribute('aria-current',i===active?'true':'false'));
