@@ -191,3 +191,22 @@
  .home-page .mo-hero-fibre *{animation:none!important}
  .home-page .mo-hero-yarn{stroke-dashoffset:0!important}
 }
+
+
+/* The completed garment is revealed over the real production photograph. */
+.mo-thread-finish-reveal{
+ position:absolute;right:9px;bottom:9px;width:43%;height:72%;
+ padding:4px;background:#f5eee4;box-shadow:0 8px 20px rgba(5,20,24,.3);
+ opacity:1;transform:none;
+ transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);
+}
+.mo-thread-visual--photo .mo-thread-finish-reveal img{
+ display:block;width:100%;height:100%;min-height:0;object-fit:contain;
+ background:#e4e1d6;filter:none!important;image-rendering:auto!important
+}
+.mo-thread-story.mo-thread-ready .mo-thread-step:not(.mo-thread-seen) .mo-thread-finish-reveal{
+ opacity:0;transform:translateY(18px);
+}
+@media(prefers-reduced-motion:reduce){
+ .mo-thread-story .mo-thread-finish-reveal{opacity:1!important;transform:none!important;transition:none!important}
+}
