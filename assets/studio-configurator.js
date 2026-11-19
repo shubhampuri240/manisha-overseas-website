@@ -13,7 +13,7 @@
     ['9152', 'Green printed long dress', 'full', 'detail']
   ].map(([code, name, front, back]) => ({ code, name, front: `assets/visuals/style-${code}-${front}.webp`, back: `assets/visuals/style-${code}-${back}.webp`, backLabel: back === 'detail' ? 'Detail view' : 'Back view' }));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const defaults = () => ({ selected: 0, mode: 'photo', side: 'front', tone: 'chalk', fabric: 'cotton', pattern: 'reference', trims: true, view: 'orbit', lighting: 'daylight', motion: 'still', spinning: !reduced, imported: null });
+  const defaults = () => ({ selected: 0, mode: '3d', side: 'front', tone: 'chalk', fabric: 'cotton', pattern: 'reference', trims: true, view: 'orbit', lighting: 'daylight', motion: 'still', spinning: !reduced, imported: null });
   let state = defaults();
   let toastTimer;
   let syncing = false;
@@ -116,7 +116,7 @@
     $('#brief-texture').textContent = nameFor('fabric', state.fabric);
     $('#brief-pattern').textContent = nameFor('pattern', state.pattern);
     $('#trim-toggle').checked = state.trims;
-    $('#stage-style-title').textContent = `${label} / ${state.mode === 'photo' ? 'fashion photograph' : '3D design study'}`;
+    $('#stage-style-title').textContent = `${label} / ${state.mode === 'photo' ? 'fashion photograph' : '3D garment study'}`;
     $('#stage-view-label').textContent = state.mode === 'photo' ? 'SUPPLIED PHOTOGRAPH' : 'THE FORM STUDY';
     document.body.classList.toggle('is-concept-mode', state.mode === '3d');
     stage.classList.toggle('is-photo-mode', state.mode === 'photo');
@@ -310,7 +310,8 @@
   }
   try { $('#saved-look-panel').hidden = !localStorage.getItem('manishaAtelierLook'); } catch { /* Storage is optional. */ }
   // A direct link can open the procedural 3D study; normal catalogue visits default to the real photo.
-  if (params.get('mode') === '3d' && !state.imported) state.mode = '3d';
+  if (params.get('mode') === 'photo' || image) state.mode = 'photo';
+  else if (params.get('mode') === '3d') state.mode = '3d';
   syncEngine(); refresh(); updateBackend(); showMode(state.mode);
   window.addEventListener('studio:ready', updateBackend);
   window.addEventListener('studio:state', event => { if (!syncing && event.detail?.view === 'manual') { state.view = 'manual'; state.spinning = false; refresh(); } });
