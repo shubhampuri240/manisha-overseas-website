@@ -169,6 +169,17 @@
       ['style-2941-front.webp','style-2941-back.webp'],
       ['style-9152-full.webp',null] // other supplied image is a detail, not a back
     ];
+    // Crop only cloth-rich regions confirmed by visual inspection of the seven
+    // catalogue previews. These are TEXTILE SAMPLING regions, not product cutouts.
+    const textureCrops=[
+      [[.38,.48,.24,.32],[.38,.48,.24,.32]], // 4638
+      [[.28,.50,.29,.31],[.32,.49,.25,.31]], // 6821
+      [[.51,.48,.22,.31],[.40,.46,.23,.31]], // 3476
+      [[.47,.48,.19,.30],[.46,.48,.22,.32]], // 7284
+      [[.51,.43,.19,.29],[.49,.43,.20,.33]], // 1509
+      [[.45,.49,.24,.29],[.46,.48,.24,.31]], // 2941
+      [[.43,.52,.20,.29],[.43,.52,.20,.29]]  // 9152, true back unavailable
+    ];
     let referenceRequest=0;
     const profiles=[
       {flare:1.02,length:2.55,neck:.26,sleeve:0,tiers:0,back:.96},
@@ -252,8 +263,10 @@
           if(current!==referenceRequest || state.pattern!=='reference')return;
           const iw=image.naturalWidth, ih=image.naturalHeight;
           // Avoid the upper face/head area; do not claim full garment segmentation.
-          const sx=Math.round(iw*.32),sy=Math.round(ih*.43);
-          const sw=Math.round(iw*.36),sh=Math.round(ih*.40);
+          const spec=state.referencePhotos?null:textureCrops[state.style]?.[index];
+          const [x,y,w,h]=spec||[.35,.49,.3,.31];
+          const sx=Math.round(iw*x),sy=Math.round(ih*y);
+          const sw=Math.round(iw*w),sh=Math.round(ih*h);
           if(sw>1&&sh>1)ctx.drawImage(image,sx,sy,sw,sh,index*size/2,0,size/2,size);
           map.needsUpdate=true;change.pending=true;wake();
         };
