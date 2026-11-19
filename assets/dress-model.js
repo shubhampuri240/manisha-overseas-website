@@ -54,7 +54,7 @@
       if(state.referencePhotos?.[0]===a && state.referencePhotos?.[1]===b)return;
       if(!a && !state.referencePhotos)return;
       state.referencePhotos=a?[a,b]:null;
-      currentSurface='';invalidate();emit();
+      invalidate();emit();
     },
     setTone(hex) { if(/^#[0-9a-f]{6}$/i.test(hex)) {state.tone=hex;invalidate();emit();} },
     setFabric(name) { state.fabric=['cotton','linen','drape','eyelet'].includes(name)?name:'cotton';invalidate();emit(); },
