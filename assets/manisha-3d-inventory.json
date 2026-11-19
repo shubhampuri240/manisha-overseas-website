@@ -1,11 +1,11 @@
 {
   "schema": "manisha-overseas-garment-3d-inventory-v1",
-  "auditedOn": "2026-11-15",
+  "auditedOn": "2026-11-19",
   "repository": "shubhampuri240/manisha-overseas-website",
   "branch": "staging",
   "genuineGarmentMeshes": [],
   "native3DModelFiles": [],
-  "note": "No GLB/GLTF/OBJ/FBX/BLEND/USDZ files found in the repository trees or file-name-matched Google Drive searches. The working WebGL design study generates THREE.BufferGeometry meshes at runtime; it is true interactive 3D geometry but not a scanned or CAD-authored replica of the actual photographed garments. A 2D fallback is available when WebGL is not supported.",
+  "note": "No GLB/GLTF/OBJ/FBX/BLEND/USDZ files were located in the repository or matched Drive searches. The WebGL engine creates rotatable 3D geometry and now samples cropped regions from the same first-party garment photographs to create experimental front/back textile appearance. Geometry, projected fabric and side views are APPROXIMATE, not the actual finished garment or approved digital twin. For arbitrary dress images from collections, the generic mesh need not match actual cut. Non-dress categories open real photo mode.",
   "inputAssets": {
     "photographedReferenceType": "Original style-specific catalogue photographs (2D)",
     "sourceDirectory": "assets/visuals/",
@@ -93,7 +93,16 @@
     "photoChangeColour": false,
     "colourAccuracy": "Illustrative; not proof of production colourway",
     "realisticClothSimulation": false,
-    "accurateSizing": false
+    "accurateSizing": false,
+    "photoSampledReferenceTexture": true,
+    "photoSampleSource": "existing approved assets/visuals/ or assets/manisha/ catalogue images",
+    "photoSampleAccuracy": "Experimental crop-based fabric impression; exact print alignment, dimensions and identity not guaranteed",
+    "collectionDressDeepLinks": true,
+    "collectionDressShapeAccuracy": "Generic approximation for non-Kasturi designs",
+    "realGarment360PhotoSequence": false,
+    "glbModelIntegration": false,
+    "thirdPartyRedRosePhotosAdded": false,
+    "faceTryOnLive": false
   },
   "real3DIntakeChecklist": [
     "Confirm the garment style code and ownership/permission for model usage",
@@ -102,5 +111,11 @@
     "Compress geometry and textures for fast mobile web loading",
     "Display model with GLTFLoader or model-viewer and label verified 3D model",
     "Keep unverified generic/third-party models labelled as illustrative, not actual Manisha products"
+  ],
+  "nextTasks": [
+    "Browser and mobile interactive QA on deployed GitHub Pages preview",
+    "Commission or obtain verified garment CAD/GLB models and print repeats",
+    "Confirm Red Rose seller identity and photo ownership for each Manisha-supplied style",
+    "Build secure optional try-on backend separately if prioritized"
   ]
 }
