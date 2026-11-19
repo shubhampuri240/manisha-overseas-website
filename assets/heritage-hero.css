@@ -1,0 +1,217 @@
+/* Heritage hero refinement / staging only, 19 Nov 2026.
+   Restores the original white Schiffli campaign art direction without rewriting the site.
+   No third-party images, image blur/upscaling, loading overlay, or scroll hijacking.
+   Scoped to homepage except where noted. */
+:root{--mo-heritage-navy:#082b47;--mo-heritage-ivory:#f5eee3;--mo-heritage-champagne:#dec4a2;--mo-heritage-ink:#142d37}
+.home-page{--stage2-ink:#182e38;--stage2-navy:#082b47;--stage2-cream:#f6f0e7;--stage2-gold:#bba17c}
+.home-page .ref-hero{
+  background:var(--mo-heritage-navy)!important;
+  min-height:680px;
+  height:min(950px,100svh);
+  color:#f9f5ee;
+  isolation:isolate;
+}
+.home-page .hero-catalogue-photo{
+  inset:0!important;
+  width:100%!important;height:100%!important;
+  margin:0!important;
+  background:var(--mo-heritage-navy)!important;
+}
+.home-page .hero-catalogue-photo img{
+  inset:0!important;top:0!important;bottom:0!important;
+  left:0!important;right:0!important;
+  width:100%!important;height:100%!important;max-width:none!important;
+  object-fit:cover!important;object-position:center 42%!important;
+  opacity:1!important;filter:none!important;image-rendering:auto!important;
+  transform-origin:62% 43%;
+}
+.home-page .ref-hero .hero-backdrop{
+  z-index:1;
+  background:linear-gradient(90deg,rgba(5,25,45,.81) 0%,rgba(8,28,46,.52) 32%,rgba(8,31,49,.06) 70%,rgba(8,31,49,.04) 100%),
+    linear-gradient(0deg,rgba(3,20,36,.46),transparent 24%);
+}
+.home-page .ref-hero::before{opacity:.3}
+.home-page .ref-hero::after{border-color:rgba(248,237,222,.17)}
+.home-page .mo-orbit{border-color:rgba(244,233,215,.15);right:3%;top:11%}
+.home-page .mo-orbit::before,.home-page .mo-orbit::after{border-color:rgba(244,233,215,.11)}
+.home-page .hero-copy{
+  position:absolute;z-index:6;
+  left:clamp(36px,7.4vw,145px);
+  top:auto;bottom:clamp(85px,11.5vh,135px);
+  max-width:min(660px,58vw);
+  padding:0;
+}
+.home-page .hero-copy .micro{
+  font:600 10px/1.6 'DM Sans',Arial,sans-serif;
+  letter-spacing:.25em;color:var(--mo-heritage-ivory);
+}
+.home-page .hero-copy h1{
+  font-family:'Bodoni Moda','Bodoni MT','Didot',Georgia,serif;
+  font-optical-sizing:auto;font-weight:500;
+  font-size:clamp(62px,6vw,103px);
+  letter-spacing:-.042em;line-height:.94;
+  text-shadow:0 3px 22px rgba(2,20,36,.18);
+  max-width:680px;margin:31px 0 21px;
+  text-wrap:balance;
+}
+.home-page .hero-copy h1 em{
+  font-family:'Bodoni Moda','Bodoni MT','Didot',Georgia,serif;
+  font-weight:400;font-style:italic;
+  color:var(--mo-heritage-ivory);
+}
+.home-page .hero-copy p{
+  color:#faf7f1;max-width:430px;font-size:clamp(13px,1.02vw,15px);
+  font-weight:400;line-height:1.74;
+  text-shadow:0 1px 11px rgba(4,20,35,.15);
+}
+.home-page .hero-buttons{gap:12px 22px;margin-top:24px}
+.home-page .hero-buttons a{min-height:46px}
+.home-page .hero-buttons .btn-cream{
+  background:var(--mo-heritage-ivory);color:var(--mo-heritage-ink);
+  border:1px solid var(--mo-heritage-ivory);
+  padding:15px 21px;border-radius:1px;
+  font-size:10px;letter-spacing:.045em;
+}
+.home-page .hero-buttons .btn-cream:hover{background:var(--mo-heritage-champagne);border-color:var(--mo-heritage-champagne);transform:translateY(-2px)}
+.home-page .hero-buttons .btn-play{font-weight:500;font-size:10px;letter-spacing:.03em;color:#f8f1e7}
+.home-page .hero-buttons .btn-play span{border-color:rgba(246,238,227,.56)}
+.home-page .hero-buttons .btn-play:hover{color:#e8c8a1}
+.home-page .hero-caption{
+  left:clamp(36px,7.4vw,145px);bottom:27px;
+  font-size:9px;letter-spacing:.1em;color:#eee5d9;
+}
+.home-page .hero-catalogue-photo figcaption{right:3.8%;bottom:25px;font-size:8px;letter-spacing:.14em;color:#f2e5d7;max-width:29%}
+.home-page .mo-editorial-kicker{left:clamp(36px,7.4vw,145px);top:127px;color:#e6dac8;font-size:9px;letter-spacing:.2em}
+.home-page .mo-hero-fibre{top:25%;left:5%;width:clamp(75px,11vw,138px);opacity:.27}
+.home-page .mo-thread-hero-jump{color:#f5dfc6;border-color:rgba(245,223,198,.55)}
+.home-page .hero-index{
+  display:grid;position:absolute;z-index:7;
+  right:clamp(25px,4.5vw,85px);top:41%;
+  gap:20px;font-size:10px;font-weight:500;letter-spacing:.02em;
+}
+.home-page .hero-index a{
+  display:block;position:relative;padding:6px 0 6px 24px;
+  color:#f5eee4;text-shadow:0 1px 9px rgba(8,28,45,.25);
+  transition:color .2s ease,transform .2s ease;
+}
+.home-page .hero-index a:before{
+  content:'';position:absolute;left:0;top:50%;width:6px;height:6px;
+  background:#fff7e8;border-radius:50%;transform:translateY(-50%);opacity:.9
+}
+.home-page .hero-index a:hover{color:var(--mo-heritage-champagne);transform:translateX(3px)}
+.home-page .edition-nav{
+  background:linear-gradient(180deg,rgba(4,23,39,.68),rgba(7,31,50,.2));
+  border-color:rgba(245,236,222,.21);backdrop-filter:none;
+}
+.home-page .edition-nav .brand{
+  font-family:'Bodoni Moda','Bodoni MT','Didot',Georgia,serif;
+  font-weight:500;letter-spacing:.06em;font-size:clamp(22px,2vw,27px);
+}
+.home-page .edition-nav nav>a,.home-page .edition-nav .nav-drop>a{
+  font-family:'DM Sans',Arial,sans-serif;letter-spacing:.045em;
+  font-size:10px;text-transform:none;font-weight:600;
+}
+.home-page .edition-nav nav .nav-quote{
+  background:var(--mo-heritage-ivory);border:1px solid var(--mo-heritage-ivory);
+  color:var(--mo-heritage-ink);font-size:10px;
+}
+.home-page .edition-nav nav .nav-quote:hover{background:var(--mo-heritage-champagne);border-color:var(--mo-heritage-champagne);color:var(--mo-heritage-ink)}
+/* Make subsequent editorial headlines less generic without changing section structure. */
+.home-page .mo-statement h2,
+.home-page .photo-edit-heading h2,
+.home-page .home-collections h2,
+.home-page .manufacturing-copy h2,
+.home-page .schiffli-copy h2,
+.home-page .studio-teaser h2,
+.home-page .home-company-spotlight h2,
+.home-page .last-cta h2,
+.home-page .mo-thread-intro h2,
+.home-page .mo-thread-finale h3{
+  font-family:'Bodoni Moda','Bodoni MT','Didot',Georgia,serif;
+  font-optical-sizing:auto;letter-spacing:-.04em;font-weight:500;
+}
+.home-page .mo-statement h2 em,
+.home-page .mo-thread-intro h2 em,
+.home-page .mo-thread-finale h3 em{font-weight:400}
+.home-page .mo-statement{background:#f4f0e8}
+.home-page .mo-statement h2 em{color:#8b745c}
+.home-page .mo-section-label,.home-page .mo-thread-kicker{letter-spacing:.18em}
+.home-page .mo-thread-story{background:#0b2c3e}
+/* Short cinematic opening. The page and navigation remain interactive immediately. */
+@media(prefers-reduced-motion:no-preference){
+  .home-page .hero-catalogue-photo img{animation:mo-heritage-photo-enter 2.5s cubic-bezier(.2,.65,.25,1) both}
+  .home-page .hero-copy .micro{animation:mo-heritage-rise .7s .15s ease-out both}
+  .home-page .hero-copy h1{animation:mo-heritage-rise 1.05s .28s cubic-bezier(.2,.7,.2,1) both}
+  .home-page .hero-copy p{animation:mo-heritage-rise .85s .58s ease-out both}
+  .home-page .hero-buttons{animation:mo-heritage-rise .85s .78s ease-out both}
+  .home-page .hero-index{animation:mo-heritage-rise .85s .78s ease-out both}
+  .home-page .mo-editorial-kicker{animation:mo-heritage-fade .8s .25s ease-out both}
+}
+@keyframes mo-heritage-photo-enter{
+  0%{transform:scale(1.07) translate3d(0,7px,0)}
+  100%{transform:scale(1) translate3d(0,0,0)}
+}
+@keyframes mo-heritage-rise{
+  from{opacity:0;transform:translate3d(0,20px,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes mo-heritage-fade{from{opacity:0}to{opacity:1}}
+@media(max-height:750px) and (min-width:1051px){
+  .home-page .ref-hero{min-height:640px}
+  .home-page .hero-copy{bottom:70px}
+  .home-page .hero-copy h1{font-size:clamp(58px,5.35vw,84px);margin-top:18px}
+  .home-page .hero-copy p{line-height:1.58}
+  .home-page .hero-buttons{margin-top:16px}
+}
+@media(max-width:1260px){
+  .home-page .hero-index{display:none}
+  .home-page .hero-copy{max-width:min(640px,75vw)}
+}
+@media(max-width:900px){
+  .home-page .ref-hero{min-height:740px}
+  .home-page .hero-copy{left:6%;max-width:82vw;bottom:9%}
+  .home-page .hero-copy h1{font-size:clamp(60px,8vw,86px)}
+  .home-page .hero-catalogue-photo figcaption{display:none}
+  .home-page .mo-editorial-kicker{left:6%;top:112px}
+  .home-page .hero-caption{left:6%}
+}
+@media(max-width:720px){
+  .home-page .ref-hero{height:100svh;min-height:700px;max-height:950px}
+  .home-page .hero-catalogue-photo img{
+    inset:0!important;top:0!important;width:100%!important;height:100%!important;
+    object-fit:cover!important;object-position:65% center!important;opacity:1!important
+  }
+  .home-page .ref-hero .hero-backdrop{
+    background:linear-gradient(0deg,rgba(5,24,44,.95) 0%,rgba(5,24,44,.8) 28%,rgba(5,24,44,.15) 75%),
+      linear-gradient(90deg,rgba(5,24,44,.28),transparent 80%);
+  }
+  .home-page .hero-copy{left:7%;bottom:8%;max-width:88vw}
+  .home-page .hero-copy h1{
+    font-size:clamp(48px,10.8vw,73px);
+    line-height:.98;letter-spacing:-.045em;
+    margin:16px 0 12px;
+  }
+  .home-page .hero-copy p{font-size:12px;max-width:345px;line-height:1.6}
+  .home-page .hero-buttons{margin-top:15px;gap:7px 15px}
+  .home-page .hero-buttons a{min-height:41px;font-size:9px}
+  .home-page .hero-buttons .btn-cream{padding:11px 13px}
+  .home-page .mo-hero-fibre{display:none}
+  .home-page .hero-caption{bottom:15px;font-size:8px}
+  .home-page .mo-editorial-kicker{left:7%;top:88px;font-size:8px;max-width:90%}
+  .home-page .edition-nav{backdrop-filter:blur(7px)}
+  .home-page .edition-nav .brand{font-size:21px}
+}
+@media(max-width:410px){
+  .home-page .hero-copy h1{font-size:clamp(43px,11vw,55px)}
+  .home-page .hero-copy{bottom:10%}
+  .home-page .hero-buttons .btn-play{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .home-page .hero-catalogue-photo img,
+  .home-page .hero-copy *,
+  .home-page .hero-buttons,
+  .home-page .hero-index,
+  .home-page .mo-editorial-kicker{
+    animation:none!important;opacity:1!important;transform:none!important;
+  }
+}
