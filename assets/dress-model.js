@@ -6,7 +6,7 @@
   if (!canvas) return;
   const stage = canvas.parentElement;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const state = {backend:'pending', ready:false, style:0, tone:'#fffdf7', fabric:'cotton', pattern:'reference', trims:true, view:'orbit', lighting:'daylight', motion:'still', spinning:!reduced.matches};
+  const state = {backend:'pending', ready:false, style:0, tone:'#fffdf7', fabric:'cotton', pattern:'reference', trims:true, view:'orbit', lighting:'daylight', motion:'still', spinning:!reduced.matches,referencePhotos:null,referenceStatus:'none'};
   const clamp = (n,a,b) => Math.max(a, Math.min(b,n));
   let change = () => {}, draw = () => {}, frame = 0, visible = true, interacting = false;
   let targetAngle = -.2, angle = -.2, targetPitch = .025, pitch = .025, distance = 9.4, targetDistance = 9.4, cameraFocus = -.62, targetFocus = -.62;
@@ -38,6 +38,23 @@
       const amount=clamp(Number(degrees)||0,-90,90)*Math.PI/180;
       if(!amount)return;
       targetAngle+=amount;state.view='manual';state.spinning=false;emit();wake();
+    },
+    // Use a visitor-selected FIRST-PARTY catalogue photograph as the textile sample.
+    setReferenceImages(front,back) {
+      const normalise=value=>{
+        if(!value || typeof value!=='string')return null;
+        try {
+          const url=new URL(value,location.href),base=new URL('assets/',location.href);
+          if(url.origin!==base.origin || !url.pathname.startsWith(base.pathname)
+            || !/\.(webp|png|jpe?g)$/i.test(url.pathname) || url.search || url.hash)return null;
+          return url.href;
+        } catch { return null; }
+      };
+      const a=normalise(front), b=normalise(back);
+      if(state.referencePhotos?.[0]===a && state.referencePhotos?.[1]===b)return;
+      if(!a && !state.referencePhotos)return;
+      state.referencePhotos=a?[a,b]:null;
+      currentSurface='';invalidate();emit();
     },
     setTone(hex) { if(/^#[0-9a-f]{6}$/i.test(hex)) {state.tone=hex;invalidate();emit();} },
     setFabric(name) { state.fabric=['cotton','linen','drape','eyelet'].includes(name)?name:'cotton';invalidate();emit(); },
@@ -214,7 +231,7 @@
       transition=reduced.matches?1:.935;
     }
     function surface(){
-      const keyName=state.fabric+'-'+state.pattern+'-'+(state.pattern==='reference'?state.style:'');if(keyName===currentSurface)return;currentSurface=keyName;
+      const keyName=state.fabric+'-'+state.pattern+'-'+(state.pattern==='reference'?(state.referencePhotos?.[0]||state.style):'');if(keyName===currentSurface)return;currentSurface=keyName;
       ++referenceRequest;state.referenceStatus=state.pattern==='reference'?'loading':'none';
       textures.forEach(t=>t.dispose());textures=[];
       const size=512,c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');
@@ -230,7 +247,7 @@
         // supplied back photo. A photograph only approximates textile appearance.
         ctx.clearRect(0,0,size,size);
         ctx.fillStyle='#e7e2d7';ctx.fillRect(0,0,size,size);
-        const current=referenceRequest, photos=sourcePhotos[state.style];
+        const current=referenceRequest, photos=state.referencePhotos||sourcePhotos[state.style];
         const renderCrop=(image,index)=>{
           if(current!==referenceRequest || state.pattern!=='reference')return;
           const iw=image.naturalWidth, ih=image.naturalHeight;
@@ -243,12 +260,12 @@
         const front=new Image();front.decoding='async';
         front.onload=()=>{renderCrop(front,0);if(!photos[1]){renderCrop(front,1);state.referenceStatus='ready';emit();wake();}};
         front.onerror=()=>{if(current===referenceRequest){state.referenceStatus='unavailable';emit();wake();}};
-        front.src='assets/visuals/'+photos[0];
+        front.src=state.referencePhotos?photos[0]:'assets/visuals/'+photos[0];
         if(photos[1]){
           const back=new Image();back.decoding='async';
           back.onload=()=>{renderCrop(back,1);if(current===referenceRequest){state.referenceStatus='ready';emit();wake();}};
           back.onerror=()=>{if(current===referenceRequest){state.referenceStatus='partial';emit();wake();}};
-          back.src='assets/visuals/'+photos[1];
+          back.src=state.referencePhotos?photos[1]:'assets/visuals/'+photos[1];
         }
       }
       const map=new T.CanvasTexture(c);map.wrapS=map.wrapT=T.RepeatWrapping;map.repeat.set(state.pattern==='reference'?1:2.8,state.pattern==='reference'?1:3.2);map.colorSpace=T.SRGBColorSpace;map.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);textures.push(map);cloth.map=map;
