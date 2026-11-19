@@ -61,6 +61,31 @@ function addCompanyNavMenu(){const nav=document.querySelector('.edition-nav nav'
  });
 })();
 
+/* An explicit 3D study action on garment product detail pages.
+   The source photos remain the product truth; the rotating mesh is approximate. */
+(() => {
+  const details=document.querySelector('.detail-copy');
+  const photo=document.querySelector('.product-photo-gallery img');
+  if(!details || !photo || details.querySelector('[data-style-3d-link]'))return;
+  const heading=details.querySelector('h1')?.textContent?.trim()||photo.alt||'Garment';
+  if(!/\b(dress|gown|maxi|midi|mini|kaftan|jumpsuit|one-piece)\b/i.test(heading+' '+(photo.alt||'')))return;
+  const destination=new URL('../dress-studio.html',location.href);
+  destination.searchParams.set('mode','3d');
+  destination.searchParams.set('image',photo.currentSrc||photo.src);
+  destination.searchParams.set('name',heading);
+  destination.searchParams.set('source','product-detail');
+  const link=document.createElement('a');
+  link.dataset.style3dLink='1';
+  link.className='button';
+  link.style.cssText='display:inline-flex;align-items:center;margin:12px 0 0;max-width:100%';
+  link.textContent='Rotate photo-inspired 3D study ↗';
+  link.setAttribute('aria-label','View an approximate 3D rotation of '+heading);
+  link.href=destination.href;
+  const action=details.querySelector('.button');
+  if(action)action.insertAdjacentElement('afterend',link);
+  else details.append(link);
+})();
+
 // Keep the selected photograph with the wholesale brief.
 if(studioMessage && params.has('reference') && !studioMessage.value.trim()) {
  const reference=params.get('reference').slice(0,180).replace(/-/g,' ');
