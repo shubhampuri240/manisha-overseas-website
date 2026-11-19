@@ -1,6 +1,6 @@
 # Manisha Overseas — Stage 3 garment model handoff
 
-**Last reviewed:** 15 November 2026  
+**Last reviewed:** 19 November 2026  
 **Working branch:** `staging` — never deploy this branch to the live production domain without approval.
 
 ## Verified inventory
@@ -13,7 +13,13 @@
 
 ## What already works in the staging code
 
-Open the staged site, navigate to `dress-studio.html?mode=3d`, and select a style. In 3D mode the browser's WebGL engine provides drag-to-rotate, eight concept colours, front/back/detail/orbit presets, zoom, pause/play and 30° turn buttons. The on-page note distinguishes this study from the original product photograph; colour is not a verified product colourway.
+Open the staged site at `dress-studio.html?mode=3d` (also now the default mode), and select a style. In 3D mode the browser's WebGL engine provides drag-to-rotate, eight optional *concept* colours, front/back/detail/orbit presets, zoom, pause/play and 30° turn buttons. A **From garment photo** mode now samples visibly cloth-rich regions from existing front/back product photographs onto the mesh; this improves connection to the specific prints without reconstructing a fully accurate garment. For Style 9152 there is no full back photo; only a detail, so the texture study reuses its supplied full view. The on-page note distinguishes this study from the original product photograph; colour is not a verified product colourway.
+
+## Broader collection integration
+
+Existing collection cards, the seven-style showcase and dress product detail pages can now open a **photo-inspired 3D preview** using a first-party supplied image. This does not create a garment-specific shape for designs outside the seven rough Kasturi profiles, and is always explicitly labelled as approximate. Shirts and other non-dress items stay in photo mode rather than pretending to be 3D dresses.
+
+No outside Red Rose images have been uploaded. See `RED-ROSE-RUSSIA-PHOTO-SOURCE-RESEARCH.md` for candidate accounts and rights requirements.
 
 ## Creating an exact Manisha Overseas 3D garment
 
@@ -40,6 +46,8 @@ Do **not** treat a Google image, a front/back photo pair, an unlicensed third-pa
 - [x] Staging branch contains model engine with `turnBy(degrees)` and concept colour API.
 - [x] 3D panel integrated into the staging dress-studio HTML.
 - [x] All 7 referenced photo assets exist in staging.
+- [x] Source-photo-derived textile sampling wired into the mesh for seven base styles and approved first-party collection dress photos.
+- [x] Dress collection cards and product pages linked to 3D study; other garment types remain photo-led.
 - [x] New and existing JavaScript parse successfully.
 - [ ] Browser click-through and mobile WebGL test on a deployed staging preview.
 - [ ] Real garment-specific GLB approved against a sample.
