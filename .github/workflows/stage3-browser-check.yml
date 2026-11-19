@@ -1,0 +1,42 @@
+name: Garment Studio 3D browser smoke test
+
+on:
+  push:
+    branches: [staging]
+    paths:
+      - 'assets/dress-model.js'
+      - 'assets/studio-configurator.js'
+      - 'assets/stage3-controls.js'
+      - 'dress-studio.html'
+      - 'scripts/garment-studio-smoke.cjs'
+      - '.github/workflows/stage3-browser-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  webgl-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser-test dependencies
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Start local staging website
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/manisha-studio-http.log 2>&1 &
+          sleep 2
+      - name: Verify 3D rotation and garment imagery
+        run: node scripts/garment-studio-smoke.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: garment-studio-browser-screenshots
+          path: artifacts/garment-studio/
+          if-no-files-found: ignore
