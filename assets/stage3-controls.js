@@ -16,9 +16,8 @@
   section.innerHTML=`
     <div class="stage3-toolkit-intro">
       <div><span class="stage3-eyebrow">3D / PROCEDURAL GARMENT STUDY</span>
-        <h2>Turn the silhouette. Explore a colour.</h2>
-        <p>This is a rotatable <strong>3D mesh generated in the browser</strong>—not a 3D scan or exact replica of the photographed garment.
-        Colours and prints here are illustrative design directions, not confirmed production variants.</p>
+        <h2 id="stage3-selected-heading">Turn your garment in 3D.</h2>
+        <p>The garment silhouette is a <strong>real interactive 3D mesh</strong>. Its experimental fabric appearance is sampled from our original garment photos—not a fitted 3D scan or a verified print repeat. Side views and proportions are approximate.</p>
       </div>
       <span class="stage3-model-status" id="stage3-model-status" role="status" aria-live="polite">Preparing 3D controls</span>
     </div>
@@ -37,7 +36,7 @@
         <div class="stage3-colours" role="group" aria-label="Illustrative garment colour">
           ${palette.map(([name,hex])=>`<button type="button" data-stage3-tone="${name}" aria-pressed="false" title="${name}" aria-label="${name} conceptual colour"><span style="--stage3-swatch:${hex}"></span><small>${name}</small></button>`).join('')}
         </div>
-        <small>For actual fabric colour and print, use the original photographs.</small>
+        <small>Choosing a colour switches from the sampled photograph to a conceptual colour study. Use the photo reference for actual approved colours.</small>
       </div>
     </div>
     <div class="stage3-toolkit-bottom">
@@ -55,7 +54,9 @@
     const engineState=engine?.getState?.();
     const atelier=window.ManishaAtelier?.getState?.();
     const backend=engineState?.backend;
-    if(backend==='webgl') status.textContent='Interactive 3D geometry ready';
+    const name=atelier?.imported?.name || (atelier?.selected>=0?('Style '+['4638','6821','3476','7284','1509','2941','9152'][atelier.selected]):'Selected garment');
+    section.querySelector('#stage3-selected-heading').textContent='Turn '+name+' in 3D.';
+    if(backend==='webgl') status.textContent=engineState.pattern==='reference' ? (engineState.referenceStatus==='ready'?'3D mesh · garment-photo fabric':'3D mesh · loading photo texture') : '3D mesh · concept colour';
     else if(backend==='2d') status.textContent='2D illustrated fallback — rotation unavailable';
     else if(backend==='unavailable') status.textContent='3D unavailable — use product photos';
     else status.textContent='3D engine loading';
