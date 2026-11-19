@@ -46,15 +46,17 @@ function addCompanyNavMenu(){const nav=document.querySelector('.edition-nav nav'
    }
    const button=document.createElement("a");
    button.className="studio-entry-button";
-   button.textContent="Open in Dress Studio ↗";
+   const dressLike=/\b(dress|gown|maxi|midi|mini|kaftan|jumpsuit|one-piece)\b/i.test(name+" "+(img.alt||""));
+   button.textContent=dressLike?"Rotate 3D study ↗":"View garment photograph ↗";
    const nested=location.pathname.includes("/collections/")||location.pathname.includes("/products/");
    const studioPath=nested?"../dress-studio.html":"dress-studio.html";
    const destination=new URL(studioPath,location.href);
    destination.searchParams.set("image",img.currentSrc||img.src);
    destination.searchParams.set("name",name);
    destination.searchParams.set("source","website");
+   destination.searchParams.set("mode",dressLike?"3d":"photo");
    button.href=destination.href;
-   button.setAttribute("aria-label","Open "+name+" in the dress studio");
+   button.setAttribute("aria-label",(dressLike?"Open approximate rotating 3D study of ":"Open photographs of ")+name);
    target.appendChild(button);
  });
 })();
