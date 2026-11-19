@@ -151,3 +151,43 @@
  .mo-thread-story .mo-thread-route-ink{stroke-dasharray:none!important;stroke-dashoffset:0!important}
  .mo-thread-story *{animation:none!important}
 }
+
+
+/* Tiny opening cotton-to-thread illustration. Runs immediately with no loading screen. */
+.home-page .mo-hero-fibre{
+ position:absolute;z-index:5;left:8.5%;top:25%;width:clamp(140px,20vw,265px);
+ height:auto;pointer-events:none;opacity:.72;
+}
+.home-page .mo-hero-fibre svg{width:100%;height:auto;display:block;overflow:visible}
+.home-page .mo-hero-cotton{fill:rgba(252,241,222,.85)}
+.home-page .mo-hero-mote{fill:#f9ecdb}
+.home-page .mo-hero-yarn{
+ fill:none;stroke:#f2d6aa;stroke-width:2.2;stroke-linecap:round;
+ stroke-dasharray:200;stroke-dashoffset:0;
+}
+.home-page .mo-thread-hero-jump{
+ display:inline-block;color:#eed4b4;text-transform:uppercase;letter-spacing:.12em;
+ font-weight:700;font-size:9px;margin-left:22px;
+ padding:4px 0;border-bottom:1px solid rgba(244,216,178,.65);
+}
+.home-page .mo-thread-hero-jump:hover{color:#fff;border-color:#fff}
+.home-page .mo-thread-hero-jump:focus-visible{outline:3px solid #efcc91;outline-offset:4px}
+@media(prefers-reduced-motion:no-preference){
+ .home-page .mo-hero-cotton{animation:mo-hero-cotton-in 1.7s ease-out both}
+ .home-page .mo-hero-yarn{animation:mo-hero-yarn-in 2.6s .25s ease-out both}
+ .home-page .mo-hero-mote--1{animation:mo-hero-mote-left 1.8s ease-out both}
+ .home-page .mo-hero-mote--2{animation:mo-hero-mote-right 2.1s ease-out both}
+ .home-page .mo-hero-mote--3{animation:mo-hero-mote-left 2.3s ease-out both}
+}
+@keyframes mo-hero-cotton-in{from{opacity:.15;transform:translate(-15px,-9px)}to{opacity:1;transform:translate(0,0)}}
+@keyframes mo-hero-yarn-in{from{stroke-dashoffset:200;opacity:.5}to{stroke-dashoffset:0;opacity:1}}
+@keyframes mo-hero-mote-left{from{opacity:0;transform:translate(-15px,-15px)}to{opacity:1;transform:translate(0,0)}}
+@keyframes mo-hero-mote-right{from{opacity:0;transform:translate(10px,-15px)}to{opacity:1;transform:translate(0,0)}}
+@media(max-width:700px){
+ .home-page .mo-hero-fibre{left:7%;top:20%;width:clamp(100px,25vw,160px);opacity:.52}
+ .home-page .mo-thread-hero-jump{display:block;width:max-content;margin:8px 0 0;font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-page .mo-hero-fibre *{animation:none!important}
+ .home-page .mo-hero-yarn{stroke-dashoffset:0!important}
+}
