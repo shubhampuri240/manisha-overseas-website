@@ -13,7 +13,7 @@
     ['9152', 'Green printed long dress', 'full', 'detail']
   ].map(([code, name, front, back]) => ({ code, name, front: `assets/visuals/style-${code}-${front}.webp`, back: `assets/visuals/style-${code}-${back}.webp`, backLabel: back === 'detail' ? 'Detail view' : 'Back view' }));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const defaults = () => ({ selected: 0, mode: 'photo', side: 'front', tone: 'sage', fabric: 'cotton', pattern: 'plain', trims: true, view: 'orbit', lighting: 'daylight', motion: 'still', spinning: !reduced, imported: null });
+  const defaults = () => ({ selected: 0, mode: 'photo', side: 'front', tone: 'chalk', fabric: 'cotton', pattern: 'reference', trims: true, view: 'orbit', lighting: 'daylight', motion: 'still', spinning: !reduced, imported: null });
   let state = defaults();
   let toastTimer;
   let syncing = false;
@@ -148,18 +148,20 @@
     stopPhotoPlayback(); refresh();
     if (state.mode === 'photo') { api()?.pause(); $('#studio-loading').hidden = true; announce('Original garment photograph. Zoom in, drag to inspect, or choose front and back.'); return; }
     $('#studio-loading').hidden = !!api();
-    try { await window.loadManishaRenderer(); if (state.mode === '3d') { syncEngine(); refresh(); announce(api()?.getState?.().backend === 'webgl' ? '3D design study. Return to Fashion photograph for the real garment.' : 'Illustrated design study. Fashion photograph shows the real garment.'); } }
+    try { await window.loadManishaRenderer(); if (state.mode === '3d') { syncEngine(); refresh(); announce(api()?.getState?.().backend === 'webgl' ? 'Rotatable 3D silhouette with a reference-photo sampled texture. Not an exact 3D scan; compare with the original photographs.' : 'Illustrated design study. Fashion photograph shows the real garment.'); } }
     catch { toast('The design study could not load. Your garment photographs are available.'); state.mode = 'photo'; refresh(); }
     finally { $('#studio-loading').hidden = true; }
   }
   function conceptAction(action) { if (state.mode !== '3d') return; action(); refresh(); }
   $$('[data-style-index]').forEach(button => button.addEventListener('click', () => {
     stopPhotoPlayback(); resetPhotoView(); state.selected = Number(button.dataset.styleIndex); state.imported = null; state.side = 'front';
-    api()?.setStyle(state.selected); refresh(); announce(`Style ${styles[state.selected].code} selected.`);
+    if (state.mode === '3d') {state.pattern = 'reference';state.tone = 'chalk';}
+    api()?.setStyle(state.selected); if(state.mode==='3d'){api()?.setTone('#f5efe4');api()?.setPattern('reference');}
+    refresh(); announce(`Style ${styles[state.selected].code} selected. ${state.mode==='3d'?'Photograph-sampled fabric study; not an exact garment scan.':''}`);
   }));
   $$('[data-stage-mode]').forEach(button => button.addEventListener('click', () => showMode(button.dataset.stageMode)));
   $$('[data-photo-side]').forEach(button => button.addEventListener('click', () => choosePhotoSide(button.dataset.photoSide)));
-  $$('[data-tone]').forEach(button => button.addEventListener('click', () => conceptAction(() => { state.tone = button.dataset.tone; api()?.setTone(button.dataset.hex); announce(`${nameFor('tone', state.tone)} colour direction.`); })));
+  $$('[data-tone]').forEach(button => button.addEventListener('click', () => conceptAction(() => { state.tone = button.dataset.tone; if(state.pattern==='reference'){state.pattern='plain';api()?.setPattern('plain');} api()?.setTone(button.dataset.hex); announce(`${nameFor('tone', state.tone)} colour direction.`); })));
   $$('[data-fabric]').forEach(button => button.addEventListener('click', () => conceptAction(() => { state.fabric = button.dataset.fabric; api()?.setFabric(state.fabric); announce(`${nameFor('fabric', state.fabric)} texture selected.`); })));
   $$('[data-pattern]').forEach(button => button.addEventListener('click', () => conceptAction(() => { state.pattern = button.dataset.pattern; api()?.setPattern(state.pattern); })));
   $('#trim-toggle').addEventListener('change', event => conceptAction(() => { state.trims = event.target.checked; api()?.setTrims(state.trims); }));
