@@ -6,7 +6,7 @@
   if (!canvas) return;
   const stage = canvas.parentElement;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const state = {backend:'pending', ready:false, style:0, tone:'#fffdf7', fabric:'cotton', pattern:'plain', trims:true, view:'orbit', lighting:'daylight', motion:'still', spinning:!reduced.matches};
+  const state = {backend:'pending', ready:false, style:0, tone:'#fffdf7', fabric:'cotton', pattern:'reference', trims:true, view:'orbit', lighting:'daylight', motion:'still', spinning:!reduced.matches};
   const clamp = (n,a,b) => Math.max(a, Math.min(b,n));
   let change = () => {}, draw = () => {}, frame = 0, visible = true, interacting = false;
   let targetAngle = -.2, angle = -.2, targetPitch = .025, pitch = .025, distance = 9.4, targetDistance = 9.4, cameraFocus = -.62, targetFocus = -.62;
@@ -41,7 +41,7 @@
     },
     setTone(hex) { if(/^#[0-9a-f]{6}$/i.test(hex)) {state.tone=hex;invalidate();emit();} },
     setFabric(name) { state.fabric=['cotton','linen','drape','eyelet'].includes(name)?name:'cotton';invalidate();emit(); },
-    setPattern(name) { state.pattern=['plain','stripe','floral','eyelet'].includes(name)?name:'plain';invalidate();emit(); },
+    setPattern(name) { state.pattern=['reference','plain','stripe','floral','eyelet'].includes(name)?name:'reference';invalidate();emit(); },
     setTrims(value) {state.trims=!!value;invalidate();emit();},
     zoom(delta) {targetDistance=clamp(targetDistance+Number(delta||0),5.1,11.5);wake();},
     setView(view) {
@@ -55,7 +55,7 @@
     setMotion(name) {state.motion=name==='breeze'?'breeze':'still';invalidate();emit();},
     pause() {state.spinning=false;emit();wake();},
     resume() {state.spinning=true;state.view='orbit';emit();wake();},
-    reset() {Object.assign(state,{tone:'#fffdf7',fabric:'cotton',pattern:'plain',trims:true,motion:'still',lighting:'daylight'});change('style');this.setView('orbit');},
+    reset() {Object.assign(state,{tone:'#fffdf7',fabric:'cotton',pattern:'reference',trims:true,motion:'still',lighting:'daylight'});change('style');this.setView('orbit');},
     capture() {try {draw(elapsed,0);return canvas.toDataURL('image/png');}catch {return null;}},
     getState() {return {...state,angle,distance};}
   };
@@ -141,6 +141,18 @@
     const garment=new T.Group();root.add(garment);
     const trimGroup=new T.Group();garment.add(trimGroup);
     let clothParts=[],textures=[],transition=1,currentSurface='';
+    // Photos from this repository are used to sample approximate textile patterns.
+    // These textured meshes are NOT production-accurate digital garment replicas.
+    const sourcePhotos=[
+      ['style-4638-front.webp','style-4638-back.webp'],
+      ['style-6821-front.webp','style-6821-back.webp'],
+      ['style-3476-front.webp','style-3476-back.webp'],
+      ['style-7284-front.webp','style-7284-back.webp'],
+      ['style-1509-front.webp','style-1509-back.webp'],
+      ['style-2941-front.webp','style-2941-back.webp'],
+      ['style-9152-full.webp',null] // other supplied image is a detail, not a back
+    ];
+    let referenceRequest=0;
     const profiles=[
       {flare:1.02,length:2.55,neck:.26,sleeve:0,tiers:0,back:.96},
       {pants:true,flare:.95,length:2.48,neck:.36,sleeve:.42,tiers:0,back:.96},
@@ -202,7 +214,8 @@
       transition=reduced.matches?1:.935;
     }
     function surface(){
-      const keyName=state.fabric+'-'+state.pattern;if(keyName===currentSurface)return;currentSurface=keyName;
+      const keyName=state.fabric+'-'+state.pattern+'-'+(state.pattern==='reference'?state.style:'');if(keyName===currentSurface)return;currentSurface=keyName;
+      ++referenceRequest;state.referenceStatus=state.pattern==='reference'?'loading':'none';
       textures.forEach(t=>t.dispose());textures=[];
       const size=512,c=document.createElement('canvas');c.width=c.height=size;const ctx=c.getContext('2d');
       ctx.fillStyle='#f1efe9';ctx.fillRect(0,0,size,size);
@@ -212,7 +225,33 @@
       if(state.pattern==='floral'||state.pattern==='eyelet'||state.fabric==='eyelet'){
         for(let y=34;y<size;y+=85)for(let x=34;x<size;x+=85){ctx.save();ctx.translate(x+(y%2)*15,y);ctx.strokeStyle=state.pattern==='floral'?'#667761':'#b6b8a5';ctx.lineWidth=state.pattern==='floral'?2.7:1.7;for(let k=0;k<6;k++){const a=k*Math.PI/3;ctx.beginPath();ctx.ellipse(Math.cos(a)*12,Math.sin(a)*12,6,11,a,0,Math.PI*2);ctx.stroke();}ctx.fillStyle='#9b9e87';ctx.beginPath();ctx.arc(0,0,3,0,Math.PI*2);ctx.fill();ctx.restore();}
       }
-      const map=new T.CanvasTexture(c);map.wrapS=map.wrapT=T.RepeatWrapping;map.repeat.set(2.8,3.2);map.colorSpace=T.SRGBColorSpace;map.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);textures.push(map);cloth.map=map;
+      if(state.pattern==='reference'){
+        // Front half of UV canvas samples the supplied front photo; back half the
+        // supplied back photo. A photograph only approximates textile appearance.
+        ctx.clearRect(0,0,size,size);
+        ctx.fillStyle='#e7e2d7';ctx.fillRect(0,0,size,size);
+        const current=referenceRequest, photos=sourcePhotos[state.style];
+        const renderCrop=(image,index)=>{
+          if(current!==referenceRequest || state.pattern!=='reference')return;
+          const iw=image.naturalWidth, ih=image.naturalHeight;
+          // Avoid the upper face/head area; do not claim full garment segmentation.
+          const sx=Math.round(iw*.32),sy=Math.round(ih*.43);
+          const sw=Math.round(iw*.36),sh=Math.round(ih*.40);
+          if(sw>1&&sh>1)ctx.drawImage(image,sx,sy,sw,sh,index*size/2,0,size/2,size);
+          map.needsUpdate=true;change.pending=true;wake();
+        };
+        const front=new Image();front.decoding='async';
+        front.onload=()=>{renderCrop(front,0);if(!photos[1]){renderCrop(front,1);state.referenceStatus='ready';emit();wake();}};
+        front.onerror=()=>{if(current===referenceRequest){state.referenceStatus='unavailable';emit();wake();}};
+        front.src='assets/visuals/'+photos[0];
+        if(photos[1]){
+          const back=new Image();back.decoding='async';
+          back.onload=()=>{renderCrop(back,1);if(current===referenceRequest){state.referenceStatus='ready';emit();wake();}};
+          back.onerror=()=>{if(current===referenceRequest){state.referenceStatus='partial';emit();wake();}};
+          back.src='assets/visuals/'+photos[1];
+        }
+      }
+      const map=new T.CanvasTexture(c);map.wrapS=map.wrapT=T.RepeatWrapping;map.repeat.set(state.pattern==='reference'?1:2.8,state.pattern==='reference'?1:3.2);map.colorSpace=T.SRGBColorSpace;map.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);textures.push(map);cloth.map=map;
       const bumpCanvas=document.createElement('canvas');bumpCanvas.width=bumpCanvas.height=128;const b=bumpCanvas.getContext('2d');b.fillStyle='#888';b.fillRect(0,0,128,128);for(let i=0;i<128;i+=4){b.fillStyle='#999';b.fillRect(i,0,1,128);b.fillStyle='#777';b.fillRect(0,i,128,1);}const bump=new T.CanvasTexture(bumpCanvas);bump.wrapS=bump.wrapT=T.RepeatWrapping;bump.repeat.set(8,8);textures.push(bump);cloth.bumpMap=bump;cloth.bumpScale=state.fabric==='linen'?.032:state.fabric==='drape'?.007:.016;cloth.roughness=state.fabric==='drape'?.48:state.fabric==='linen'?.95:.77;
       cloth.needsUpdate=true;
     }
@@ -224,7 +263,7 @@
     const moods={daylight:{background:'#eee9df',key:'#fff4dc',fill:'#d8e8ed',intensity:1.8,exposure:.96},warm:{background:'#eddfca',key:'#ffd9a0',fill:'#efdfcc',intensity:1.9,exposure:.94},gallery:{background:'#dfe5df',key:'#f2f7ff',fill:'#a4c2c5',intensity:2.1,exposure:.94}};
     let lightMood='';
     change=reason=>{
-      if(reason==='style')rebuild();targetTone.set(state.tone);surface();trimGroup.visible=state.trims;
+      if(reason==='style')rebuild();targetTone.set(state.pattern==='reference'?'#ffffff':state.tone);surface();trimGroup.visible=state.trims;
       if(lightMood!==state.lighting){lightMood=state.lighting;const m=moods[lightMood];scene.background.set(m.background);scene.fog.color.set(m.background);floor.material.color.set(m.background);key.color.set(m.key);fill.color.set(m.fill);key.intensity=m.intensity;renderer.toneMappingExposure=m.exposure;}
       change.pending=true;
     };
