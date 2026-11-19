@@ -136,6 +136,7 @@
     const engine = api(); if (!engine) return;
     syncing = true;
     try {
+    engine.setReferenceImages?.(state.imported?.front||null,state.imported?.back||null);
     engine.setStyle(state.selected);
     engine.setTone(option('tone', state.tone).dataset.hex);
     engine.setFabric(state.fabric); engine.setPattern(state.pattern); engine.setTrims(state.trims);
@@ -156,6 +157,7 @@
   $$('[data-style-index]').forEach(button => button.addEventListener('click', () => {
     stopPhotoPlayback(); resetPhotoView(); state.selected = Number(button.dataset.styleIndex); state.imported = null; state.side = 'front';
     if (state.mode === '3d') {state.pattern = 'reference';state.tone = 'chalk';}
+    api()?.setReferenceImages?.(null,null);
     api()?.setStyle(state.selected); if(state.mode==='3d'){api()?.setTone('#f5efe4');api()?.setPattern('reference');}
     refresh(); announce(`Style ${styles[state.selected].code} selected. ${state.mode==='3d'?'Photograph-sampled fabric study; not an exact garment scan.':''}`);
   }));
@@ -310,8 +312,9 @@
   }
   try { $('#saved-look-panel').hidden = !localStorage.getItem('manishaAtelierLook'); } catch { /* Storage is optional. */ }
   // A direct link can open the procedural 3D study; normal catalogue visits default to the real photo.
-  if (params.get('mode') === 'photo' || image) state.mode = 'photo';
+  if (params.get('mode') === 'photo') state.mode = 'photo';
   else if (params.get('mode') === '3d') state.mode = '3d';
+  else if (image) state.mode = 'photo';
   syncEngine(); refresh(); updateBackend(); showMode(state.mode);
   window.addEventListener('studio:ready', updateBackend);
   window.addEventListener('studio:state', event => { if (!syncing && event.detail?.view === 'manual') { state.view = 'manual'; state.spinning = false; refresh(); } });
