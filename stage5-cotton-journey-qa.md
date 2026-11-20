@@ -1,51 +1,39 @@
-# Cotton → Showroom scroll story — implementation notes
+# Manisha Overseas — Fibre-to-Thread redesign QA
 
-**Branch:** `staging` only. **Do not merge to `main` until separately approved.**
+**Updated:** 2026-11-20. **Branch:** `staging` only. GitHub Pages deployment branch and live mobile rendering remain unverified.
 
-## Location
-- Home page: `index.html`
-- Self-contained styles: `assets/cotton-journey.css`
-- Scroll progress / reveal behavior: `assets/cotton-journey.js`
-- Section link: `#cotton-to-showroom`
-- Existing contact CTA: `contact.html`
+## Why this revision was made
+The previous six dark-card cotton timeline was hard to see in action and appeared generic. The new section keeps the site's original white Schiffli campaign hero and replaces the timeline with a refined ivory editorial layout and a **visible cotton-to-yarn canvas animation**.
 
-## Story
-The hero includes a quick decorative cotton-to-yarn drawing and a **Follow the thread** anchor. The six-chapter timeline then illustrates:
-1. Cotton fibres gathering into yarn
-2. Spinning/weaving (animated spool, shuttle, woven strands)
-3. Colour and cutting (fabric-handling photo with illustrative dye swatch and scissors)
-4. Factory workroom and a finished garment reveal (actual workroom and catalogue photographs)
-5. International dispatch (illustrated ship and route)
-6. Buyer showroom presentation (actual garment catalogue image in a conceptual display frame), ending with the existing wholesale enquiry link
+## Files used
+- `index.html`: a single `#cotton-to-showroom` section directly after the classic hero, visible “Watch cotton become thread” anchor, existing photos/sections kept intact
+- `assets/fibre-to-thread.css`: ivory/navy styling, mobile breakpoints, photo grids and reduced-motion fallback
+- `assets/fibre-to-thread.js`: 126 moving cotton fibres converge into a visibly braided thread, loops after 10.5 seconds, replay button, pauses offscreen/when tab hidden, no external requests
+- Older `assets/cotton-journey.css` and `assets/cotton-journey.js` remain in Git history/repository but are **no longer loaded** by the homepage.
 
-The section is intentionally a **material-to-market illustration**, not a claim that the Noida factory performs cotton farming, spinning, fabric weaving, dyeing, or logistics operations on-site. The page includes this disclosure and uses genuine existing Manisha images for workroom/garments.
+## Visual composition
+1. Restore the original white Schiffli campaign hero, historical headline, and original editorial photo entrance animation.
+2. After hero, a wide ivory cotton-to-yarn feature with a muted graphic and warm bronze accents; no generic dark stacked cards.
+3. Five short text milestones: cotton → spinning/weaving → colour/cutting → stitching/finishing → worldwide buyers.
+4. Approved original factory and finished Style 4638 garment photos, with links to `manufacturing.html` and existing `contact.html`.
 
-## Animation and accessibility
-- No React, GSAP, added fonts, third-party APIs, video or new image compression
-- Lightweight CSS transform/opacity changes with `IntersectionObserver`
-- `requestAnimationFrame`-throttled SVG stroke on passive scroll
-- No scroll snapping, hijacking, fixed intro overlay or forced delays
-- Feature degrades to readable static content with JavaScript disabled or `prefers-reduced-motion: reduce`
-- All SVG illustrations are decorative (`aria-hidden`), each chapter has a visible heading; anchor and CTA are keyboard-focusable
-- Mobile breakpoints at 760px and 430px move the path to the left side and stack chapter cards
-- Existing home hero, photo edit, atelier, collection grid, manufacturing, Schiffli, studio teaser, client/global reach sections and footer are preserved
+All imagery remains unaltered. Cotton/spinning/export imagery is presented as a conceptual material-to-market story, not a claim that all processes are performed on-site.
 
-## Completed static checks
-- New JavaScript parsed successfully
+## Automated checks completed
+- JavaScript parsed successfully with the JavaScript compiler
+- Canvas mock runtime: 46 animation frames ran without throwing; replay handler verified
 - CSS braces balanced
-- New HTML chapter section nesting validated (including SVG elements)
-- 6 chapter IDs and labels verified, with no duplicates
-- New original image paths resolved on the GitHub staging branch
-- All existing homepage sections remain
-- New `href="contact.html"` CTA exists; existing enquiry page is unchanged
-- `main/index.html` verified to contain no new cotton journey
+- One and only one `id="cotton-to-showroom"`
+- Hero anchor to story exists
+- Exactly five milestones
+- Old dark-card assets no longer included in homepage
+- Existing gallery, product, factory, Schiffli, Studio and enquiry sections remain
+- No `main` branch files were changed
 
-## Live browser QA still required
-The published GitHub Pages domain could not be reached from this editing environment. Actual browser screenshots or interaction tests at desktop and mobile widths (including 375, 768, 1280 px) were **not** run. Check:
-- Desktop: story thread visually connects alternating cards; factory and catalogue photos are crisp
-- Mobile: no horizontal overflow, readable cards, usable nav and anchor
-- Keyboard: skip link, hero anchor and quote CTA accessible
-- Reduced motion: no animated path, no moving cotton, all content visible
-- Contact: CTA opens the existing enquiry page
+## Browser and publishing checks still required
+- Real browser screenshots/layout checks at 375px / 768px / 1280px
+- Validate image clarity and typography with external Google Fonts loaded or local fallbacks
+- Verify `prefers-reduced-motion`, keyboard controls and high zoom
+- Verify which GitHub Pages source is publishing; this editing environment did not confirm `staging` as the live publishing branch
 
-Production deployment status has not been independently verified. The changed files exist and passed static checks on `staging`.
+**This is implemented code on `staging`, not a claim of a completed live production deployment.**
