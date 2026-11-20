@@ -1,0 +1,174 @@
+/* Manisha Overseas / editorial fibre story v2
+   An intentional ivory + midnight-navy direction. Scoped to homepage.
+   Keeps the historic Schiffli hero photograph and all other pages intact. */
+.home-page .mo-fibre-story{
+ --fibre-navy:#122c38;--fibre-ivory:#f6f2e9;--fibre-bronze:#967757;--fibre-line:#d7d3c7;
+ color:var(--fibre-navy);background:var(--fibre-ivory);padding:clamp(70px,7.8vw,128px) clamp(22px,7vw,120px) clamp(72px,8vw,120px);
+ position:relative;isolation:isolate;
+}
+.home-page .mo-fibre-inner{width:min(1320px,100%);margin:0 auto}
+.home-page .mo-fibre-main{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(30px,5vw,85px);align-items:center}
+.home-page .mo-fibre-overline{
+ display:block;font:700 10px/1.6 "DM Sans",Arial,sans-serif;letter-spacing:.15em;color:var(--fibre-bronze);text-transform:uppercase;
+}
+.home-page .mo-fibre-intro h2{
+ font:500 clamp(49px,5.4vw,86px)/1.04 "Bodoni Moda","Bodoni MT",Georgia,serif;
+ letter-spacing:-.051em;max-width:710px;margin:18px 0 27px;color:var(--fibre-navy);text-wrap:balance;
+}
+.home-page .mo-fibre-intro h2 em{font-weight:400;color:#947453}
+.home-page .mo-fibre-intro p{
+ max-width:440px;margin:0 0 27px;font-size:clamp(13px,1vw,15px);
+ line-height:1.87;color:#5c625e;
+}
+.home-page .mo-fibre-text-link{
+ display:inline-flex;align-items:center;gap:13px;min-height:44px;
+ border-bottom:1px solid #9b896d;text-decoration:none!important;
+ color:#203e49;font:700 11px/1.4 "DM Sans",Arial,sans-serif;
+ letter-spacing:.025em;transition:color .2s ease,border-color .2s ease;
+}
+.home-page .mo-fibre-text-link:hover{color:#906b45;border-color:#906b45}
+.home-page .mo-fibre-scene{position:relative;min-width:0}
+.home-page .mo-fibre-surface{
+ position:relative;aspect-ratio:1.49;background:#eae7dc;border:1px solid #ded9cb;
+ overflow:hidden;display:grid;place-items:center;
+ box-shadow:18px 22px 0 rgba(28,49,52,.055);
+}
+.home-page .mo-fibre-surface:before,.home-page .mo-fibre-surface:after{
+ content:"";position:absolute;z-index:3;pointer-events:none;width:36px;height:36px;
+ border-color:rgba(122,100,72,.5);border-style:solid;
+}
+.home-page .mo-fibre-surface:before{left:19px;top:19px;border-width:1px 0 0 1px}
+.home-page .mo-fibre-surface:after{right:19px;bottom:19px;border-width:0 1px 1px 0}
+.home-page .mo-fibre-fallback{width:100%;height:100%;position:absolute;inset:0;z-index:1}
+.home-page .mo-fibre-surface canvas{
+ width:100%;height:100%;display:block;position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .35s ease;
+}
+.home-page .mo-fibre-live .mo-fibre-surface canvas{opacity:1}
+.home-page .mo-fibre-live .mo-fibre-fallback{opacity:0}
+.home-page .mo-fibre-surface-label{
+ position:absolute;z-index:4;top:25px;left:29px;color:#776b5a;font-size:9px;letter-spacing:.12em;font-weight:700;text-transform:uppercase;
+}
+.home-page .mo-fibre-scene-foot{
+ display:flex;justify-content:space-between;align-items:center;gap:15px;
+ padding-top:15px;flex-wrap:wrap;
+}
+.home-page .mo-fibre-state{
+ font:700 10px/1.5 "DM Sans",Arial,sans-serif;letter-spacing:.17em;color:#7c715f;
+}
+.home-page .mo-fibre-replay{
+ display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:7px 0;
+ background:transparent;border:0;border-bottom:1px solid #9d8d72;
+ color:var(--fibre-navy);cursor:pointer;font:600 11px/1.3 "DM Sans",Arial,sans-serif;
+}
+.home-page .mo-fibre-replay:hover{color:#9a7452}
+.home-page .mo-fibre-replay:focus-visible,.home-page .mo-fibre-story a:focus-visible{
+ outline:3px solid #a58862;outline-offset:4px;
+}
+.home-page .mo-fibre-replay svg{width:13px;height:13px}
+.home-page .mo-fibre-milestones{
+ list-style:none;margin:clamp(55px,6vw,95px) 0 0;padding:26px 0 30px;
+ border-top:1px solid #c6c8c0;border-bottom:1px solid #c6c8c0;
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px;
+}
+.home-page .mo-fibre-milestones li{min-width:0;position:relative;padding:0 12px 0 0}
+.home-page .mo-fibre-milestones li:not(:last-child)::after{
+ content:"";position:absolute;right:2px;top:8px;bottom:8px;border-right:1px solid #d9d8cc;
+}
+.home-page .mo-fibre-milestones span{
+ font:700 10px/1 "DM Sans",Arial,sans-serif;color:#947453;letter-spacing:.16em;
+}
+.home-page .mo-fibre-milestones strong{
+ display:block;margin:13px 0 8px;font:500 clamp(19px,2vw,26px)/1.12 "Bodoni Moda",Georgia,serif;color:#183340;
+}
+.home-page .mo-fibre-milestones p{margin:0;max-width:185px;color:#6f746d;font-size:11px;line-height:1.7}
+.home-page .mo-fibre-photos{
+ display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(15px,2.4vw,34px);align-items:start;
+ margin-top:clamp(52px,6.5vw,94px);
+}
+.home-page .mo-fibre-photos figure{position:relative;margin:0;min-width:0}
+.home-page .mo-fibre-photos .mo-fibre-photo{position:relative;overflow:hidden;background:#ddd8c8}
+.home-page .mo-fibre-photos .mo-fibre-photo--factory{height:clamp(285px,34vw,480px)}
+.home-page .mo-fibre-photos .mo-fibre-photo--dress{height:clamp(320px,42vw,580px);background:#e8e4dc}
+.home-page .mo-fibre-photos img{
+ width:100%;height:100%;object-fit:cover;
+ filter:none!important;image-rendering:auto!important;display:block;transition:transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.home-page .mo-fibre-photos .mo-fibre-photo--dress img{object-fit:contain}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+ .home-page .mo-fibre-photos figure:hover img{transform:scale(1.025)}
+}
+.home-page .mo-fibre-photos figcaption{
+ display:flex;justify-content:space-between;gap:12px;align-items:start;
+ padding-top:18px;border-top:1px solid #d8d5ca;margin-top:13px;
+ color:#213c46;font:700 10px/1.5 "DM Sans",Arial,sans-serif;letter-spacing:.07em;text-transform:uppercase;
+}
+.home-page .mo-fibre-photos figcaption span:last-child{font-weight:500;color:#817e72}
+.home-page .mo-fibre-ending{
+ display:flex;justify-content:space-between;gap:25px;align-items:center;margin-top:54px;
+ padding:32px 0 0;border-top:1px solid #c5c6ba;
+}
+.home-page .mo-fibre-ending h3{
+ color:#152f3e;font:500 clamp(31px,3.4vw,50px)/1.13 "Bodoni Moda",Georgia,serif;
+ letter-spacing:-.035em;margin:12px 0 7px;
+}
+.home-page .mo-fibre-ending h3 em{font-weight:400;color:#926f50}
+.home-page .mo-fibre-ending p{max-width:620px;color:#6f726b;font-size:12px;line-height:1.8;margin:0}
+.home-page .mo-fibre-quote{
+ display:inline-flex;align-items:center;justify-content:center;text-decoration:none!important;
+ color:#f8f2e7!important;background:#163342;border:1px solid #163342;
+ padding:15px 23px;min-height:49px;font:700 11px/1.4 "DM Sans",Arial,sans-serif;
+ transition:background .25s ease,transform .25s ease;
+ white-space:nowrap;
+}
+.home-page .mo-fibre-quote:hover{background:#355567;transform:translateY(-2px)}
+.home-page .mo-fibre-source{
+ color:#9a9283;font-size:10px;line-height:1.7;margin:21px 0 0;max-width:920px;
+}
+/* Unified editorial finishing: fewer ornamental icons, less competing colour. */
+.home-page .mo-statement{background:#f6f2e9}
+.home-page .mo-statement h2 em{color:#987a58}
+.home-page .proof-strip i{display:none}
+.home-page .proof-strip{background:#f2eee5;border-color:#d6cfc4}
+.home-page .proof-strip b{color:#203a46}
+.home-page .home-collections,.home-page .photo-edit-section{background:#f8f5ef}
+.home-page .last-cta{background:#112e3c}
+.home-page .edition-footer{background:#0e2a37}
+.home-page .hero-buttons .btn-play{letter-spacing:.015em}
+/* Avoid white-on-white small text in light editorial sections. */
+.home-page .mo-fibre-story .mo-fibre-source,
+.home-page .mo-fibre-story .mo-fibre-milestones p{color:#676d67}
+@media(max-width:980px){
+ .home-page .mo-fibre-main{grid-template-columns:1fr 1fr;gap:24px}
+ .home-page .mo-fibre-intro h2{font-size:clamp(45px,5.4vw,65px)}
+ .home-page .mo-fibre-milestones{grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+ .home-page .mo-fibre-milestones strong{font-size:20px}
+}
+@media(max-width:730px){
+ .home-page .mo-fibre-story{padding:70px 6% 85px}
+ .home-page .mo-fibre-main{grid-template-columns:1fr;gap:30px}
+ .home-page .mo-fibre-intro h2{font-size:clamp(45px,9.4vw,65px);max-width:680px}
+ .home-page .mo-fibre-intro p{max-width:560px}
+ .home-page .mo-fibre-surface{aspect-ratio:1.6}
+ .home-page .mo-fibre-milestones{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-top:50px;padding-block:15px}
+ .home-page .mo-fibre-milestones li{padding:17px 12px 18px 0;border-bottom:1px solid #dedbd0}
+ .home-page .mo-fibre-milestones li:after{display:none}
+ .home-page .mo-fibre-milestones strong{font-size:23px}
+ .home-page .mo-fibre-photos{grid-template-columns:1fr;gap:32px;margin-top:50px}
+ .home-page .mo-fibre-photos .mo-fibre-photo--factory{height:clamp(230px,62vw,460px)}
+ .home-page .mo-fibre-photos .mo-fibre-photo--dress{height:clamp(300px,90vw,570px)}
+ .home-page .mo-fibre-ending{display:block;margin-top:55px}
+ .home-page .mo-fibre-quote{margin-top:22px;white-space:normal}
+}
+@media(max-width:420px){
+ .home-page .mo-fibre-story{padding-inline:5%}
+ .home-page .mo-fibre-intro h2{font-size:45px}
+ .home-page .mo-fibre-milestones{gap:0 12px}
+ .home-page .mo-fibre-milestones strong{font-size:20px}
+ .home-page .mo-fibre-milestones p{font-size:10px}
+ .home-page .mo-fibre-scene-foot{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-page .mo-fibre-photos img,.home-page .mo-fibre-quote,.home-page .mo-fibre-surface canvas{transition:none!important;animation:none!important;transform:none!important}
+ .home-page .mo-fibre-fallback{opacity:1!important}
+ .home-page .mo-fibre-surface canvas{opacity:0!important}
+}
