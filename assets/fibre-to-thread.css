@@ -172,3 +172,16 @@
  .home-page .mo-fibre-fallback{opacity:1!important}
  .home-page .mo-fibre-surface canvas{opacity:0!important}
 }
+
+
+/* Make the cotton animation a clear destination from the original homepage hero. */
+.home-page .mo-watch-thread{
+ color:#f5e2c4!important;
+ text-decoration:none;letter-spacing:.025em;
+}
+.home-page .mo-watch-thread span{border-color:#edd6b3!important}
+.home-page .mo-watch-thread:hover{color:#fff!important}
+.home-page .mo-fibre-story{scroll-margin-top:70px}
+@media(prefers-reduced-motion:reduce){
+ .home-page .mo-fibre-replay{display:none!important}
+}
